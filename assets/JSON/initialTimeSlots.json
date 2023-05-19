@@ -1,0 +1,122 @@
+[
+  {
+    "id": 10,
+    "startTime": "6:00 AM",
+    "endTime": "7:00 AM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 10,
+    "startTime": "7:00 AM",
+    "endTime": "8:00 AM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 10,
+    "startTime": "8:00 AM",
+    "endTime": "9:00 AM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 0,
+    "startTime": "9:00 AM",
+    "endTime": "10:00 AM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 1,
+    "startTime": "10:00 AM",
+    "endTime": "11:00 AM",
+    "booked": true,
+    "contactName": "Will",
+    "contactPhone": "4"
+  },
+  {
+    "id": 2,
+    "startTime": "11:00 AM",
+    "endTime": "12:00 PM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 3,
+    "startTime": "12:00 PM",
+    "endTime": "1:00 PM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 4,
+    "startTime": "1:00 PM",
+    "endTime": "2:00 PM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 5,
+    "startTime": "2:00 PM",
+    "endTime": "3:00 PM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 6,
+    "startTime": "3:00 PM",
+    "endTime": "4:00 PM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 7,
+    "startTime": "4:00 PM",
+    "endTime": "5:00 PM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 8,
+    "startTime": "5:00 PM",
+    "endTime": "6:00 PM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 9,
+    "startTime": "6:00 PM",
+    "endTime": "7:00 PM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 10,
+    "startTime": "7:00 PM",
+    "endTime": "8:00 PM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  },
+  {
+    "id": 11,
+    "startTime": "8:00 PM",
+    "endTime": "9:00 PM",
+    "booked": true,
+    "contactName": null,
+    "contactPhone": null
+  }
+]
