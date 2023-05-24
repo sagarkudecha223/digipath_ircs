@@ -26,7 +26,7 @@ class _MultiAccountPageState extends State<MultiAccountPage> {
     preferences.setBool("loggedIn", true);
 
     localCitizenIDP = locitizenIDP;
-    localCitizenName = lousername;
+    localUserName = lousername;
     localUserLoginIDP = louserLoginIDP;
 
     Get.offAll(HomePage());
@@ -47,32 +47,34 @@ class _MultiAccountPageState extends State<MultiAccountPage> {
           children: [
             const SizedBox(height: 30,),
             TopPageTextViews('CITIZEN LIST', 'Registration with Mobile No: $localMobileNum'),
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  decoration: ColorFillContainer(Colors.white),
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(15),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: accountList.length,
-                    itemBuilder: (context,index){
-                      return InkWell(
-                        onTap: (){
-                          setLocalData(accountList[index].citizenIDP,accountList[index].userName,accountList[index].userLoginIDP);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(5),
-                          padding: EdgeInsets.all(15),
-                          decoration: ColorFillContainer(Colors.indigo.shade100),
-                          child: Text( accountList[index].userName,style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black,fontSize: 18),),
-                        ),
-                      );
-                    },
+            SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    decoration: ColorFillContainer(Colors.white),
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(15),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: accountList.length,
+                      itemBuilder: (context,index){
+                        return InkWell(
+                          onTap: (){
+                            setLocalData(accountList[index].citizenIDP,accountList[index].userName,accountList[index].userLoginIDP);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(15),
+                            decoration: ColorFillContainer(Colors.indigo.shade100),
+                            child: Text( accountList[index].userName,style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black,fontSize: 18),),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

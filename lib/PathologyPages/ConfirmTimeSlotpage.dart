@@ -4,7 +4,6 @@ import 'package:digipath_ircs/Global/Toast.dart';
 import 'package:digipath_ircs/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import '../Design/ColorFillContainer.dart';
 import '../Design/ContainerDecoration.dart';

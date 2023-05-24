@@ -10,7 +10,6 @@ String internetStatus = 'ConnectivityResult.none';
 String localCitizenIDP = '';
 String localUserName = '';
 String localUserLoginIDP = '';
-String localCitizenName = '';
 String localMobileNum = '';
 String careProviderID = '4286';
 String TreatingDoctorIDP = '14890_1376';

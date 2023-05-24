@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:digipath_ircs/Global/global.dart';
 import 'package:digipath_ircs/NewPages/BookApointmentPage.dart';
 import 'package:digipath_ircs/NewPages/ViewTimeLinePage.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Design/TextWidget.dart';
 import 'LoginPage.dart';
 import 'ModalClass/HomePageTitleModal.dart';
-import 'NewPages/OrderedInvestigation.dart';
+import 'NewPages/AddRecordPage.dart';
 import 'NewPages/PaymentHistoryPage.dart';
 import 'NewPages/PaymentPage.dart';
 import 'NewPages/PrescriptionPage.dart';
@@ -54,13 +55,14 @@ class _homeState extends State<HomePage> {
 
     titleList.clear();
 
-    titleList.add(HomePagetitleModal(color: Colors.yellow.shade800, title: 'BOOK APPOINTMENT'));
-    titleList.add(HomePagetitleModal(color: Colors.blueAccent, title: 'PAYMENT'));
-    titleList.add(HomePagetitleModal(color: Colors.lightGreen, title: 'UPLOAD DOCUMENT'));
-    titleList.add(HomePagetitleModal(color: Colors.lightBlue, title: 'VIEW REPORT'));
-    titleList.add(HomePagetitleModal(color: Colors.orangeAccent, title: 'VIEW TIMELINE'));
-    titleList.add(HomePagetitleModal(color: Colors.green.shade400, title: 'START TELE-CONSULTATION'));
-    titleList.add(HomePagetitleModal(color: Colors.indigo.shade500, title: 'PRESCRIPTION'));
+    titleList.add(HomePagetitleModal(icon: Icons.calendar_month,color: Colors.yellow.shade800, title: 'BOOK APPOINTMENT'));
+    titleList.add(HomePagetitleModal(icon: Icons.payment_rounded,color: Colors.blueAccent, title: 'PAYMENT'));
+    titleList.add(HomePagetitleModal(icon: Icons.upload_file,color: Colors.lightGreen, title: 'UPLOAD DOCUMENT' ));
+    titleList.add(HomePagetitleModal(icon: Icons.pageview_rounded,color: Colors.lightBlue, title: 'VIEW REPORT'));
+    titleList.add(HomePagetitleModal( icon: Icons.view_timeline_outlined, color: Colors.orangeAccent, title: 'VIEW TIMELINE'));
+    titleList.add(HomePagetitleModal(icon: Icons.video_camera_front_outlined, color: Colors.green.shade400, title: ' TELE-CONSULTATION'));
+    titleList.add(HomePagetitleModal( icon: Icons.medical_services_outlined,color: Colors.indigo.shade500, title: 'PRESCRIPTION'));
+    titleList.add(HomePagetitleModal( icon: Icons.add_photo_alternate_rounded,color: Colors.blueAccent, title: 'ADD RECORD'));
 
   }
 
@@ -68,7 +70,7 @@ class _homeState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: Colors.white),
+          color: colors),
       child: Padding(
         padding: const EdgeInsets.only(left: 4.0),
         child: Center(
@@ -77,7 +79,7 @@ class _homeState extends State<HomePage> {
             textAlign: TextAlign.center,
             style:  TextStyle(
               fontSize: 16,
-              color: Colors.indigo.shade800,
+              color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -217,7 +219,7 @@ class _homeState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Text(
-                        'localUserName',
+                        localUserName,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.indigo[900],
@@ -276,7 +278,7 @@ class _homeState extends State<HomePage> {
                             crossAxisCount: 2,
                             childAspectRatio: 3.5 / 2,
                             crossAxisSpacing: 0,
-                            mainAxisSpacing: 0
+                            mainAxisSpacing: 15
                         ),
                         itemBuilder:(BuildContext context, int index){
                           return InkWell(
@@ -378,12 +380,33 @@ class _homeState extends State<HomePage> {
                               else if(index == 6){
                                 Get.to(PrescriptionPage());
                               }
+                              else if(index == 7){
+                                Get.to(AddRecordPage());
+                              }
                             },
-                            child: Container(
-                              margin: const EdgeInsets.all(15),
-                              child: homeCommonContainer(
-                                titleList[index].color,
-                                titleList[index].title,),
+                            child: Stack(
+                                alignment: Alignment.center,
+                                clipBehavior: Clip.none,
+                              children : [
+                                Container(
+                                  margin: const EdgeInsets.all(15),
+                                  child: homeCommonContainer(
+                                    titleList[index].color,
+                                    titleList[index].title,),
+                                ),
+                                Positioned(
+                                  top: -15,
+                                  child: Container(
+                                    padding: EdgeInsets.all(7),
+                                    child: Icon(titleList[index].icon,size: 28,color: Colors.blueGrey.shade700,),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(color: Colors.grey,width: 1),
+                                        shape: BoxShape.circle
+                                    ),
+                                  ),
+                                ),
+                             ]
                             ),
                           );
                         }
@@ -393,14 +416,14 @@ class _homeState extends State<HomePage> {
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: const[
+                children: [
                   Text(
                     "Powered By",
                     style: TextStyle(fontSize: 15),
                   ),
                   Text(
                     "Artem Healthtech Pvt Ltd",
-                    style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                    style: TextStyle(fontSize: 18, color: Colors.blueAccent.shade700),
                   ),
                   SizedBox(
                     height: 10,

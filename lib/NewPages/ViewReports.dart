@@ -36,7 +36,7 @@ class _ViewReportPageState extends State<ViewReportPage> {
     searchReportList.clear();
 
     try{
-      Response response = await get(
+      Response response = await get(                                                                     /// 1028107
           Uri.parse('https://medicodb.in/patientListForPathologyReport.do?requestFrom=patient&citizenID=1028107&startDate=01-April-2023&endDate=14-April-2023&careProviderID=4286'),
       );
 
@@ -44,14 +44,14 @@ class _ViewReportPageState extends State<ViewReportPage> {
         var status = jsonDecode(response.body.toString());
         List<dynamic> statusinfo = status['data'];
 
-        if(!(statusinfo == null)) {
+        if(statusinfo.isNotEmpty) {
           for (int i = 0; i < statusinfo.length; i++) {
             String ServiceName = statusinfo[i]["serviceAlias"].toString();
             String OnSetDate = statusinfo[i]["onSetDate"].toString();
             String ReportStatus = statusinfo[i]["reportStatus"].toString();
             String ServiceMapIDP = statusinfo[i]["serviceMapIDF"].toString();
             String EncounterServiceIDP = statusinfo[i]["encounterServiceIDP"].toString();
-            String  CitizenIDF = statusinfo[i]["citizenIDF"].toString();
+            String CitizenIDF = statusinfo[i]["citizenIDF"].toString();
             String EncounterServiceNumber = statusinfo[i]["encounterServiceNumber"].toString();
 
             searchReportList.add(ViewReportModal(

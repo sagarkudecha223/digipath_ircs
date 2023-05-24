@@ -105,14 +105,13 @@ class _LoginPageState extends State<LoginPage> {
           localCitizenIDP = array[i]['citizenIDP'].toString();
           localUserName = array[i]['userName'].toString();
           localUserLoginIDP = array[i]['userLoginIDP'].toString();
-          localCitizenName = array[i]['CitizenName'].toString();
+          localUserName = array[i]['CitizenName'].toString();
 
           accountList.add(MultiAccountModal(citizenIDP: localCitizenIDP, userName: localUserName, userLoginIDP: localUserLoginIDP));
 
         }
 
         showToast('Verification successfully completed !');
-
         navigateUser();
       }
       else{
@@ -141,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
 
     _timer.cancel();
     if(accountList.length ==1){
-      saveData(localCitizenIDP, localUserName,localUserLoginIDP,localCitizenName,localMobileNum);
+      saveData(localCitizenIDP, localUserName,localUserLoginIDP,localUserName,localMobileNum);
       Get.offAll(HomePage());
     }
     else{

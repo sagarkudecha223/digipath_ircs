@@ -75,7 +75,7 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
 
           }else{
             noDataText = true;
-            noDataTextString = 'Do Data Found';
+            noDataTextString = 'No Data Found';
           }
 
           setState(() {

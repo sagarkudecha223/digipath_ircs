@@ -53,7 +53,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
   void initState() {
     super.initState();
     getTimeSlots(date, current_date);
-    getServiceList();
+    // getServiceList();
   }
 
   void getServiceList() async{
@@ -66,6 +66,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
 
     print(' status after responce: $status');
     serviceList.clear();
+    EasyLoading.dismiss();
 
     if (status.toString() != 'Sorry !!! Server Error' && status.toString().isNotEmpty) {
 
@@ -321,6 +322,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
                       return InkWell(
                         onTap: () async{
                           if(serviceList.isEmpty){
+                            EasyLoading.show(status: 'Loading...');
                             getServiceList();
                           }
                           else{
