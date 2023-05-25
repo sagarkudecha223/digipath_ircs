@@ -3,13 +3,14 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:digipath_ircs/Global/Toast.dart';
 import 'package:digipath_ircs/HomePage.dart';
+import 'package:digipath_ircs/NewPages/SecondUploadDocumentPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
-import '../Design/GlobalAppBar.dart';
 import '../Global/global.dart';
 import '../ModalClass/DocumentModal.dart';
 import 'package:image_picker/image_picker.dart';
@@ -94,7 +95,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
     }
     catch(e){
       EasyLoading.dismiss();
-      bool noData = true;
+      noData = true;
       noDataTextString = 'Sorry Server Error';
       showToast(e.toString());
     }
@@ -532,6 +533,28 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           child: Column(
                             crossAxisAlignment: documentList[index].documentType == '3'?CrossAxisAlignment.start : CrossAxisAlignment.end,
                             children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Visibility(
+                                    visible : !(imageList.length<(index+1)),
+                                    child: FloatingActionButton(onPressed: ()async{
+                                      Directory appDocDirectory = await getTemporaryDirectory();
+                                      final myImagePath = "${appDocDirectory.path}/image.jpg";
+                                      File file = await File(myImagePath).writeAsBytes(imageList[index]);
+                                      print(file);
+                                          Get.to(SecondUploadDocumentPage(filePath: file));
+                                      },
+                                      heroTag: null,
+                                      backgroundColor: Colors.indigo,
+                                      elevation: 0.0,
+                                      tooltip: 'ADD TO RECORD',
+                                      mini: true,
+                                      child: Icon(Icons.add_photo_alternate_rounded),),
+                                  )
+                                ],
+                              ),
                               InkWell(
                                 onTap : (){
                                   showDialog<String>(
@@ -592,10 +615,10 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                                   );
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.all(5),
+                                  padding: EdgeInsets.only(left: 5),
                                   height: 200,
                                   width: 220,
-                                  child: imageList.length<(index+1)?Center(child: CircularProgressIndicator()) : Image.memory(imageList[index]),
+                                  child: imageList.length<(index+1)?const Center(child: CircularProgressIndicator()) : Image.memory(imageList[index]),
                                 ),
                               ),
                               SizedBox(height: 5,),
