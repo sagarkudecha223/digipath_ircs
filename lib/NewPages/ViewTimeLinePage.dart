@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:digipath_ircs/Global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart';
@@ -17,24 +18,34 @@ class ViewTimeLinePage extends StatefulWidget {
 
 class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
 
-  late String ServiceName;
-  late String DoctorName;
-  late String CareProviderName;
-  late String OnSetDate;
-  late String ReportStatus;
-  late String ImageType;
-  late String modalityIDP;
-  late String Document;
-  late String LinkToMeasurement;
-  late String ServiceMapIDP;
-  late String EncounterServiceIDP;
-  late String filterReportStatus;
-  late String Age;
-  late String CitizenIDF;
-  late String EncounterServiceNumber;
-  late String PatientDocumentIDP;
-
+   String ServiceName = '';
+   String DoctorName = '';
+   String CareProviderName = '';
+   String OnSetDate = '';
+   String ReportStatus = '';
+   String ImageType = '';
+   String modalityIDP = '';
+   String Document = '';
+   String LinkToMeasurement = '';
+   String ServiceMapIDP = '';
+   String EncounterServiceIDP = '';
+   String filterReportStatus = '';
+   String Age = '';
+   String CitizenIDF = '';
+   String EncounterServiceNumber = '';
+   String PatientDocumentIDP = '';
+   String ServiceIDP = '';
+   String CareprofessionalByTreatingDoctorIdf = '';
+   String ServiceAlias = '';
+  String reportStatusText = '';
+  String u = 'dhruv';
+  String p  = 'demo';
   List<MedicalReportModal> recordlist =  <MedicalReportModal>[];
+   String PatientReportIDP = '';
+   String RightPatientReportIDP = '';
+   String LeftPatientReportIDP = '';
+  bool noDataText = true;
+  String noDataTextString = 'Searching...';
 
   @override
   void initState() {
@@ -50,7 +61,7 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
     try {
       Response response = await get(
           Uri.parse(
-              'https://medicodb.in/getListofDateAsPerCitizenCode.app?CitizenCode=15092100073901'),
+              'https://medicodb.com/getListofDateAsPerCitizenCode.app?CitizenCode=15092100073901'),
           headers: {
             'u': 'dhruv',
             'p': 'demo',
@@ -66,42 +77,47 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
           List<dynamic> statusinfo = status['JsonResponse'];
           print(statusinfo);
 
-          if(!(statusinfo == null)) {
+          if(statusinfo.isNotEmpty) {
             for (int i = 0; i < statusinfo.length; i++) {
-              ServiceName = statusinfo[i]["ServiceName"].toString();
-              DoctorName = statusinfo[i]["DoctorName"].toString();
-              CareProviderName = statusinfo[i]["CareProviderName"].toString();
-              OnSetDate = statusinfo[i]["OnSetDate"].toString();
-              ReportStatus = statusinfo[i]["ReportStatus"].toString();
-              ImageType = statusinfo[i]["ImageType"].toString();
-              modalityIDP = statusinfo[i]["modalityIDP"].toString();
-              Document = statusinfo[i]["Document"].toString();
-              LinkToMeasurement = statusinfo[i]["LinkToMeasurement"].toString();
-              ServiceMapIDP = statusinfo[i]["ServiceMapIDP"].toString();
-              EncounterServiceIDP = statusinfo[i]["EncounterServiceIDP"].toString();
-              Age = statusinfo[i]["Age"].toString();
-              CitizenIDF = statusinfo[i]["CitizenIDF"].toString();
-              EncounterServiceNumber = statusinfo[i]["EncounterServiceNumber"].toString();
-              PatientDocumentIDP = statusinfo[i]["PatientDocumentIDP"].toString();
+
+                Document = statusinfo[i]["Document"].toString();
+                CareProviderName = statusinfo[i]["CareProviderName"].toString();
+                CareprofessionalByTreatingDoctorIdf = statusinfo[i]["CareprofessionalByTreatingDoctorIdf"].toString();
+                PatientDocumentIDP = statusinfo[i]["PatientDocumentIDP"].toString();
+                ServiceAlias = statusinfo[i]["ServiceAlias"].toString();
+                ServiceName = statusinfo[i]["ServiceName"].toString();
+                DoctorName = statusinfo[i]["DoctorName"].toString();
+                OnSetDate = statusinfo[i]["OnSetDate"].toString();
+                ReportStatus = statusinfo[i]["ReportStatus"].toString();
+                ImageType = statusinfo[i]["ImageType"].toString();
+                modalityIDP = statusinfo[i]["modalityIDP"].toString();
+                LinkToMeasurement = statusinfo[i]["LinkToMeasurement"].toString();
+                ServiceMapIDP = statusinfo[i]["ServiceMapIDP"].toString();
+                EncounterServiceIDP = statusinfo[i]["EncounterServiceIDP"].toString();
+                Age = statusinfo[i]["Age"].toString();
+                ServiceIDP = statusinfo[i]["ServiceIDP"].toString();
+                CitizenIDF = statusinfo[i]["CitizenIDF"].toString();
+                EncounterServiceNumber = statusinfo[i]["EncounterServiceNumber"].toString();
 
               recordlist.add(MedicalReportModal(
                   ServiceName: ServiceName, DoctorName: DoctorName,
                   CareProviderName: CareProviderName, OnSetDate: OnSetDate, ReportStatus: ReportStatus,
                   ImageType: ImageType, modalityIDP: modalityIDP, Document: Document, LinkToMeasurement: LinkToMeasurement, ServiceMapIDP: ServiceMapIDP,
-                  EncounterServiceIDP: EncounterServiceIDP,Age: Age, CitizenIDF: CitizenIDF, EncounterServiceNumber: EncounterServiceNumber, PatientDocumentIDP: PatientDocumentIDP));
+                  EncounterServiceIDP: EncounterServiceIDP,Age: Age, CitizenIDF: CitizenIDF, EncounterServiceNumber: EncounterServiceNumber,
+                  PatientDocumentIDP: PatientDocumentIDP,ServiceIDP: ServiceIDP, CareprofessionalByTreatingDoctorIdf: CareprofessionalByTreatingDoctorIdf, ServiceAlias: ServiceAlias));
             }
           }
-          else{
-          }
+
           if (mounted) {
             setState(() {
               EasyLoading.dismiss();
-              // if (recordlist.isEmpty) {
-              //   recordFound = true;
-              // }
-              // else {
-              //   recordFound = false;
-              // }
+              if (recordlist.isEmpty) {
+                noDataText = true;
+                noDataTextString = 'No Data Found';
+              }
+              else {
+                noDataText = false;
+              }
             });
           }
         }
@@ -132,21 +148,28 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
         child: Column(
           children: [
             TopPageTextViews('View TimeLine','Can see Timeline Reports here..'),
+            noDataText?Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center) :
             Flexible(
-              child: RefreshIndicator(
-                onRefresh: () {
-                  return Future.delayed(Duration(microseconds: 500),
-                  () {
-                    EasyLoading.show(status: 'Loading...');
-                    getRecord();
-                  });
+              child: ListView.builder(
+                itemCount: recordlist.length,
+                itemBuilder: (context, index){
+                  return MedicalRecordsCard(medicalReportModal: recordlist[index]);
                 },
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: recordlist.map((key) => MedicalRecordsCard(medicalReportModal:key)).toList(),
-                  ),
-                ),
               ),
+              // child: RefreshIndicator(
+              //   onRefresh: () {
+              //     return Future.delayed(Duration(microseconds: 500),
+              //     () {
+              //       EasyLoading.show(status: 'Loading...');
+              //       getRecord();
+              //     });
+              //   },
+              //   // child: SingleChildScrollView(
+              //   //   child: Column(
+              //   //     children: recordlist.map((key) => MedicalRecordsCard(medicalReportModal:key)).toList(),
+              //   //   ),
+              //   // ),
+              // ),
             ),
           ],
         ),

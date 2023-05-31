@@ -2,7 +2,7 @@
 class MedicalReportModal{
 
   String ServiceName,DoctorName,CareProviderName,OnSetDate,ReportStatus,ImageType,modalityIDP,Document,LinkToMeasurement,ServiceMapIDP,
-      EncounterServiceIDP,Age,CitizenIDF,EncounterServiceNumber,PatientDocumentIDP;
+      EncounterServiceIDP,Age,CitizenIDF,EncounterServiceNumber,PatientDocumentIDP,ServiceIDP,CareprofessionalByTreatingDoctorIdf,ServiceAlias;
 
   MedicalReportModal({
 
@@ -21,6 +21,9 @@ class MedicalReportModal{
     required this.CitizenIDF,
     required this.EncounterServiceNumber,
     required this.PatientDocumentIDP,
+    required this.ServiceIDP,
+    required this.CareprofessionalByTreatingDoctorIdf,
+    required this.ServiceAlias,
 
   });
 

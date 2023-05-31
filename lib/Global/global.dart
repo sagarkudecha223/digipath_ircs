@@ -11,6 +11,7 @@ String localCitizenIDP = '';
 String localUserName = '';
 String localUserLoginIDP = '';
 String localMobileNum = '';
+String localCitizenCode = '';
 String careProviderID = '4286';
 String TreatingDoctorIDP = '14890_1376';
 

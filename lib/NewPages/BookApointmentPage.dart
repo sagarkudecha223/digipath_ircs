@@ -208,6 +208,10 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
       }
 
     }
+
+    if(filterList.isEmpty && searchText.length >=2){
+      showToast('No Result Found');
+    }
   }
 
   Padding textWithPadding(String text){
@@ -218,6 +222,18 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
   InputDecoration textFieldDecoration(String hintText){
     return InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 0.0,horizontal: 10),
+        suffixIcon: InkWell(
+          onTap: (){
+            setState(() {
+              filterColumn = false;
+              searchCityColumn = false;
+              specialityTypeColumn = false;
+              hospitalColumn = false;
+              doctorColumn = false;
+            });
+          },
+          child: Icon(Icons.cancel)
+        ),
         hintText:  hintText,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -287,6 +303,13 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                                     onTap: (){
                                       cityText = filterColumn? filterList[index].name : cityList[index].name;
                                       cityID =  filterColumn? filterList[index].id : cityList[index].id;
+                                      final split = cityID.split(',');
+                                      final Map<int, String> values = {
+                                        for (int i = 0; i < split.length; i++)
+                                          i: split[i]
+                                      };
+                                      print(values);
+                                      cityID = values[0].toString();
                                       setState(() {
                                         filterColumn = false;
                                         searchCityColumn = false;

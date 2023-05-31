@@ -1,16 +1,18 @@
 import 'dart:convert';
-
+import 'package:digipath_ircs/Design/ColorFillContainer.dart';
+import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/global.dart';
+import 'package:digipath_ircs/NewPages/NewEnquiryPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import '../Design/ContainerDecoration.dart';
 import '../Design/TopPageTextViews.dart';
-import '../Global/global.dart';
-import '../HomePage.dart';
 import '../ModalClass/RequestByUserModel.dart';
 import 'package:http/http.dart' as http;
 
 class EnquiryListPage extends StatefulWidget {
-  const EnquiryListPage({super.key});
+  const EnquiryListPage({Key? key}) : super(key: key);
 
   @override
   State<EnquiryListPage> createState() => EnquiryListPageState();
@@ -21,6 +23,9 @@ class EnquiryListPageState extends State<EnquiryListPage> {
   bool serching = true;
 
   void getAllRequestByUser() async {
+
+    EasyLoading.show(status: 'Loading...');
+
     final response = await http.get(
         Uri.parse(
             'https://smarthealth.care/getAllRequestByUser.shc?citizenID=$localCitizenIDP'),
@@ -29,10 +34,10 @@ class EnquiryListPageState extends State<EnquiryListPage> {
           "eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg"
         });
 
+    EasyLoading.dismiss();
+
     if (response.statusCode == 200) {
-      requestByUserModel =
-          RequestByUserModel.fromJson(jsonDecode(response.body));
-      EasyLoading.dismiss();
+      requestByUserModel = RequestByUserModel.fromJson(jsonDecode(response.body));
       setState(() {
         serching = false;
       });
@@ -45,94 +50,88 @@ class EnquiryListPageState extends State<EnquiryListPage> {
   @override
   void initState() {
     super.initState();
-
-    EasyLoading.show(status: 'Loading...');
     getAllRequestByUser();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async {
-          Get.offAll(HomePage());
-          return false;
-        },
-        child: Scaffold(
-          backgroundColor: Colors.indigo[100],
-          appBar: AppBar(
-            elevation: 0.0,
-            backgroundColor: Colors.indigo[100],
-            leading: InkWell(
-                onTap: () {
-                  Get.offAll(
-                    HomePage(),
-                  );
-                },
-                child:
-                Icon(Icons.arrow_back_rounded, color: Colors.indigo[900])),
-            actions: [
-              IconButton(
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.indigo[900],
-                ),
-                onPressed: () {
-                  Get.offAll(
-                    HomePage(),
-                  );
-                },
-              )
-            ],
-          ),
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
+    return Scaffold(
+      backgroundColor: Colors.indigo[100],
+      appBar: GlobalAppBar(context),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            TopPageTextViews('Enquiry List', 'Generated Enquiry List'),
+            SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TopPageTextViews('Enquiry List', 'Generated Enquiry List'),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.centerRight,
-                  margin: EdgeInsets.fromLTRB(0, 0, 16, 0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blueAccent, // background
-                      onPrimary: Colors.white, // foreground
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      'NEW ENQUIRY',
-                    ),
+                InkWell(
+                  onTap: () async{
+                    var data = await Get.to(NewEnquiryPage());
+                    if(data == 'added'){
+                      getAllRequestByUser();
+                    }
+                  },
+                  child: Container(
+                    decoration: ColorFillContainer(Colors.indigo.shade500),
+                    margin: EdgeInsets.fromLTRB(0, 0, 26, 0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'NEW ENQUIRY',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                      ),
+                    )
                   ),
                 ),
-                if (serching)
-                  Text('Searching')
-                else
-                  ListView.builder(
-                    shrinkWrap: true,
+              ],
+            ),
+            SizedBox(height: 2,),
+            if (serching)
+              Text('Searching')
+            else
+              Flexible(
+                child: Container(
+                  height: double.infinity,
+                  child: ListView.builder(
                     itemCount: requestByUserModel.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
+                        margin: const EdgeInsets.fromLTRB(25, 5, 25, 5),
+                        padding: const EdgeInsets.fromLTRB(15, 15, 10, 15),
+                        decoration: ContainerDecoration(10),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (requestByUserModel.data[index].isClosed)
-                              Text('Status:Close')
-                            else
-                              Text('Status:Close'),
+                            Text( requestByUserModel.data[index].isClosed?'status: Close'.toUpperCase():'Status: OPEN'.toUpperCase(),
+                              style: TextStyle(color: Colors.indigo.shade800,fontWeight: FontWeight.bold,fontSize: 15),),
+                            SizedBox(height: 3,),
                             Text(
-                              'TYPE : ${requestByUserModel.data[index].enquiryType}',
-                            ),
+                                'TYPE : ${requestByUserModel.data[index].enquiryType}',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14)),
+                            SizedBox(height: 3,),
                             Text(
-                              'MESSAGE : ${requestByUserModel.data[index].closedReason}',
-                            ),
+                                'MESSAGE : ${requestByUserModel.data[index].enquiryText}',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14)),
                           ],
                         ),
                       );
                     },
-                  )
-              ],
-            ),
-          ),
-        ));
+                  ),
+                ),
+              )
+          ],
+        ),
+      ),
+    );
   }
 }

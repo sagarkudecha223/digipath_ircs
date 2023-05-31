@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:digipath_ircs/Global/global.dart';
 import 'package:digipath_ircs/NewPages/BookApointmentPage.dart';
 import 'package:digipath_ircs/NewPages/ViewTimeLinePage.dart';
+import 'package:digipath_ircs/SignUpPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -9,9 +10,12 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Design/TextWidget.dart';
+import 'DrawerPages/SwitchUserPage.dart';
 import 'LoginPage.dart';
 import 'ModalClass/HomePageTitleModal.dart';
 import 'NewPages/AddRecordPage.dart';
+import 'NewPages/EnquiryListPage.dart';
+import 'NewPages/OrderedInvestigation.dart';
 import 'NewPages/PaymentHistoryPage.dart';
 import 'NewPages/PaymentPage.dart';
 import 'NewPages/PrescriptionPage.dart';
@@ -63,6 +67,7 @@ class _homeState extends State<HomePage> {
     titleList.add(HomePagetitleModal(icon: Icons.video_camera_front_outlined, color: Colors.green.shade400, title: ' TELE-CONSULTATION'));
     titleList.add(HomePagetitleModal( icon: Icons.medical_services_outlined,color: Colors.indigo.shade500, title: 'PRESCRIPTION'));
     titleList.add(HomePagetitleModal( icon: Icons.add_photo_alternate_rounded,color: Colors.blueAccent, title: 'ADD RECORD'));
+    titleList.add(HomePagetitleModal( icon: Icons.inventory_sharp,color: Colors.orangeAccent, title: 'ORDERED INVESTIGATION'));
 
   }
 
@@ -256,6 +261,56 @@ class _homeState extends State<HomePage> {
                   }
               ),
               divider,
+              ListTile(
+                  dense: true,
+                  visualDensity: VisualDensity(vertical: -3),
+                  leading: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Icon(Icons.switch_account, color: Colors.indigo[900],),
+                  ),
+                  title: Text('Switch User',style: TextStyle( color: Colors.indigo[900],),),
+                  onTap: (){
+                    _scaffoldKey.currentState?.openEndDrawer();
+                    Get.to(SwitchUserPage());
+                  }
+              ),
+              divider,
+              ListTile(
+                dense: true,
+                visualDensity: VisualDensity(vertical: -3),
+                leading: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Icon(
+                    Icons.edit_note_rounded,
+                    color: Colors.indigo[900],
+                  ),
+                ),
+                title: Text(
+                  'Enquiry List',
+                  style: TextStyle(
+                    color: Colors.indigo[900],
+                  ),
+                ),
+                onTap: () {
+                  _scaffoldKey.currentState?.openEndDrawer();
+                  Get.to(EnquiryListPage());
+                },
+              ),
+              divider,
+              ListTile(
+                  dense: true,
+                  visualDensity: VisualDensity(vertical: -3),
+                  leading: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Icon(Icons.family_restroom_rounded, color: Colors.indigo[900],),
+                  ),
+                  title: Text('Add Family Member',style: TextStyle( color: Colors.indigo[900],),),
+                  onTap: (){
+                    _scaffoldKey.currentState?.openEndDrawer();
+                    Get.to(SignUpPage(fromAddMember: true,));
+                  }
+              ),
+              divider,
             ],
           ),
         ),
@@ -383,6 +438,9 @@ class _homeState extends State<HomePage> {
                               else if(index == 7){
                                 Get.to(AddRecordPage());
                               }
+                              else if(index ==8){
+                                  Get.to(OrderedInvestigation());
+                              }
                             },
                             child: Stack(
                                 alignment: Alignment.center,
@@ -415,6 +473,7 @@ class _homeState extends State<HomePage> {
                 ),
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(

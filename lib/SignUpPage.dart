@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'package:digipath_ircs/Design/TopPageTextViews.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
-import 'Design/EditTextBorder.dart';
 import 'Global/SearchAPI.dart';
 import 'Global/TextFieldDecoration.dart';
 import 'Global/Toast.dart';
@@ -11,10 +11,11 @@ import 'ModalClass/SearchCityModal.dart';
 import 'OTPpage.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  final bool fromAddMember;
+  const SignUpPage({Key? key, required this.fromAddMember}) : super(key: key);
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignUpPage> createState() => _SignUpPageState(fromAddMember);
 }
 
 class _SignUpPageState extends State<SignUpPage> {
@@ -47,6 +48,9 @@ class _SignUpPageState extends State<SignUpPage> {
   bool filterColumn = false;
   bool onBack = true;
   List<SearchCityModal> filterlist =  <SearchCityModal>[];
+  bool fromAddMember;
+
+  _SignUpPageState(this.fromAddMember);
 
   void changeText(String enterText){
 
@@ -109,7 +113,6 @@ class _SignUpPageState extends State<SignUpPage> {
     String value1 = values[0].toString();
     String value2 = values[1].toString();
     String value3 = values[2].toString();
-    String value4 = values[3].toString();
 
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -253,6 +256,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void dispose() {
     EasyLoading.dismiss();
+    FocusManager.instance.primaryFocus?.unfocus();
     super.dispose();
   }
 
@@ -276,11 +280,8 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('QUICK SIGN UP',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 28,color: Colors.indigo[900]),),
-                Padding(
-                  padding: const EdgeInsets.all(7.0),
-                  child: Text('Start your Account of Vinecare',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.indigo[900]),),
-                ),
+                fromAddMember? TopPageTextViews('Add Family Member', 'family member registration'):
+                TopPageTextViews('QUICK SIGN UP', 'Start your Account of Vinecare'),
                 Padding(
                   padding: const EdgeInsets.only(left: 15,right: 15),
                   child: Container(
@@ -553,6 +554,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             ),
                           ),
+                          SizedBox(height: 1,),
                           Visibility(
                             visible: seachCityView,
                             child: Column(
@@ -562,6 +564,16 @@ class _SignUpPageState extends State<SignUpPage> {
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(vertical: 0.0),
                                     prefixIcon: Icon(Icons.search),
+                                    suffixIcon: InkWell(
+                                      onTap: (){
+                                        setState(() {
+                                          seachCityView = false;
+                                          seachCity.clear();
+                                          filterColumn = false;
+                                        });
+                                      },
+                                      child: Icon(Icons.cancel)
+                                    ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
                                       borderSide: const BorderSide(
@@ -590,6 +602,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                           setState(() {
                                             cityvalid = true;
                                             seachCityView = false;
+                                            filterColumn = false;
+                                            seachCity.clear();
                                           });
                                         },
                                         contentPadding :EdgeInsets.zero,
@@ -674,7 +688,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text('CREATE ACCOUNT',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                                        Text(fromAddMember?'Add Family Member' : 'CREATE ACCOUNT',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                                       ],
                                     ),
                                     Icon(Icons.arrow_forward,color: Colors.white,),

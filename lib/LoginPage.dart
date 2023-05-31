@@ -86,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void VerifyOTP(String number,OTP) async{
 
+    accountList.clear();
     FocusManager.instance.primaryFocus?.unfocus();
 
     dynamic status = await searchAPI(true ,'$urlForIN/validateMobileOTP_smarthealth.notauth',
@@ -103,11 +104,11 @@ class _LoginPageState extends State<LoginPage> {
 
         for(int i=0; i<array.length; i++){
           localCitizenIDP = array[i]['citizenIDP'].toString();
-          localUserName = array[i]['userName'].toString();
           localUserLoginIDP = array[i]['userLoginIDP'].toString();
           localUserName = array[i]['CitizenName'].toString();
+          localCitizenCode = array[i]['CitizenCode'].toString();
 
-          accountList.add(MultiAccountModal(citizenIDP: localCitizenIDP, userName: localUserName, userLoginIDP: localUserLoginIDP));
+          accountList.add(MultiAccountModal(citizenIDP: localCitizenIDP, userName: localUserName, userLoginIDP: localUserLoginIDP, CitizenCode: localCitizenCode));
 
         }
 
@@ -126,13 +127,14 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void saveData(String citizenIDP,userName,userLoginIDP,CitizenName,mobile) async{
+  void saveData(String citizenIDP,userName,userLoginIDP,CitizenName,mobile,CitizenCode) async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString('citizenIDP', citizenIDP);
     preferences.setString('userName', userName);
     preferences.setString('userLoginIDP', userLoginIDP);
     preferences.setString('CitizenName', CitizenName);
     preferences.setString('mobile', localMobileNum);
+    preferences.setString('CitizenCode', localCitizenCode);
     preferences.setBool("loggedIn", true);
   }
 
@@ -140,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
 
     _timer.cancel();
     if(accountList.length ==1){
-      saveData(localCitizenIDP, localUserName,localUserLoginIDP,localUserName,localMobileNum);
+      saveData(localCitizenIDP, localUserName,localUserLoginIDP,localUserName,localMobileNum,localCitizenCode);
       Get.offAll(HomePage());
     }
     else{
@@ -295,7 +297,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: InkWell(
                             onTap: () {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              Get.to(SignUpPage());
+                              Get.to(SignUpPage(fromAddMember: false,));
                             },
                             child: Text(
                               "SIGN UP",

@@ -1,5 +1,6 @@
 import 'package:digipath_ircs/HomePage.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Global/global.dart';
 import 'LoginPage.dart';
@@ -20,7 +21,7 @@ class _SplashState extends State<Splash> {
 
     InternetCheck().initConnectivity();
     getData();
-    Future.delayed(const Duration(seconds: 2),(){
+    Future.delayed(const Duration(seconds: 3),(){
       navigateUser();
     });
   }
@@ -32,8 +33,10 @@ class _SplashState extends State<Splash> {
     localUserName = preferences.getString('userName')!;
     localUserLoginIDP = preferences.getString('userLoginIDP')!;
     localMobileNum = preferences.getString('mobile')!;
+    localCitizenCode = preferences.getString('CitizenCode')!;
 
-    print('get Data form Local Starage ::: + $localCitizenIDP + $localUserName + $localUserLoginIDP + $localMobileNum');
+    print('get Data form Local Starage :  localCitizenIDP =$localCitizenIDP + localUserName= $localUserName +'
+        ' localUserLoginIDP =  $localUserLoginIDP + localMobileNum = $localMobileNum + localCitizenCode = $localCitizenCode');
   }
 
   void navigateUser(){
@@ -53,11 +56,12 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey,
+      color: Colors.indigo.shade50,
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      child: const Center(
-       child: Text('Splash !!!')
+      child:  Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Lottie.asset('assets/JSON/homeDoctor.json',repeat: true,height: double.infinity,width: double.infinity),
       ),
     );
   }

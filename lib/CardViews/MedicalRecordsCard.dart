@@ -8,7 +8,7 @@ import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import '../Design/ContainerDecoration.dart';
 import '../Global/Toast.dart';
-import '../Global/global.dart';
+// import '../Global/global.dart';
 import '../ModalClass/MedicalReportModal.dart';
 
 class MedicalRecordsCard extends StatefulWidget {
@@ -23,12 +23,8 @@ class MedicalRecordsCard extends StatefulWidget {
 
 class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
 
-  bool Registered = true;
-  bool Uploaded = false;
-  bool Reported = false;
-  bool Scanned = false;
   String reportStatusText = '';
-  late String ServiceMapIDP = widget.medicalReportModal.ServiceMapIDP;
+  late String ServiceMapIDP =  widget.medicalReportModal.ServiceMapIDP;
   late String Age = widget.medicalReportModal.Age;
   late String EncounterServiceNumber = widget.medicalReportModal.EncounterServiceNumber;
   late String CitizenIDF = widget.medicalReportModal.CitizenIDF;
@@ -46,33 +42,20 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
   void initState() {
     super.initState();
 
+    reportStatusText = '';
+
+    if(widget.medicalReportModal.Document == '1'){
+      reportStatusText = 'Scanned';
+    }
+
     if(widget.medicalReportModal.ReportStatus == '1'){
       reportStatusText = 'Registered';
-      Uploaded = false;
-      Registered = true;
-      Reported = false;
-      Scanned = false;
     }
     else if(widget.medicalReportModal.ReportStatus == '2'){
       reportStatusText = 'Uploaded';
-      Registered = false;
-      Uploaded  = true;
-      Reported = false;
-      Scanned = false;
     }
     else if(widget.medicalReportModal.ReportStatus == '3'){
       reportStatusText = 'Reported';
-      Registered = false;
-      Uploaded  = false;
-      Reported = true;
-      Scanned = false;
-    }
-    else if(widget.medicalReportModal.ReportStatus == '5'){
-      reportStatusText = 'Scanned';
-      Registered = false;
-      Uploaded  = false;
-      Reported = false;
-      Scanned = true;
     }
   }
 
@@ -80,7 +63,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              '$urlForIN/getPatientReportDataForFundoscopyAndroid.app?EncounterServiceIDF=$EncounterServiceIDP'),
+              'https://medicodb.com/getPatientReportDataForFundoscopyAndroid.app?EncounterServiceIDF=$EncounterServiceIDP'),
           headers: {
             'u': u,
             'p': p,
@@ -104,7 +87,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
             }
 
             openFile(
-              url: '$urlForIN/downloadFundoscopyReportForAndroid.app?PatientReportIDP=$RightPatientReportIDP&PatientReportIDPLeft=$LeftPatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&CitizenIDF=$CitizenIDF&reportType=$imageType',
+              url: 'https://medicodb.com/downloadFundoscopyReportForAndroid.app?PatientReportIDP=$RightPatientReportIDP&PatientReportIDPLeft=$LeftPatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&CitizenIDF=$CitizenIDF&reportType=$imageType',
               fileName:'$EncounterServiceIDP.pdf',
             );
 
@@ -134,7 +117,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              '$urlForIN/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
+              'https://medicodb.com/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
           headers: {
             'u': u,
             'p': p,
@@ -144,31 +127,37 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
       if (mounted) {
         if (response.statusCode == 200) {
 
-          var status = jsonDecode(response.body.toString());
-          print(status);
+          if(response.body != ''){
+            var status = jsonDecode(response.body.toString());
+            print(status);
 
-          List<dynamic> statusinfo = status['JsonResponse'];
-          print('ECGReport::::::: $statusinfo');
+            List<dynamic> statusinfo = status['JsonResponse'];
+            print('ECGReport::::::: $statusinfo');
 
-          if(!(statusinfo == null || statusinfo.length == 0)) {
+            if(!(statusinfo == null || statusinfo.length == 0)) {
 
-            for (int i = 0; i < statusinfo.length; i++) {
-              PatientReportIDP = statusinfo[i]["PatientReportIDP"].toString();
+              for (int i = 0; i < statusinfo.length; i++) {
+                PatientReportIDP = statusinfo[i]["PatientReportIDP"].toString();
+              }
+
+              openFile(
+                url: 'https://medicodb.com/getECGReportPrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF',
+                fileName:'$EncounterServiceIDP.pdf',
+              );
             }
-
-            openFile(
-              url: '$urlForIN/getECGReportPrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF',
-              fileName:'$EncounterServiceIDP.pdf',
-            );
-          }
-          else{
+            else{
+              EasyLoading.dismiss();
+              showToast('Report Not Found');
+            }
+          }else{
             EasyLoading.dismiss();
             showToast('Report Not Found');
           }
         }
         else{
           if (mounted) {
-            showToast('Not Found');
+            EasyLoading.dismiss();
+            showToast('Report Not Found');
           }
         }
       }
@@ -188,7 +177,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              '$urlForIN/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
+              'https://medicodb.com/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
           headers: {
             'u': u,
             'p': p,
@@ -198,21 +187,27 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
       if (mounted) {
         if (response.statusCode == 200) {
 
-          var status = jsonDecode(response.body.toString());
-          print(status);
+          if(response.body != ''){
+            var status = jsonDecode(response.body.toString());
+            print(status);
 
-          List<dynamic> statusinfo = status['JsonResponse'];
-          print('XRAyReport::::::: $statusinfo');
+            List<dynamic> statusinfo = status['JsonResponse'];
+            print('XRAyReport::::::: $statusinfo');
 
-          if(!(statusinfo == null || statusinfo.length == 0)) {
+            if(!(statusinfo == null || statusinfo.length == 0)) {
 
-            for (int i = 0; i < statusinfo.length; i++) {
-              PatientReportIDP = statusinfo[i]["PatientReportIDP"].toString();
+              for (int i = 0; i < statusinfo.length; i++) {
+                PatientReportIDP = statusinfo[i]["PatientReportIDP"].toString();
+              }
+              openFile(
+                url: 'https://medicodb.com/getRadiologyReportAndImagePrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF&selPerPage=1',
+                fileName:'$EncounterServiceIDP.pdf',
+              );
             }
-            openFile(
-              url: '$urlForIN/getRadiologyReportAndImagePrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF&selPerPage=1',
-              fileName:'$EncounterServiceIDP.pdf',
-            );
+            else{
+              EasyLoading.dismiss();
+              showToast('Report Not Found');
+            }
           }
           else{
             EasyLoading.dismiss();
@@ -281,13 +276,11 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
                         padding: const EdgeInsets.only(top: 3, bottom: 15),
                         child: InkWell(
                             onTap: () => { Navigator.pop(context, 'Cancel')},
-                            child: Container(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 100,left: 100,top: 10,bottom: 10),
-                                child: Text('OK',textScaleFactor: 1.0, style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.normal),
-                                  textAlign: TextAlign.center,),
-                              ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 100,left: 100,top: 10,bottom: 10),
+                              child: Text('OK',textScaleFactor: 1.0, style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.normal),
+                                textAlign: TextAlign.center,),
                             )),
                       ),
                     ],
@@ -355,7 +348,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
 
                 EasyLoading.show(status: 'Loading...'),
                 openFile(
-                  url: '$urlForIN/pathologyReportForAndroid.app?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP',
+                  url: 'https://medicodb.com/pathologyReportForAndroid.app?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP',
                   fileName:'$EncounterServiceIDP.pdf',
                 ),
 
@@ -424,7 +417,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
         else{
           EasyLoading.show(status: 'Loading...'),
           openFile(
-            url: '$urlForIN/getScanDocReportAndroid.do?patientDocumentIDP=$PatientDocumentIDP',
+            url: 'https://medicodb.com/getScanDocReportAndroid.do?patientDocumentIDP=$PatientDocumentIDP',
             fileName:'$PatientDocumentIDP.pdf',
           ),
         }
@@ -439,11 +432,11 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                child: Text(widget.medicalReportModal.ServiceName.toString(),textScaleFactor: 1.0,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                child: Text(widget.medicalReportModal.Document == '1'?widget.medicalReportModal.ServiceAlias : widget.medicalReportModal.ServiceName.toString(),textScaleFactor: 1.0,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-                child: Text(widget.medicalReportModal.DoctorName.toString(),textScaleFactor: 1.0,style: TextStyle(fontSize: 16.0),),
+                child: Text(widget.medicalReportModal.Document == '1'?widget.medicalReportModal.CareprofessionalByTreatingDoctorIdf :widget.medicalReportModal.DoctorName.toString(),textScaleFactor: 1.0,style: TextStyle(fontSize: 16.0),),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
@@ -460,22 +453,23 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
                     Row(
                       children: [
                         Visibility(
-                            visible: Registered,
+                            visible: widget.medicalReportModal.ReportStatus == '1',
                             child: Image.asset('assets/images/registered.png',color: Colors.green,)),
                         Visibility(
-                            visible: Uploaded,
+                            visible: widget.medicalReportModal.ReportStatus == '2',
                             child: Icon(Icons.cloud_upload,color: Colors.green,)),
                         Visibility(
-                            visible: Reported,
+                            visible: widget.medicalReportModal.ReportStatus == '3',
                             child: Image.asset('assets/images/reported.png',color: Colors.green,)),
                         Visibility(
-                            visible: Scanned,
+                            visible: widget.medicalReportModal.Document == '1',
                             child: Icon(Icons.scanner,color: Colors.green,)),
                         SizedBox(width: 5.0,),
                         Text(reportStatusText,textScaleFactor: 1.0,),
                       ],
                     ),
-                  ],),
+                  ],
+                ),
               )
             ],
           ),
@@ -485,8 +479,9 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
   }
 
   Future openFile({required String url, required String fileName}) async {
-    final name = fileName ?? url.split('/').last;
-    final file = await downloadFile(url,name!);
+    final name = fileName;
+    final file = await downloadFile(url,name);
+    print(url);
 
     if(file == null){
       showToast('Sorry ! PDF Not Found');

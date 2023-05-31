@@ -40,6 +40,13 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
     else if(searchText.length >3){
       filterTheList(searchText);
     }
+    else if(searchText.length<3){
+      setState(() {
+        noDataBool = false;
+        filter = false;
+        searchList.clear();
+      });
+    }
     else if(searchText.isEmpty){
       setState(() {
         noDataBool = false;
@@ -149,6 +156,7 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
         child: Column(
           children: [
             TextField(
+              autofocus: true,
               controller: _controller,
               decoration: InputDecoration(
                   filled: true,

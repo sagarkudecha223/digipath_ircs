@@ -172,7 +172,7 @@ class _AddRecordPageState extends State<AddRecordPage> {
               flex: 1,
               child:imageSelected?
                   Container(
-                    margin: EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
+                    margin: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
                     child: GridView.builder(
                        itemCount: selectedImageList.length,
                         shrinkWrap: true,
@@ -221,9 +221,9 @@ class _AddRecordPageState extends State<AddRecordPage> {
                               show1Dialog();
                           },
                           child: Container(
-                            child: Text('ADD',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
                             decoration: ColorFillContainer(Colors.indigo),
                             padding: EdgeInsets.only(left: 25,top: 12,right: 25,bottom: 12),
+                            child: Text('ADD',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
                           ),
                         ),
                         SizedBox(height: 10,),
