@@ -15,6 +15,7 @@ import 'LoginPage.dart';
 import 'ModalClass/HomePageTitleModal.dart';
 import 'NewPages/AddRecordPage.dart';
 import 'NewPages/EnquiryListPage.dart';
+import 'NewPages/FreeConsultationPage.dart';
 import 'NewPages/OrderedInvestigation.dart';
 import 'NewPages/PaymentHistoryPage.dart';
 import 'NewPages/PaymentPage.dart';
@@ -63,11 +64,12 @@ class _homeState extends State<HomePage> {
     titleList.add(HomePagetitleModal(icon: Icons.payment_rounded,color: Colors.blueAccent, title: 'PAYMENT'));
     titleList.add(HomePagetitleModal(icon: Icons.upload_file,color: Colors.lightGreen, title: 'UPLOAD DOCUMENT' ));
     titleList.add(HomePagetitleModal(icon: Icons.pageview_rounded,color: Colors.lightBlue, title: 'VIEW REPORT'));
-    titleList.add(HomePagetitleModal( icon: Icons.view_timeline_outlined, color: Colors.orangeAccent, title: 'VIEW TIMELINE'));
+    titleList.add(HomePagetitleModal(icon: Icons.view_timeline_outlined, color: Colors.orangeAccent, title: 'VIEW TIMELINE'));
     titleList.add(HomePagetitleModal(icon: Icons.video_camera_front_outlined, color: Colors.green.shade400, title: ' TELE-CONSULTATION'));
-    titleList.add(HomePagetitleModal( icon: Icons.medical_services_outlined,color: Colors.indigo.shade500, title: 'PRESCRIPTION'));
-    titleList.add(HomePagetitleModal( icon: Icons.add_photo_alternate_rounded,color: Colors.blueAccent, title: 'ADD RECORD'));
-    titleList.add(HomePagetitleModal( icon: Icons.inventory_sharp,color: Colors.orangeAccent, title: 'ORDERED INVESTIGATION'));
+    titleList.add(HomePagetitleModal(icon: Icons.medical_services_outlined,color: Colors.indigo.shade500, title: 'PRESCRIPTION'));
+    titleList.add(HomePagetitleModal(icon: Icons.add_photo_alternate_rounded,color: Colors.blueAccent, title: 'ADD RECORD'));
+    titleList.add(HomePagetitleModal(icon: Icons.inventory_sharp,color: Colors.orangeAccent, title: 'ORDERED INVESTIGATION'));
+    titleList.add(HomePagetitleModal(icon: Icons.chat_rounded,color: Colors.lightGreen, title: 'GET FREE CONSULTATION'));
 
   }
 
@@ -441,6 +443,9 @@ class _homeState extends State<HomePage> {
                               else if(index ==8){
                                   Get.to(OrderedInvestigation());
                               }
+                              else if(index == 9){
+                                Get.to(FreeConsultationPage());
+                              }
                             },
                             child: Stack(
                                 alignment: Alignment.center,
@@ -476,7 +481,7 @@ class _homeState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
+                  const Text(
                     "Powered By",
                     style: TextStyle(fontSize: 15),
                   ),
@@ -484,7 +489,7 @@ class _homeState extends State<HomePage> {
                     "Artem Healthtech Pvt Ltd",
                     style: TextStyle(fontSize: 18, color: Colors.blueAccent.shade700),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   )
                 ],
