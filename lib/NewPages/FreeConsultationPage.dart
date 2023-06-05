@@ -2,8 +2,8 @@ import 'package:digipath_ircs/Design/ColorFillContainer.dart';
 import 'package:digipath_ircs/Design/TopPageTextViews.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:translator/translator.dart';
 import '../Design/GlobalAppBar.dart';
 import '../ModalClass/AnswerModal.dart';
 import 'RecordingPart.dart';
@@ -23,18 +23,21 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
   List<AnswerModal> answerList = <AnswerModal>[];
   String language = 'English';
   List categoryList = [];
-  final translator = GoogleTranslator();
+  final _modelManager = OnDeviceTranslatorModelManager();
+  final _sourceLanguage = TranslateLanguage.english;
+  late TranslateLanguage _targetLanguage = TranslateLanguage.hindi;
+  late OnDeviceTranslator _onDeviceTranslator = OnDeviceTranslator(sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     getAnswerList();
-    getCategoryList();
   }
 
-  void getCategoryList(){
+  void getAnswerList() async{
 
+    answerList.clear();
     categoryList.clear();
 
     categoryList.add('Related to blood & Blood Producer');
@@ -42,12 +45,6 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
     categoryList.add('Related to Iron Overload');
     categoryList.add('Related to');
     categoryList.add('Related to bone marrow Transplant');
-
-  }
-
-  void getAnswerList() async{
-
-    answerList.clear();
 
     answerList.add(AnswerModal(title: 'Quality', isChecked: false, selectedButton: 1));
     answerList.add(AnswerModal(title: 'Dosage', isChecked: false, selectedButton: 1));
@@ -72,37 +69,43 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
     answerList.add(AnswerModal(title: 'Financial', isChecked: false, selectedButton: 5));
     answerList.add(AnswerModal(title: 'Option for no matching Donor in Family', isChecked: false, selectedButton: 5));
 
-    setState(() {
-
-    });
-
+      if(language == 'English'){
+        setState(() {
+          EasyLoading.dismiss();
+        });
+      }
+      else {
+        mlKitTranslate();
+      }
   }
 
-  void changeLanguage() async{
+  void mlKitTranslate() async{
 
-    EasyLoading.show(status: 'Changing Language...');
-    List<AnswerModal> tempList = <AnswerModal>[];
-    tempList.addAll(answerList);
-    answerList.clear();
-
-    for(int i=0; i<tempList.length; i++){
-      var translate = await translator.translate(tempList[i].title,to: language);
-      answerList.add(AnswerModal(title: translate.toString(), isChecked: tempList[i].isChecked, selectedButton: tempList[i].selectedButton));
-    }
+    EasyLoading.show(status: 'Changing Language to $language');
 
     List tempCatList = [];
     tempCatList.addAll(categoryList);
     categoryList.clear();
 
     for(int i=0; i<tempCatList.length; i++){
-      var translate = await translator.translate(tempCatList[i],to: language);
-      categoryList.add(translate.toString());
+      final result = await _onDeviceTranslator.translateText(tempCatList[i]);
+      print('Result is :::::::: $result');
+      categoryList.add(result.toString());
+    }
+
+    List<AnswerModal> tempList = <AnswerModal>[];
+    tempList.addAll(answerList);
+    answerList.clear();
+
+    for(int i=0; i<tempList.length; i++){
+      final result = await _onDeviceTranslator.translateText(tempList[i].title);
+      print('Result is :::::::: $result');
+      answerList.add(AnswerModal(title: result.toString(), isChecked: tempList[i].isChecked, selectedButton: tempList[i].selectedButton));
     }
 
     setState(() {
       EasyLoading.dismiss();
     });
-
   }
 
   Color getColor(Set<MaterialState> states) {
@@ -129,6 +132,7 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
 
   @override
   void dispose() {
+    EasyLoading.dismiss();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -185,13 +189,12 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
                                               ),
                                               RadioListTile(
                                                 title: const Text('English'),
-                                                value: "en",
+                                                value: "English",
                                                 groupValue: language,
                                                 onChanged: (value){
                                                   setState(() {
                                                     language = value.toString();
                                                     Navigator.pop(context, 'Cancel');
-                                                    getCategoryList();
                                                     getAnswerList();
                                                   }
                                                   );
@@ -199,39 +202,48 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
                                               ),
                                               RadioListTile(
                                                 title: Text('Hindi'),
-                                                value: "hi",
+                                                value: "Hindi",
                                                 groupValue: language,
                                                 onChanged: (value){
                                                   setState(() {
                                                     language = value.toString();
+                                                    _targetLanguage = TranslateLanguage.hindi;
+                                                    _onDeviceTranslator = OnDeviceTranslator(sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
+                                                    print(_onDeviceTranslator.targetLanguage);
                                                     Navigator.pop(context, 'Cancel');
-                                                    changeLanguage();
+                                                    getAnswerList();
                                                   }
                                                   );
                                                 },
                                               ),
                                               RadioListTile(
                                                 title: Text('Gujarati'),
-                                                value: "gu",
+                                                value: "Gujarati",
                                                 groupValue: language,
                                                 onChanged: (value){
                                                   setState(() {
                                                     language = value.toString();
+                                                    _targetLanguage = TranslateLanguage.gujarati;
+                                                    _onDeviceTranslator = OnDeviceTranslator(sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
+                                                    print(_onDeviceTranslator.targetLanguage);
                                                     Navigator.pop(context, 'Cancel');
-                                                    changeLanguage();
+                                                    getAnswerList();
                                                   }
                                                   );
                                                 },
                                               ),
                                               RadioListTile(
                                                 title: Text('Marathi'),
-                                                value: "mr",
+                                                value: "Marathi",
                                                 groupValue: language,
                                                 onChanged: (value){
                                                   setState(() {
                                                     language = value.toString();
+                                                    _targetLanguage = TranslateLanguage.marathi;
+                                                    _onDeviceTranslator = OnDeviceTranslator(sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
+                                                    print(_onDeviceTranslator.targetLanguage);
                                                     Navigator.pop(context, 'Cancel');
-                                                    changeLanguage();
+                                                    getAnswerList();
                                                   }
                                                   );
                                                 },
@@ -241,7 +253,7 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
                                       ));
                                   FocusManager.instance.primaryFocus?.unfocus();
                                 },
-                                child: Icon(Icons.change_circle,size: 35,color: Colors.indigo,)
+                                child: Icon(Icons.g_translate_rounded,size: 30,color: Colors.indigo,)
                               ),
                             ],
                           ),

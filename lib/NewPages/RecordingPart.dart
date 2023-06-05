@@ -6,7 +6,9 @@ import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:record_mp3/record_mp3.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Animation/CirclePainter.dart';
+import '../Global/global.dart';
 
 class RecordingPart extends StatefulWidget {
   const RecordingPart({Key? key}) : super(key: key);
@@ -60,19 +62,29 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
-              onLongPress: () {
-                setState(() {
-                  micButton = true;
-                });
-                startRecord();
-                print('start recording :::::::::');
+              onLongPress: () async{
+                if(hasPermission){
+                  setState(() {
+                    micButton = true;
+                  });
+                  controller.reset();
+                  audioPlayer.stop();
+                  startRecord();
+                  print('start recording :::::::::');
+                }
+                else{
+                  hasPermission = await checkPermission();
+                  saveData(hasPermission);
+                }
               },
               onLongPressEnd:(_){
-                stopRecord();
-                setState(() {
-                  micButton = false;
-                  print('stop recording ::::::::');
-                });
+                if(micButton){
+                  stopRecord();
+                  setState(() {
+                    micButton = false;
+                    print('stop recording ::::::::');
+                  });
+                }
               },
               child:micButton? CustomPaint(
                   painter: CirclePainter(buttonController, color: Colors.grey.shade400),
@@ -94,7 +106,7 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
                 isComplete = false;
                 audioStatus = 'play';
                 controller.reset();
-                audioPlayer.dispose();
+                audioPlayer.stop();
                 recordFilePath = '';
               });
             },
@@ -174,19 +186,18 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
     return true;
   }
 
+  void saveData(bool permission) async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool('microphone', permission);
+  }
+
   void startRecord() async {
-    bool hasPermission = await checkPermission();
-    if (hasPermission) {
-      audioPlayer.dispose();
       statusText = "Recording...";
       recordFilePath = await getFilePath();
       isComplete = false;
       RecordMp3.instance.start(recordFilePath, (type) {
         statusText = "Record error--->$type";
       });
-    } else {
-      statusText = "No microphone permission";
-    }
     if(recordFilePath.isNotEmpty){
       setState(() {
         audioStatus = 'play';
@@ -207,11 +218,11 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
 
     double second = time/1000;
 
+    print('second :::::::::: $second');
+
     setState((){
       duration = second.toStringAsFixed(2);
     });
-    print('time :::::::::: $duration');
-
   }
 
   void play() async{

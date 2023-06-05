@@ -69,7 +69,7 @@ class _homeState extends State<HomePage> {
     titleList.add(HomePagetitleModal(icon: Icons.medical_services_outlined,color: Colors.indigo.shade500, title: 'PRESCRIPTION'));
     titleList.add(HomePagetitleModal(icon: Icons.add_photo_alternate_rounded,color: Colors.blueAccent, title: 'ADD RECORD'));
     titleList.add(HomePagetitleModal(icon: Icons.inventory_sharp,color: Colors.orangeAccent, title: 'ORDERED INVESTIGATION'));
-    titleList.add(HomePagetitleModal(icon: Icons.chat_rounded,color: Colors.lightGreen, title: 'GET FREE CONSULTATION'));
+    titleList.add(HomePagetitleModal(icon: Icons.chat_rounded,color: Colors.lightGreen, title: 'GET FREE ADVISE'));
 
   }
 
@@ -84,8 +84,8 @@ class _homeState extends State<HomePage> {
           child: Text(
             text1,
             textAlign: TextAlign.center,
-            style:  TextStyle(
-              fontSize: 16,
+            style:  const TextStyle(
+              fontSize: 15,
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
@@ -316,21 +316,18 @@ class _homeState extends State<HomePage> {
             ],
           ),
         ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 1,
+        body: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    SizedBox(height: 16,),
                     GridView.builder(
                         itemCount: titleList.length,
                         shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
+                        physics: const ClampingScrollPhysics(),
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: 3.5 / 2,
@@ -477,25 +474,25 @@ class _homeState extends State<HomePage> {
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Text(
-                    "Powered By",
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  Text(
-                    "Artem Healthtech Pvt Ltd",
-                    style: TextStyle(fontSize: 18, color: Colors.blueAccent.shade700),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  )
-                ],
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: 2,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Powered By",
+                  style: TextStyle(fontSize: 15),
+                ),
+                Text(
+                  "Artem Healthtech Pvt Ltd",
+                  style: TextStyle(fontSize: 18, color: Colors.blueAccent.shade700),
+                ),
+                const SizedBox(
+                  height: 10,
+                )
+              ],
+            ),
+          ],
         ),
       ),
     );
