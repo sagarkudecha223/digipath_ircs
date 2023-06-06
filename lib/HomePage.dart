@@ -323,7 +323,7 @@ class _homeState extends State<HomePage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(height: 16,),
+                    const SizedBox(height: 16,),
                     GridView.builder(
                         itemCount: titleList.length,
                         shrinkWrap: true,

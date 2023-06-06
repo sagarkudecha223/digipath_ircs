@@ -1,14 +1,12 @@
 import 'dart:io';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
-import 'package:record_mp3/record_mp3.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:record/record.dart';
 import '../Animation/CirclePainter.dart';
-import '../Global/global.dart';
 
 class RecordingPart extends StatefulWidget {
   const RecordingPart({Key? key}) : super(key: key);
@@ -28,7 +26,10 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
   late Animation<double> animation;
   bool micButton = false;
   String audioStatus = 'play';
-  AudioPlayer audioPlayer = AudioPlayer();
+  late AudioPlayer audioPlayer = AudioPlayer();
+  final record = Record();
+  bool isPlaying = false;
+  late bool hasPermission;
 
   @override
   void initState() {
@@ -44,6 +45,17 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
     )..repeat();
 
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
+    getPermission();
+  }
+
+  void getPermission() async{
+    if (!await Permission.microphone.isGranted) {
+      hasPermission = false;
+    }
+    else{
+      hasPermission = true;
+    }
+    print('Permission Is ::: $hasPermission');
   }
 
   @override
@@ -74,7 +86,6 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
                 }
                 else{
                   hasPermission = await checkPermission();
-                  saveData(hasPermission);
                 }
               },
               onLongPressEnd:(_){
@@ -98,7 +109,10 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
               Icon(Icons.music_note_rounded,color: Colors.indigo,),
               Text(recordFilePath.isEmpty?filename: filename.toUpperCase(),textAlign: TextAlign.center, style: TextStyle(fontSize: 15,color: Colors.indigo,fontWeight: FontWeight.w600)),
             ],
-          ): Flexible(child: Text(filename.toUpperCase(),textAlign: TextAlign.center, style: TextStyle(fontSize: 15,color: Colors.indigo,fontWeight: FontWeight.w600))),
+          ): Flexible(child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(filename.toUpperCase(),textAlign: TextAlign.center, style: TextStyle(fontSize: 15,color: Colors.indigo,fontWeight: FontWeight.w600)),
+          )),
           isComplete?InkWell(
             onTap: (){
               setState(() {
@@ -106,7 +120,7 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
                 isComplete = false;
                 audioStatus = 'play';
                 controller.reset();
-                audioPlayer.stop();
+                audioPlayer.dispose();
                 recordFilePath = '';
               });
             },
@@ -120,8 +134,8 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
         child: Column(
           children: [
             InkWell(
-                onTap: (){
-                  if(audioPlayer.state != PlayerState.PLAYING && audioPlayer.state != PlayerState.PAUSED){
+                 onTap: (){
+                  if(!(audioPlayer.playing)){
                     controller.forward();
                     play();
                     setState(() {
@@ -129,7 +143,7 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
                       audioStatus = 'playing';
                     });
                   }
-                  else if(audioPlayer.state == PlayerState.PLAYING){
+                  else{
                     setState(() {
                       print('Pause :::::::::');
                       audioStatus = 'pause';
@@ -137,15 +151,7 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
                       audioPlayer.pause();
                     });
                   }
-                  else if(audioPlayer.state == PlayerState.PAUSED){
-                    setState(() {
-                      print('Resume  :::::::::');
-                      audioStatus = 'playing';
-                      controller.forward();
-                      audioPlayer.resume();
-                    });
-                  }
-                },
+                  },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -157,7 +163,9 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
                 )
             ),
             SizedBox(height: 10,),
-            Text('Duration is : $duration Seconds', style: TextStyle(fontSize: 15,color: Colors.indigo,fontWeight: FontWeight.w600),),
+            Visibility(
+              visible: duration  != '0.00',
+              child: Text('Duration is : $duration Seconds', style: TextStyle(fontSize: 15,color: Colors.indigo,fontWeight: FontWeight.w600),)),
           ],
         ),
       ),
@@ -186,62 +194,66 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
     return true;
   }
 
-  void saveData(bool permission) async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setBool('microphone', permission);
-  }
-
   void startRecord() async {
       statusText = "Recording...";
       recordFilePath = await getFilePath();
       isComplete = false;
-      RecordMp3.instance.start(recordFilePath, (type) {
-        statusText = "Record error--->$type";
-      });
-    if(recordFilePath.isNotEmpty){
-      setState(() {
-        audioStatus = 'play';
-      });
-    }
+      await record.start(
+        path: recordFilePath,
+        encoder: AudioEncoder.aacLc, // by default
+        bitRate: 128000, // by default
+        samplingRate: 44100, // by default
+      );
+
+      if(recordFilePath.isNotEmpty){
+        setState(() {
+          isPlaying = false;
+          audioStatus = 'play';
+        });
+      }
   }
 
   void stopRecord() async{
-    bool s = RecordMp3.instance.stop();
-    if (s) {
-      statusText = "Record complete";
-      isComplete = true;
-    }
+    await record.stop();
+    audioPlayer = AudioPlayer();
+    await audioPlayer.setUrl(recordFilePath, preload: true);
+    int? time =  audioPlayer.duration?.inMilliseconds.toInt();
+    print('time::::::: $time');
 
-    await audioPlayer.setUrl(recordFilePath, isLocal: true);
-
-    var time = await audioPlayer.getDuration();
-
-    double second = time/1000;
-
+    double second = time!/1000;
     print('second :::::::::: $second');
+    duration = second.toStringAsFixed(2);
 
     setState((){
-      duration = second.toStringAsFixed(2);
+      statusText = "Record complete";
+      isComplete = true;
     });
-  }
+ }
 
   void play() async{
 
     if (recordFilePath != '' && File(recordFilePath).existsSync()) {
-      audioPlayer = AudioPlayer();
-      await audioPlayer.play(recordFilePath, isLocal: true);
-      if(mounted){
-        audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
-          if(state == PlayerState.COMPLETED)
-            setState((){
-              audioStatus = 'Re-play';
-              controller.reverse();
-            });
-        });
+      if(isPlaying == false){
+        audioPlayer = AudioPlayer();
+        isPlaying = true;
+        await audioPlayer.setUrl(recordFilePath, preload: true);
+        audioPlayer.play();
 
-        audioPlayer.onDurationChanged.listen((Duration d) {
-          print('Max duration ::::  $d');
+        audioPlayer.processingStateStream.listen((state) async {
+          print('State ::::: $state');
+          if (state == ProcessingState.completed) {
+            setState(() {
+              isPlaying = false;
+              audioPlayer = AudioPlayer();
+              controller.reset();
+              audioStatus = 'Play';
+            });
+          }
         });
+      }
+      else{
+        print('Re-Playing ::::::');
+        audioPlayer.play();
       }
     }
   }
@@ -249,7 +261,7 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
   int i = 0;
 
   Future<String> getFilePath() async {
-    Directory storageDirectory = await getTemporaryDirectory();
+    Directory storageDirectory = await getApplicationDocumentsDirectory();
     String sdPath = "${storageDirectory.path}/record";
     var d = Directory(sdPath);
     if (!d.existsSync()) {
