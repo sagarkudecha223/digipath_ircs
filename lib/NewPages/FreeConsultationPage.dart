@@ -1,12 +1,14 @@
+import 'dart:io';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
 import 'package:digipath_ircs/Design/TopPageTextViews.dart';
+import 'package:digipath_ircs/NewPages/RecordingPart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../Design/GlobalAppBar.dart';
 import '../ModalClass/AnswerModal.dart';
-import 'RecordingPart.dart';
+import 'IosRecording.dart';
 
 class FreeConsultationPage extends StatefulWidget {
   const FreeConsultationPage({Key? key}) : super(key: key);
@@ -333,7 +335,7 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
                       decoration: ColorFillContainer(Colors.white),
                       padding: EdgeInsets.all(20),
                       margin: EdgeInsets.only(left: 20,right: 20,bottom: 5),
-                      child: RecordingPart(),
+                      child: Platform.isIOS?IosRecordingPart():RecordingPart(),
                     ),
                   ],
                 ),

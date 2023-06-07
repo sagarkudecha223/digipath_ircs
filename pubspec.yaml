@@ -60,6 +60,8 @@ dependencies:
   just_audio: ^0.9.34
   flutter_keyboard_visibility: ^5.4.1
   google_mlkit_translation: ^0.7.0
+  record_mp3: ^3.0.0
+  audioplayers: ^0.20.1
 
 dev_dependencies:
   flutter_test:

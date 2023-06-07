@@ -1,21 +1,21 @@
 import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
+import 'package:record_mp3/record_mp3.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:record/record.dart';
 import '../Animation/CirclePainter.dart';
 
-class RecordingPart extends StatefulWidget {
-  const RecordingPart({Key? key}) : super(key: key);
+class IosRecordingPart extends StatefulWidget {
+  const IosRecordingPart({Key? key}) : super(key: key);
 
   @override
-  State<RecordingPart> createState() => _TestPageState();
+  State<IosRecordingPart> createState() => _TestPageState();
 }
 
-class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
+class _TestPageState extends State<IosRecordingPart> with TickerProviderStateMixin{
   String statusText = "";
   bool isComplete = false;
   String recordFilePath = '';
@@ -26,9 +26,7 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
   late Animation<double> animation;
   bool micButton = false;
   String audioStatus = 'play';
-  late AudioPlayer audioPlayer = AudioPlayer();
-  final record = Record();
-  bool isPlaying = false;
+  AudioPlayer audioPlayer = AudioPlayer();
   late bool hasPermission;
 
   @override
@@ -109,22 +107,19 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
               Icon(Icons.music_note_rounded,color: Colors.indigo,),
               Text(recordFilePath.isEmpty?filename: filename.toUpperCase(),textAlign: TextAlign.center, style: TextStyle(fontSize: 15,color: Colors.indigo,fontWeight: FontWeight.w600)),
             ],
-          ): Flexible(child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(filename.toUpperCase(),textAlign: TextAlign.center, style: TextStyle(fontSize: 15,color: Colors.indigo,fontWeight: FontWeight.w600)),
-          )),
+          ): Flexible(child: Text(filename.toUpperCase(),textAlign: TextAlign.center, style: TextStyle(fontSize: 15,color: Colors.indigo,fontWeight: FontWeight.w600))),
           isComplete?InkWell(
-            onTap: (){
-              setState(() {
-                filename = 'Long pressed & hold the mic button for start recording...';
-                isComplete = false;
-                audioStatus = 'play';
-                controller.reset();
-                audioPlayer.stop();
-                recordFilePath = '';
-              });
-            },
-            child: Icon(Icons.delete,size: 25,color: Colors.indigo,)
+              onTap: (){
+                setState(() {
+                  filename = 'Long pressed & hold the mic button for start recording...';
+                  isComplete = false;
+                  audioStatus = 'play';
+                  controller.reset();
+                  audioPlayer.stop();
+                  recordFilePath = '';
+                });
+              },
+              child: Icon(Icons.delete,size: 25,color: Colors.indigo,)
           ):SizedBox(width: 30,)
         ],
       ),
@@ -134,8 +129,8 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
         child: Column(
           children: [
             InkWell(
-                 onTap: (){
-                  if(!(audioPlayer.playing)){
+                onTap: (){
+                  if(audioPlayer.state != PlayerState.PLAYING && audioPlayer.state != PlayerState.PAUSED){
                     controller.forward();
                     play();
                     setState(() {
@@ -143,7 +138,7 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
                       audioStatus = 'playing';
                     });
                   }
-                  else{
+                  else if(audioPlayer.state == PlayerState.PLAYING){
                     setState(() {
                       print('Pause :::::::::');
                       audioStatus = 'pause';
@@ -151,7 +146,15 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
                       audioPlayer.pause();
                     });
                   }
-                  },
+                  else if(audioPlayer.state == PlayerState.PAUSED){
+                    setState(() {
+                      print('Resume  :::::::::');
+                      audioStatus = 'playing';
+                      controller.forward();
+                      audioPlayer.resume();
+                    });
+                  }
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -163,9 +166,7 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
                 )
             ),
             SizedBox(height: 10,),
-            Visibility(
-              visible: duration  != '0.00',
-              child: Text('Duration is : $duration Seconds', style: TextStyle(fontSize: 15,color: Colors.indigo,fontWeight: FontWeight.w600),)),
+            Text('Duration is : $duration Seconds', style: TextStyle(fontSize: 15,color: Colors.indigo,fontWeight: FontWeight.w600),),
           ],
         ),
       ),
@@ -186,74 +187,75 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
 
   Future<bool> checkPermission() async {
     if (!await Permission.microphone.isGranted) {
+      print('Enter Permission 2222');
       PermissionStatus status = await Permission.microphone.request();
       if (status != PermissionStatus.granted) {
+        setState((){
+          filename = 'Permission Not Allowed';
+        });
         return false;
       }
     }
+    setState(() {
+      filename = 'Long pressed & hold the mic button for start recording...';
+    });
     return true;
   }
 
   void startRecord() async {
-      statusText = "Recording...";
-      recordFilePath = await getFilePath();
-      isComplete = false;
-      await record.start(
-        path: recordFilePath,
-        encoder: AudioEncoder.aacLc, // by default
-        bitRate: 128000, // by default
-        samplingRate: 44100, // by default
-      );
 
-      if(recordFilePath.isNotEmpty){
-        setState(() {
-          isPlaying = false;
-          audioStatus = 'play';
-        });
-      }
+    statusText = "Recording...";
+    recordFilePath = await getFilePath();
+    isComplete = false;
+    RecordMp3.instance.start(recordFilePath, (type) {
+      statusText = "Record error--->$type";
+    });
+    if(recordFilePath.isNotEmpty){
+      setState(() {
+        audioStatus = 'play';
+      });
+    }
   }
 
   void stopRecord() async{
-    await record.stop();
-    audioPlayer = AudioPlayer();
-    await audioPlayer.setUrl(recordFilePath, preload: true);
-    int? time =  audioPlayer.duration?.inMilliseconds.toInt();
-    print('time::::::: $time');
-
-    double second = time!/1000;
-    print('second :::::::::: $second');
-    duration = second.toStringAsFixed(2);
-
-    setState((){
+    bool s = RecordMp3.instance.stop();
+    if (s) {
       statusText = "Record complete";
       isComplete = true;
+    }
+
+    audioPlayer = AudioPlayer();
+
+    await audioPlayer.setUrl(recordFilePath, isLocal: true);
+
+    var time = await audioPlayer.getDuration();
+
+    double second = time/1000;
+
+    print('second :::::::::: $second');
+
+    setState((){
+      duration = second.toStringAsFixed(2);
     });
- }
+  }
 
   void play() async{
 
     if (recordFilePath != '' && File(recordFilePath).existsSync()) {
-      if(isPlaying == false){
-        audioPlayer = AudioPlayer();
-        isPlaying = true;
-        await audioPlayer.setUrl(recordFilePath, preload: true);
-        audioPlayer.play();
-
-        audioPlayer.processingStateStream.listen((state) async {
-          print('State ::::: $state');
-          if (state == ProcessingState.completed) {
-            setState(() {
-              isPlaying = false;
-              audioPlayer = AudioPlayer();
+      audioPlayer = AudioPlayer();
+      await audioPlayer.play(recordFilePath, isLocal: true);
+      if(mounted){
+        audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
+          if(state == PlayerState.COMPLETED)
+            setState((){
+              audioStatus = 'Re-play';
               controller.reverse();
-              audioStatus = 'Play';
             });
-          }
         });
-      }
-      else{
-        print('Re-Playing ::::::');
-        audioPlayer.play();
+
+        audioPlayer.onDurationChanged.listen((Duration d) {
+          print('Max duration ::::  $d');
+        });
       }
     }
   }
