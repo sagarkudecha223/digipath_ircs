@@ -200,9 +200,16 @@ class _AddRecordPageState extends State<AddRecordPage> {
                                       fillColor: MaterialStateProperty.resolveWith(getColor),
                                       value: selectedIndex == index?true : false ,
                                       onChanged: (bool? value) {
-                                        setState(() {
-                                          selectedIndex = index;
-                                        });
+                                        if(selectedIndex == index){
+                                          setState((){
+                                            selectedIndex =100;
+                                          });
+                                        }
+                                        else{
+                                          setState(() {
+                                            selectedIndex = index;
+                                          });
+                                        }
                                       },
                                     ),
                                   ),
@@ -238,8 +245,8 @@ class _AddRecordPageState extends State<AddRecordPage> {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      margin: EdgeInsets.all(3),
-                      padding: EdgeInsets.only(top: 14,bottom: 14,),
+                      margin: const EdgeInsets.all(3),
+                      padding: const EdgeInsets.only(top: 14,bottom: 14,),
                       decoration: ColorFillContainer(Colors.indigo),
                       child: const Text('Delete',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
                     ),
@@ -251,9 +258,9 @@ class _AddRecordPageState extends State<AddRecordPage> {
                      },
                      child: Container(
                        decoration: ColorFillContainer(Colors.indigo),
-                       margin: EdgeInsets.all(3),
-                       padding: EdgeInsets.only(top: 14,bottom: 14,),
-                       child: Text('Add to Timeline',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
+                       margin: const EdgeInsets.all(3),
+                       padding: const EdgeInsets.only(top: 14,bottom: 14,),
+                       child: const Text('Add to Timeline',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
                       ),
                    ),
                   )
@@ -274,7 +281,7 @@ class _AddRecordPageState extends State<AddRecordPage> {
             onPressed: (){
               show1Dialog();
             },
-            child: Icon(Icons.add,color: Colors.white),
+            child: const Icon(Icons.add,color: Colors.white),
           ),
         ),
       ),

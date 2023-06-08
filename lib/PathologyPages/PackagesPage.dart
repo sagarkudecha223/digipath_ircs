@@ -12,6 +12,8 @@ class PackagesPage extends StatefulWidget {
 
 class _PackagesPageState extends State<PackagesPage> {
 
+  int count = 0;
+
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
       MaterialState.pressed,
@@ -118,6 +120,12 @@ class _PackagesPageState extends State<PackagesPage> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, insideIndex){
+                    if( trueServiceList[index].servicemapid == totalPackageList[insideIndex].serviceIDF){
+                      count++;
+                    }else{
+                      count =0;
+                    }
+                    print(count);
                     return trueServiceList[index].servicemapid == totalPackageList[insideIndex].serviceIDF?
                     Container(
                       decoration: ColorFillContainer(Colors.white),
@@ -126,7 +134,10 @@ class _PackagesPageState extends State<PackagesPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(Icons.add_circle_outline_rounded,color: Colors.grey.shade600,),
+                          Container(
+                            padding : EdgeInsets.all(5),
+                            child: Text(count.toString() + '.')
+                          ),
                           SizedBox(width: 10,),
                           Flexible(child: Text(totalPackageList[insideIndex].serviceName,style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w500,fontSize: 14),))
                         ],

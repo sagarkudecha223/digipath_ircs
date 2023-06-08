@@ -35,7 +35,7 @@ class _SplashState extends State<Splash> {
     localMobileNum = preferences.getString('mobile')!;
     localCitizenCode = preferences.getString('CitizenCode')!;
 
-    print('get Data form Local Starage :  localCitizenIDP =$localCitizenIDP + localUserName= $localUserName +'
+    print('get Data form Local Storage :  localCitizenIDP =$localCitizenIDP + localUserName= $localUserName +'
         ' localUserLoginIDP =  $localUserLoginIDP + localMobileNum = $localMobileNum + localCitizenCode = $localCitizenCode');
   }
 

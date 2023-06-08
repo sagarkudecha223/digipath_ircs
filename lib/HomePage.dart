@@ -62,14 +62,14 @@ class _homeState extends State<HomePage> {
 
     titleList.add(HomePagetitleModal(icon: Icons.calendar_month,color: Colors.yellow.shade800, title: 'BOOK APPOINTMENT'));
     titleList.add(HomePagetitleModal(icon: Icons.payment_rounded,color: Colors.blueAccent, title: 'PAYMENT'));
-    titleList.add(HomePagetitleModal(icon: Icons.upload_file,color: Colors.lightGreen, title: 'UPLOAD DOCUMENT' ));
-    titleList.add(HomePagetitleModal(icon: Icons.pageview_rounded,color: Colors.lightBlue, title: 'VIEW REPORT'));
-    titleList.add(HomePagetitleModal(icon: Icons.view_timeline_outlined, color: Colors.orangeAccent, title: 'VIEW TIMELINE'));
-    titleList.add(HomePagetitleModal(icon: Icons.video_camera_front_outlined, color: Colors.green.shade400, title: ' TELE-CONSULTATION'));
-    titleList.add(HomePagetitleModal(icon: Icons.medical_services_outlined,color: Colors.indigo.shade500, title: 'PRESCRIPTION'));
-    titleList.add(HomePagetitleModal(icon: Icons.add_photo_alternate_rounded,color: Colors.blueAccent, title: 'ADD RECORD'));
-    titleList.add(HomePagetitleModal(icon: Icons.inventory_sharp,color: Colors.orangeAccent, title: 'ORDERED INVESTIGATION'));
-    titleList.add(HomePagetitleModal(icon: Icons.chat_rounded,color: Colors.lightGreen, title: 'GET FREE ADVISE'));
+    titleList.add(HomePagetitleModal(icon: Icons.upload_file,color: Colors.lightBlue, title: 'UPLOAD DOCUMENT' ));
+    titleList.add(HomePagetitleModal(icon: Icons.pageview_rounded,color: Colors.lightGreen, title: 'VIEW REPORT'));
+    titleList.add(HomePagetitleModal(icon: Icons.view_timeline_outlined, color: Colors.redAccent, title: 'VIEW TIMELINE'));
+    titleList.add(HomePagetitleModal(icon: Icons.video_camera_front_outlined, color: Colors.indigo.shade500, title: ' TELE-CONSULTATION'));
+    titleList.add(HomePagetitleModal(icon: Icons.medical_services_outlined,color: Colors.blueAccent, title: 'PRESCRIPTION'));
+    titleList.add(HomePagetitleModal(icon: Icons.add_photo_alternate_rounded,color: Colors.green.shade500, title: 'ADD RECORD'));
+    titleList.add(HomePagetitleModal(icon: Icons.inventory_sharp,color: Colors.cyan.shade400, title: 'ORDERED INVESTIGATION'));
+    titleList.add(HomePagetitleModal(icon: Icons.chat_rounded,color: Colors.deepOrange, title: 'GET FREE ADVISE'));
 
   }
 
@@ -77,6 +77,15 @@ class _homeState extends State<HomePage> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+                color: colors,
+                blurRadius: 3,
+                blurStyle: BlurStyle.outer,
+                spreadRadius: 0,
+                offset: Offset(0, 0)
+            ),
+          ],
           color: colors),
       child: Padding(
         padding: const EdgeInsets.only(left: 4.0),
@@ -458,10 +467,19 @@ class _homeState extends State<HomePage> {
                                   top: -15,
                                   child: Container(
                                     padding: EdgeInsets.all(7),
-                                    child: Icon(titleList[index].icon,size: 28,color: Colors.blueGrey.shade700,),
+                                    child: Icon(titleList[index].icon,size: 28,color: Colors.indigo.shade800,),
                                     decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: titleList[index].color,
+                                              blurRadius: 5,
+                                              blurStyle: BlurStyle.outer,
+                                              spreadRadius: 0,
+                                              offset: Offset(0, 0)
+                                          ),
+                                        ],
                                         color: Colors.white,
-                                        border: Border.all(color: Colors.grey,width: 1),
+                                        border: Border.all(color: titleList[index].color,width: 1.5),
                                         shape: BoxShape.circle
                                     ),
                                   ),

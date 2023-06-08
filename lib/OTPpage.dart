@@ -40,7 +40,7 @@ class _OTPPageState extends State<OTPPage> {
         'citizenID':citizenID
       },70);
 
-    print('status after responce is' + status.toString());
+    print('status after response is : $status');
     EasyLoading.dismiss();
 
     if(status.toString() != 'Sorry !!! Server Error' && status.toString().isNotEmpty  && status.toString() != 'Sorry !!!  Connectivity issue! Try again'){
@@ -70,7 +70,7 @@ class _OTPPageState extends State<OTPPage> {
           'mobileNo':mobile
         },70);
 
-    print('status after responce is' + status.toString());
+    print('status after response is : $status');
     EasyLoading.dismiss();
 
     if(status.toString() != 'Sorry !!! Server Error' && status.toString().isNotEmpty  && status.toString() != 'Sorry !!!  Connectivity issue! Try again'){
@@ -126,7 +126,7 @@ class _OTPPageState extends State<OTPPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 15,bottom: 15),
+      padding: const EdgeInsets.only(top: 15,bottom: 15),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children:  [
@@ -139,8 +139,8 @@ class _OTPPageState extends State<OTPPage> {
                     onTap : (){
                       Navigator.pop(context);
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.cancel,size: 26,color: Colors.blueGrey),
                     )),
               )
@@ -149,23 +149,23 @@ class _OTPPageState extends State<OTPPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('OTP send Successfully',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.w600),),
-              SizedBox(height: 10,),
+              const Text('OTP send Successfully',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.w600),),
+              const SizedBox(height: 10,),
               const Padding(
                 padding: EdgeInsets.only(left: 10.0,right: 10,top: 5,bottom: 5),
                 child: Text('Enter OTP press on verify to complete registration process',textAlign: TextAlign.center,style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.w600),),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               Visibility(
                 visible: !otpTextBool,
                 child: TextField(
                   controller: otpController,
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white60,
                     hintText: "Enter OTP",
-                    hintStyle: TextStyle(color: Colors.grey),
+                    hintStyle: const TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -188,7 +188,7 @@ class _OTPPageState extends State<OTPPage> {
                   keyboardType: TextInputType.number,
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               InkWell(
                 onTap: (){
                   FocusManager.instance.primaryFocus?.unfocus();
@@ -207,23 +207,23 @@ class _OTPPageState extends State<OTPPage> {
                   decoration: ColorFillContainer(Colors.indigo.shade300),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Text(buttonText,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),textAlign: TextAlign.center,),
+                    child: Text(buttonText,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w600),textAlign: TextAlign.center,),
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         color: Colors.white,
                         image: DecorationImage(image: AssetImage("assets/images/otp_varify.png"))
                     ),
-                    padding: EdgeInsets.only(left: 30,top: 30),
+                    padding: const EdgeInsets.only(left: 30,top: 30),
                     height: 50,
                     width: 50,
                   ),
@@ -231,7 +231,7 @@ class _OTPPageState extends State<OTPPage> {
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(otpTextBool?'TIMED OUT' : _start.toString(),style: TextStyle(color: Colors.indigo[900],fontSize: 20,fontWeight: FontWeight.bold),),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   )
                 ],

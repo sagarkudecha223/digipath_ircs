@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:highlight_text/highlight_text.dart';
 import 'package:lottie/lottie.dart';
 import '../Design/ColorFillContainer.dart';
 import '../Global/Toast.dart';
@@ -17,6 +18,7 @@ class _ServicePageState extends State<ServicePage> {
   bool filterEmpty = false;
   bool filterColumn = false;
   TextEditingController searchFilterController = TextEditingController();
+  Map<String, HighlightedWord> words = {};
 
   @override
   void initState() {
@@ -32,6 +34,13 @@ class _ServicePageState extends State<ServicePage> {
 
     if(searchText.length >=2){
       serviceFilterList.clear();
+
+      words = {
+        searchText: HighlightedWord(
+          textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 14,fontFamily: 'NotoSerifToto'),
+        ),
+      };
+
       for (int i = 0; i < serviceList.length; i++) {
         if (serviceList[i].name.toLowerCase().contains(searchText.toLowerCase())) {
           serviceFilterList.add(serviceList[i]);
@@ -53,6 +62,7 @@ class _ServicePageState extends State<ServicePage> {
     }
     else{
       setState(() {
+        words = {};
         filterEmpty = false;
         filterColumn = false;
       });
@@ -66,6 +76,7 @@ class _ServicePageState extends State<ServicePage> {
         suffixIcon: InkWell(
           onTap: (){
             setState(() {
+              words = {};
               searchFilterController.clear();
               searchServiceColumn = false;
               filterEmpty = false;
@@ -144,8 +155,8 @@ class _ServicePageState extends State<ServicePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Flexible(child: Text(filterColumn? '${serviceFilterList[index].name} (${serviceFilterList[index].amount} RS.)' : '${serviceList[index].name} (${serviceList[index].amount} RS.)',
-                                  style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 14))),
+                              Flexible(child: TextHighlight(text: filterColumn? '${serviceFilterList[index].name} (${serviceFilterList[index].amount} RS.)' : '${serviceList[index].name} (${serviceList[index].amount} RS.)',
+                                  words: words, textStyle: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 14,fontFamily: 'NotoSerifToto'))),
                               SizedBox(width: 10,),
                               demoList.contains(filterColumn? serviceFilterList[index].name : serviceList[index].name)?Icon(Icons.cancel_rounded,color: Colors.red,size: 28,) : Icon(Icons.add_circle_outline_rounded,color: Colors.green,size: 28,)
                             ],

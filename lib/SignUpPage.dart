@@ -475,12 +475,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                   children: [
                                     Row(
                                       children: [
-                                        Icon(Icons.calendar_month_outlined,color: Colors.grey,),
-                                        SizedBox(width: 5,),
+                                        const Icon(Icons.calendar_month_outlined,color: Colors.grey,),
+                                        const SizedBox(width: 5,),
                                         Text(startDate),
                                       ],
                                     ),
-                                    Icon(Icons.check_circle_outline,color: Colors.green,),
+                                    const Icon(Icons.check_circle_outline,color: Colors.green,),
                                   ],
                                 ),
                               ),
@@ -492,8 +492,8 @@ class _SignUpPageState extends State<SignUpPage> {
                             controller: mobileNumber,
                             maxLength: 10,
                             decoration: TextFieldDecoration(
-                                Icon(Icons.phone_iphone_rounded,color: Colors.grey,),
-                                numbervalid?Icon(Icons.check_circle_outline,color: Colors.green,):Icon(Icons.error_outline,color: Colors.red,)
+                                const Icon(Icons.phone_iphone_rounded,color: Colors.grey,),
+                                numbervalid?const Icon(Icons.check_circle_outline,color: Colors.green,):const Icon(Icons.error_outline,color: Colors.red,)
                             ),
                             onChanged: changeText,
                           ),
@@ -502,8 +502,8 @@ class _SignUpPageState extends State<SignUpPage> {
                             keyboardType: TextInputType.emailAddress,
                             controller: emailAddress,
                             decoration: TextFieldDecoration(
-                                Icon(Icons.email_rounded,color: Colors.grey,),
-                                Icon(Icons.check_circle_outline,color: Colors.green,)
+                                const Icon(Icons.email_rounded,color: Colors.grey,),
+                                const Icon(Icons.check_circle_outline,color: Colors.green,)
                             ),
                             onChanged: changeText,
                           ),
@@ -554,7 +554,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 1,),
+                          const SizedBox(height: 1,),
                           Visibility(
                             visible: seachCityView,
                             child: Column(
@@ -562,8 +562,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 TextField(
                                   controller: seachCity,
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 0.0),
-                                    prefixIcon: Icon(Icons.search),
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
+                                    prefixIcon: const Icon(Icons.search),
                                     suffixIcon: InkWell(
                                       onTap: (){
                                         setState(() {
@@ -572,7 +572,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                           filterColumn = false;
                                         });
                                       },
-                                      child: Icon(Icons.cancel)
+                                      child: const Icon(Icons.cancel)
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
@@ -588,14 +588,14 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                   onChanged: filterSearchCity,
                                 ),
-                                Container(
+                                SizedBox(
                                   height: 200,
                                   child: ListView.builder(
                                     // shrinkWrap: true,
                                     itemCount:filterColumn? filterlist.length : citylist.length,
                                     itemBuilder: (context, index) {
                                       return ListTile(
-                                        visualDensity: VisualDensity(vertical: -4),
+                                        visualDensity: const VisualDensity(vertical: -4),
                                         onTap: (){
                                           cityText = filterColumn? filterlist[index].text : citylist[index].text;
                                           cityID = filterColumn? filterlist[index].id : citylist[index].id;
@@ -608,7 +608,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         },
                                         contentPadding :EdgeInsets.zero,
                                         title: Container(
-                                            padding: EdgeInsets.all(5),
+                                            padding: const EdgeInsets.all(5),
                                             decoration: BoxDecoration(
                                               color: Colors.white,
                                               border: Border.all(
@@ -660,7 +660,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       builder: (context, StateSetter setState) {
                                         return Dialog(
                                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                          insetPadding: EdgeInsets.all(20),
+                                          insetPadding: const EdgeInsets.all(20),
                                           elevation: 16,
                                           child: const Padding(
                                             padding:  EdgeInsets.all(20.0),
@@ -676,7 +676,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               }
                               },
                             child: Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               decoration: BoxDecoration(
                                 color: Colors.green,
                                 borderRadius: BorderRadius.circular(8),
@@ -688,10 +688,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text(fromAddMember?'Add Family Member' : 'CREATE ACCOUNT',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                                        Text(fromAddMember?'Add Family Member' : 'CREATE ACCOUNT',style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                                       ],
                                     ),
-                                    Icon(Icons.arrow_forward,color: Colors.white,),
+                                    const Icon(Icons.arrow_forward,color: Colors.white,),
                                   ],
                                 ),
                               ),

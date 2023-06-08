@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:digipath_ircs/Global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:highlight_text/highlight_text.dart';
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
 import '../Global/Toast.dart';
@@ -30,11 +30,17 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
   late String noDataText;
   bool noDataBool = false;
   bool filter = false;
+  Map<String, HighlightedWord> words = {};
 
   void searchOperation(String searchText) {
 
     if(searchText.length == 3){
       FocusManager.instance.primaryFocus?.unfocus();
+      words = {
+        searchText: HighlightedWord(
+          textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: 'NotoSerifToto'),
+        ),
+      };
       goForSearch(searchText);
     }
     else if(searchText.length >3){
@@ -42,12 +48,14 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
     }
     else if(searchText.length<3){
       setState(() {
+        words = {};
         noDataBool = false;
         filter = false;
         searchList.clear();
       });
     }
     else if(searchText.isEmpty){
+      words = {};
       setState(() {
         noDataBool = false;
         filter = false;
@@ -58,6 +66,12 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
   void filterTheList(String searchText){
 
     filterList.clear();
+
+    words = {
+      searchText: HighlightedWord(
+        textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: 'NotoSerifToto'),
+      ),
+    };
 
     for(int i= 0; i<searchList.length; i++){
       if(searchList[i].text.toLowerCase().contains(searchText.toLowerCase())){
@@ -131,6 +145,7 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
     }
   }
 
+
   @override
   void dispose() {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -161,10 +176,10 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white60,
-                  prefixIcon: Icon(Icons.search,),
+                  prefixIcon: const Icon(Icons.search,),
                   suffixIcon: IconButton(
                     // color: Colors.grey[600],
-                    icon: Icon(Icons.cancel),
+                    icon: const Icon(Icons.cancel),
                     onPressed: () {
                       setState(() {
                         _controller.clear();
@@ -191,7 +206,7 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
               ),
               onChanged: searchOperation,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             noDataBool? Flexible(
@@ -200,7 +215,7 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Lottie.asset('assets/JSON/emptySearch.json',repeat: true,height: 300,width: 300),
-                    Text(noDataText,style: TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15))
+                    Text(noDataText,style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15))
                   ],
                 ),
               ),
@@ -218,20 +233,34 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
                         Navigator.pop(context,'${searchList[index].text} || ${searchList[index].id}');
                       }
                     },
-                    visualDensity: VisualDensity(vertical: -4),
+                    visualDensity: const VisualDensity(vertical: -4),
                     contentPadding :EdgeInsets.zero,
                     title: Container(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(
                               width: 1,
                               color: Colors.grey
                           ),
-                          borderRadius: BorderRadius.circular(8),),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(6.0),
-                          child: Text(filter?filterList[index].text : searchList[index].text),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              searchType == 'Care Professional'?Image.asset('assets/images/doctor.png',color: Colors.indigo.shade300,height: 25,width: 25,):SizedBox(height: 0,width: 0,),
+                              SizedBox(width: 15,),
+                              Flexible(
+                                child: TextHighlight(
+                                    text: filter?filterList[index].text : searchList[index].text,
+                                  words: words,
+                                  textStyle: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: 'NotoSerifToto'),
+                                )
+                              ),
+                            ],
+                          ),
                         )),
                   );
                 }
