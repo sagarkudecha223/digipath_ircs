@@ -1,9 +1,9 @@
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import '../Design/ColorFillContainer.dart';
-import '../Global/global.dart';
-import 'PathologyServicePage.dart';
+import '../../Design/ColorFillContainer.dart';
+import '../../Global/global.dart';
+import 'PathologyService&PackagePage.dart';
 
 class PathologyPage extends StatefulWidget {
   const PathologyPage({Key? key}) : super(key: key);

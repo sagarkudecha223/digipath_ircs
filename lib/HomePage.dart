@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:digipath_ircs/Global/global.dart';
-import 'package:digipath_ircs/NewPages/BookApointmentPage.dart';
+import 'package:digipath_ircs/Book%20Appointment/BookApointmentPage.dart';
 import 'package:digipath_ircs/NewPages/ViewTimeLinePage.dart';
 import 'package:digipath_ircs/SignUpPage.dart';
 import 'package:flutter/material.dart';
@@ -9,19 +9,20 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'Book Appointment/PathologyPages/PathologyPage.dart';
 import 'Design/TextWidget.dart';
 import 'DrawerPages/SwitchUserPage.dart';
 import 'LoginPage.dart';
 import 'ModalClass/HomePageTitleModal.dart';
-import 'NewPages/AddRecordPage.dart';
-import 'NewPages/EnquiryListPage.dart';
-import 'NewPages/FreeConsultationPage.dart';
+import 'AddRecord/AddRecordPage.dart';
+import 'DrawerPages/EnquiryListPage.dart';
+import 'GetFreeAdvise/FreeConsultationPage.dart';
 import 'NewPages/OrderedInvestigation.dart';
 import 'NewPages/PaymentHistoryPage.dart';
 import 'NewPages/PaymentPage.dart';
 import 'NewPages/PrescriptionPage.dart';
 import 'NewPages/TeleConsulatationPage.dart';
-import 'PathologyPages/PathologyPage.dart';
 import 'NewPages/UploadDocumentPage.dart';
 import 'NewPages/ViewReports.dart';
 
@@ -60,16 +61,16 @@ class _homeState extends State<HomePage> {
 
     titleList.clear();
 
-    titleList.add(HomePagetitleModal(icon: Icons.calendar_month,color: Colors.yellow.shade800, title: 'BOOK APPOINTMENT'));
-    titleList.add(HomePagetitleModal(icon: Icons.payment_rounded,color: Colors.blueAccent, title: 'PAYMENT'));
-    titleList.add(HomePagetitleModal(icon: Icons.upload_file,color: Colors.lightBlue, title: 'UPLOAD DOCUMENT' ));
-    titleList.add(HomePagetitleModal(icon: Icons.pageview_rounded,color: Colors.lightGreen, title: 'VIEW REPORT'));
-    titleList.add(HomePagetitleModal(icon: Icons.view_timeline_outlined, color: Colors.redAccent, title: 'VIEW TIMELINE'));
-    titleList.add(HomePagetitleModal(icon: Icons.video_camera_front_outlined, color: Colors.indigo.shade500, title: ' TELE-CONSULTATION'));
-    titleList.add(HomePagetitleModal(icon: Icons.medical_services_outlined,color: Colors.blueAccent, title: 'PRESCRIPTION'));
-    titleList.add(HomePagetitleModal(icon: Icons.add_photo_alternate_rounded,color: Colors.green.shade500, title: 'ADD RECORD'));
-    titleList.add(HomePagetitleModal(icon: Icons.inventory_sharp,color: Colors.cyan.shade400, title: 'ORDERED INVESTIGATION'));
-    titleList.add(HomePagetitleModal(icon: Icons.chat_rounded,color: Colors.deepOrange, title: 'GET FREE ADVISE'));
+    titleList.add(HomePagetitleModal(icon: Icons.calendar_month,color: const Color(0xFF254D99), title: 'BOOK APPOINTMENT'));
+    titleList.add(HomePagetitleModal(icon: Icons.payment_rounded,color: const Color(0xFF254D99), title: 'PAYMENT'));
+    titleList.add(HomePagetitleModal(icon: Icons.upload_file,color: const Color(0xFF549DD6), title: 'UPLOAD DOCUMENT' ));
+    titleList.add(HomePagetitleModal(icon: Icons.pageview_rounded,color: const Color(0xFF549DD6), title: 'VIEW REPORT'));
+    titleList.add(HomePagetitleModal(icon: Icons.view_timeline_outlined, color: const Color(0xFF549DD6), title: 'VIEW TIMELINE'));
+    titleList.add(HomePagetitleModal(icon: Icons.video_camera_front_outlined, color: const Color(0xFF549DD6), title: ' TELE-CONSULTATION'));
+    titleList.add(HomePagetitleModal(icon: Icons.medical_services_outlined,color: const Color(0xFF549DD6), title: 'PRESCRIPTION'));
+    titleList.add(HomePagetitleModal(icon: Icons.add_photo_alternate_rounded,color: const Color(0xFF549DD6), title: 'ADD RECORD'));
+    titleList.add(HomePagetitleModal(icon: Icons.inventory_sharp,color: const Color(0xFF549DD6), title: 'ORDERED INVESTIGATION'));
+    titleList.add(HomePagetitleModal(icon: Icons.chat_rounded,color: const Color(0xFFF7AB39), title: 'GET FREE ADVISE'));
 
   }
 
@@ -153,27 +154,26 @@ class _homeState extends State<HomePage> {
         return false;
       },
       child: Scaffold(
-        backgroundColor: Colors.indigo[100],
         key: _scaffoldKey,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: const Color(0xFF254D99),
           leading: Builder(
             builder: (context) => IconButton(
               icon: const Icon(
                 Icons.menu,
-                color: Colors.black,
+                color: Colors.white,
               ),
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
           centerTitle: true,
-          title: Text('Home',style: TextStyle(color: Colors.grey.shade800),),
+          title: const Text('Home',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
           elevation: 0.0,
           actions: [
             IconButton(
               icon: const Icon(
                 Icons.logout_rounded,
-                color: Colors.black,
+                color: Colors.white,
               ),
               onPressed: () {
                 showDialog<String>(
@@ -191,18 +191,18 @@ class _homeState extends State<HomePage> {
                     },
                     child: AlertDialog(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                      title: TextWidget('Are you sure you want to Logout?', 15, FontWeight.normal,Colors.indigo.shade700),
+                      title: TextWidget('Are you sure you want to Logout?', 15, FontWeight.normal,Color(0xFF254D99)),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () => {Navigator.pop(context, 'Cancel'),_scaffoldKey.currentState?.openEndDrawer(),},
-                          child: TextWidget('Cancel', 15, FontWeight.normal,Colors.indigo.shade700),
+                          child: TextWidget('Cancel', 15, FontWeight.normal,Color(0xFF254D99)),
                         ),
                         TextButton(
                           onPressed: () => {
                             signOut(),
                             _scaffoldKey.currentState?.openEndDrawer(),
                           },
-                          child: TextWidget('OK', 15, FontWeight.normal,Colors.indigo.shade700),
+                          child: TextWidget('OK', 15, FontWeight.normal,Color(0xFF254D99)),
                         ),
                       ],
                     ),
@@ -325,192 +325,205 @@ class _homeState extends State<HomePage> {
             ],
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 16,),
-                    GridView.builder(
-                        itemCount: titleList.length,
-                        shrinkWrap: true,
-                        physics: const ClampingScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 3.5 / 2,
-                            crossAxisSpacing: 0,
-                            mainAxisSpacing: 15
-                        ),
-                        itemBuilder:(BuildContext context, int index){
-                          return InkWell(
-                            onTap: (){
-                              print(index);
-                              if(index == 0){
-                                showDialog<String>(
-                                    context: context,
-                                    builder: (BuildContext context) => TweenAnimationBuilder(
-                                      tween: Tween<double>(begin: 0, end: 1),
-                                      duration: Duration(milliseconds: 500),
-                                      builder: (BuildContext context, double value, Widget? child) {
-                                        return Opacity(opacity: value,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(top: value * 1),
-                                            child: child,
-                                          ),
-                                        );
-                                      },
-                                      child: Dialog(
-                                        backgroundColor: Colors.white.withOpacity(0.7),
-                                        insetPadding : EdgeInsets.all(15),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-                                        elevation: 16,
-                                        child: Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              SizedBox(height: 10,),
-                                              Text('Book Appointment for...',style: TextStyle(fontSize: 16,color: Colors.indigo.shade900,fontWeight: FontWeight.bold,),),
-                                              SizedBox(height: 20,),
-                                              InkWell(
-                                                onTap: (){
-                                                  Navigator.pop(context);
-                                                  Get.to(BookApointmentPage());
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius: BorderRadius.circular(12),
-                                                  ),
-                                                  margin: EdgeInsets.only(bottom: 3,top: 7,left: 10,right: 10),
-                                                  padding: EdgeInsets.all(10),
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(Icons.ac_unit_rounded,color: Colors.indigo.shade800),
-                                                      SizedBox(width: 15),
-                                                      Text('Tele Consultation',style: TextStyle(fontSize: 16,color: Colors.indigo.shade800,fontWeight: FontWeight.w500),)
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(height: 20,),
-                                              InkWell(
-                                                onTap: (){
-                                                  Navigator.pop(context);
-                                                  Get.to(PathologyPage());
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius: BorderRadius.circular(12),
-                                                  ),
-                                                  margin: EdgeInsets.only(bottom: 10,top: 3,left: 10,right: 10),
-                                                  padding: EdgeInsets.all(10),
-                                                  child: Row(
-                                                    children: [
-                                                      Icon(Icons.ac_unit_rounded,color: Colors.indigo.shade800),
-                                                      SizedBox(width: 15),
-                                                      Text('Pathology',style: TextStyle(fontSize: 16,color: Colors.indigo.shade800,fontWeight: FontWeight.w500),)
-                                                    ],
+        body: Container(
+          padding: const EdgeInsets.only(top: 10),
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 1,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16,),
+                      GridView.builder(
+                          itemCount: titleList.length,
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 3.5 / 2,
+                              crossAxisSpacing: 0,
+                              mainAxisSpacing: 15
+                          ),
+                          itemBuilder:(BuildContext context, int index){
+                            return InkWell(
+                              onTap: (){
+                                print(index);
+                                if(index == 0){
+                                  showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) => TweenAnimationBuilder(
+                                        tween: Tween<double>(begin: 0, end: 1),
+                                        duration: Duration(milliseconds: 500),
+                                        builder: (BuildContext context, double value, Widget? child) {
+                                          return Opacity(opacity: value,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(top: value * 1),
+                                              child: child,
+                                            ),
+                                          );
+                                        },
+                                        child: Dialog(
+                                          backgroundColor: Colors.white.withOpacity(0.7),
+                                          insetPadding : EdgeInsets.all(15),
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+                                          elevation: 16,
+                                          child: Container(
+                                            padding: EdgeInsets.all(10),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                SizedBox(height: 10,),
+                                                Text('Book Appointment for...',style: TextStyle(fontSize: 16,color: Colors.indigo.shade900,fontWeight: FontWeight.bold,),),
+                                                SizedBox(height: 20,),
+                                                InkWell(
+                                                  onTap: (){
+                                                    Navigator.pop(context);
+                                                    Get.to(BookApointmentPage());
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.circular(12),
+                                                    ),
+                                                    margin: EdgeInsets.only(bottom: 3,top: 7,left: 10,right: 10),
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(Icons.ac_unit_rounded,color: Colors.indigo.shade800),
+                                                        SizedBox(width: 15),
+                                                        Text('Tele Consultation',style: TextStyle(fontSize: 16,color: Colors.indigo.shade800,fontWeight: FontWeight.w500),)
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              const SizedBox(height: 20,),
-                                            ],
+                                                SizedBox(height: 20,),
+                                                InkWell(
+                                                  onTap: (){
+                                                    Navigator.pop(context);
+                                                    Get.to(PathologyPage());
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.circular(12),
+                                                    ),
+                                                    margin: EdgeInsets.only(bottom: 10,top: 3,left: 10,right: 10),
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(Icons.ac_unit_rounded,color: Colors.indigo.shade800),
+                                                        SizedBox(width: 15),
+                                                        Text('Pathology',style: TextStyle(fontSize: 16,color: Colors.indigo.shade800,fontWeight: FontWeight.w500),)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 20,),
+                                              ],
+                                            ),
                                           ),
                                         ),
+                                      )
+                                  );
+                                }
+                                else if(index == 1){
+                                  Get.to(PaymentPage());
+                                }
+                                else if(index == 2){
+                                  Get.to(UploadDocumentPage(isDirect: true));
+                                }
+                                else if(index == 3){
+                                  Get.to(ViewReportPage());
+                                }
+                                else if(index == 4){
+                                  Get.to(ViewTimeLinePage());
+                                }
+                                else if(index == 5){
+                                  Get.to(TeleConsultationPage());
+                                }
+                                else if(index == 6){
+                                  Get.to(PrescriptionPage());
+                                }
+                                else if(index == 7){
+                                  Get.to(AddRecordPage());
+                                }
+                                else if(index ==8){
+                                    Get.to(OrderedInvestigation());
+                                }
+                                else if(index == 9){
+                                  Get.to(FreeConsultationPage());
+                                }
+                              },
+                              child: Stack(
+                                  alignment: Alignment.center,
+                                  clipBehavior: Clip.none,
+                                children : [
+                                  Container(
+                                    margin: const EdgeInsets.all(15),
+                                    child: homeCommonContainer(
+                                      titleList[index].color,
+                                      titleList[index].title,),
+                                  ),
+                                  Positioned(
+                                    top: -15,
+                                    child: Container(
+                                      padding: EdgeInsets.all(7),
+                                      child: Icon(titleList[index].icon,size: 28,color: Colors.indigo.shade800,),
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: titleList[index].color,
+                                                blurRadius: 6,
+                                                blurStyle: BlurStyle.outer,
+                                                spreadRadius: 0,
+                                                offset: Offset(0, 0)
+                                            ),
+                                          ],
+                                          color: Colors.white,
+                                          border: Border.all(color: titleList[index].color,width: 1.5),
+                                          shape: BoxShape.circle
                                       ),
-                                    )
-                                );
-                              }
-                              else if(index == 1){
-                                Get.to(PaymentPage());
-                              }
-                              else if(index == 2){
-                                Get.to(UploadDocumentPage(isDirect: true));
-                              }
-                              else if(index == 3){
-                                Get.to(ViewReportPage());
-                              }
-                              else if(index == 4){
-                                Get.to(ViewTimeLinePage());
-                              }
-                              else if(index == 5){
-                                Get.to(TeleConsultationPage());
-                              }
-                              else if(index == 6){
-                                Get.to(PrescriptionPage());
-                              }
-                              else if(index == 7){
-                                Get.to(AddRecordPage());
-                              }
-                              else if(index ==8){
-                                  Get.to(OrderedInvestigation());
-                              }
-                              else if(index == 9){
-                                Get.to(FreeConsultationPage());
-                              }
-                            },
-                            child: Stack(
-                                alignment: Alignment.center,
-                                clipBehavior: Clip.none,
-                              children : [
-                                Container(
-                                  margin: const EdgeInsets.all(15),
-                                  child: homeCommonContainer(
-                                    titleList[index].color,
-                                    titleList[index].title,),
-                                ),
-                                Positioned(
-                                  top: -15,
-                                  child: Container(
-                                    padding: EdgeInsets.all(7),
-                                    child: Icon(titleList[index].icon,size: 28,color: Colors.indigo.shade800,),
-                                    decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: titleList[index].color,
-                                              blurRadius: 5,
-                                              blurStyle: BlurStyle.outer,
-                                              spreadRadius: 0,
-                                              offset: Offset(0, 0)
-                                          ),
-                                        ],
-                                        color: Colors.white,
-                                        border: Border.all(color: titleList[index].color,width: 1.5),
-                                        shape: BoxShape.circle
                                     ),
                                   ),
-                                ),
-                             ]
-                            ),
-                          );
-                        }
-                    ),
-                  ],
+                               ]
+                              ),
+                            );
+                          }
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 2,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  "Powered By",
-                  style: TextStyle(fontSize: 15),
-                ),
-                Text(
-                  "Artem Healthtech Pvt Ltd",
-                  style: TextStyle(fontSize: 18, color: Colors.blueAccent.shade700),
-                ),
-                const SizedBox(
-                  height: 10,
-                )
-              ],
-            ),
-          ],
+              SizedBox(height: 2,),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Powered By",
+                    style: TextStyle(fontSize: 15,color: Color(0xFF254D99)),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      final Uri url = Uri.parse('https://artemhealthtech.com/');
+                      if (!await launchUrl(url)) {
+                      throw Exception('Could not launch $url');
+                      }
+                    },
+                    child: const Text(
+                      "Artem Healthtech Pvt Ltd",
+                      style: TextStyle(fontSize: 18, color: Color(0xFF254D99),fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

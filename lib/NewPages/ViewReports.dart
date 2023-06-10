@@ -27,7 +27,6 @@ class _ViewReportPageState extends State<ViewReportPage> {
   void initState() {
     super.initState();
     EasyLoading.show(status: 'Loading...');
-
     getReportsData();
   }
 

@@ -3,12 +3,12 @@ import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
-import '../Design/TopPageTextViews.dart';
-import '../Global/SearchAPI.dart';
-import '../Global/Toast.dart';
-import '../Global/global.dart';
-import '../ModalClass/PathologyPackageModal.dart';
-import '../ModalClass/PathologyServiceModal.dart';
+import '../../Design/TopPageTextViews.dart';
+import '../../Global/SearchAPI.dart';
+import '../../Global/Toast.dart';
+import '../../Global/global.dart';
+import '../../ModalClass/PathologyPackageModal.dart';
+import '../../ModalClass/PathologyServiceModal.dart';
 import 'FixTimeSlotPage.dart';
 import 'PackagesPage.dart';
 import 'ServicePage.dart';
@@ -138,8 +138,8 @@ class _PathologyServicePageState extends State<PathologyServicePage> {
             Expanded(
               child: Container(
                 width: double.infinity,
-                margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                padding: EdgeInsets.all(15),
+                margin: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                padding: const EdgeInsets.all(15),
                 decoration: ColorFillContainer(Colors.white),
                 child: SingleChildScrollView(
                   child: Column(
@@ -160,13 +160,13 @@ class _PathologyServicePageState extends State<PathologyServicePage> {
                                 showToast('Please Select Service or package');
                               }
                               else{
-                                await Get.to(FixTimeSlotPage());
+                                await Get.to(const FixTimeSlotPage());
                                 setState(() {
                                 });
                               }
                             },
                             child: Container(
-                              padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                              padding: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                               decoration: ColorFillContainer(Colors.green.shade500),
                               child: Row(
                                 children: const [

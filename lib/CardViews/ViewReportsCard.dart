@@ -40,6 +40,7 @@ class _ViewReportsCardState extends State<ViewReportsCard> {
 
   @override
   void dispose() {
+    EasyLoading.dismiss();
     super.dispose();
   }
 
@@ -47,7 +48,6 @@ class _ViewReportsCardState extends State<ViewReportsCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: ()=>{
-
           if(widget.viewReportModal.ReportStatus == '3'){
                 EasyLoading.show(status: 'Loading...'),
                 openFile(
@@ -106,8 +106,8 @@ class _ViewReportsCardState extends State<ViewReportsCard> {
   }
 
   Future openFile({required String url, required String fileName}) async {
-    final name = fileName ?? url.split('/').last;
-    final file = await downloadFile(url,name!);
+    final name = fileName;
+    final file = await downloadFile(url,name);
 
     if(file == null){
       showToast('Sorry ! PDF Not Found');

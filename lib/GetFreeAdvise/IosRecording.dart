@@ -46,6 +46,7 @@ class _TestPageState extends State<IosRecordingPart> with TickerProviderStateMix
     getPermission();
   }
 
+
   void getPermission() async{
     if (!await Permission.microphone.isGranted) {
       hasPermission = false;

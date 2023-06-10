@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../Design/ColorFillContainer.dart';
-import '../Global/global.dart';
+import '../../Design/ColorFillContainer.dart';
+import '../../Global/global.dart';
 import 'ServicePage.dart';
 
 class EditServicePage extends StatefulWidget {
@@ -12,10 +12,6 @@ class EditServicePage extends StatefulWidget {
 
 class _EditServicePageState extends State<EditServicePage> {
 
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

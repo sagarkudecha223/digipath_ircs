@@ -34,6 +34,8 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
   void getPaymentList() async{
 
     EasyLoading.show(status: 'Searching...');
+    paymentList.clear();
+
     try{
       Response response = await post(
         Uri.parse('https://medicodb.in/getCitizenPaymentHistory.do?citizenID=1028107'),
@@ -98,45 +100,56 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
             padding: const EdgeInsets.all(15),
             child: Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center)) :
             Flexible(
-              child: ListView.builder(
-              itemCount: paymentList.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: const EdgeInsets.all(15),
-                  margin: const EdgeInsets.only(left: 20,right: 20,bottom: 3,top: 5),
-                  width: double.infinity,
-                  decoration: ColorFillContainer(Colors.white),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment : CrossAxisAlignment.start,
-                          children: [
-                            Text('Date : ${paymentList[index].voucherDate}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
-                            const SizedBox(height: 5,),
-                            Text('Dr. : ${paymentList[index].tDr}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
-                            const SizedBox(height: 5,),
-                            Text('Amount : ${paymentList[index].amount}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
-                          ],
-                        ),
+              child: RefreshIndicator(
+                onRefresh: () {
+                  return Future.delayed(Duration(microseconds: 500),() {
+                    getPaymentList();
+                  });
+                },
+                child: SingleChildScrollView(
+                  child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: paymentList.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: const EdgeInsets.all(15),
+                      margin: const EdgeInsets.only(left: 20,right: 20,bottom: 3,top: 5),
+                      width: double.infinity,
+                      decoration: ColorFillContainer(Colors.white),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment : CrossAxisAlignment.start,
+                              children: [
+                                Text('Date : ${paymentList[index].voucherDate}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
+                                const SizedBox(height: 5,),
+                                Text('Dr. : ${paymentList[index].tDr}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
+                                const SizedBox(height: 5,),
+                                Text('Amount : ${paymentList[index].amount}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap : (){
+                              String episodeID = paymentList[index].episodeID;
+                              String patientProfileID = paymentList[index].patientProfileID;
+                              EasyLoading.show(status: 'Loading...');
+                              openFile(
+                                url: 'https://smarthealth.care/generatePatientVoucherOPD_android.do?patientProfileID=$patientProfileID&episodeID=$episodeID&loginID=10834&withStationary=YES',
+                                fileName:'$patientProfileID.pdf',
+                              );
+                            },
+                            child: Icon(Icons.download,size: 26,color: Colors.indigo.shade800,),
+                          )
+                        ],
                       ),
-                      InkWell(
-                        onTap : (){
-                          String episodeID = paymentList[index].episodeID;
-                          String patientProfileID = paymentList[index].patientProfileID;
-                          EasyLoading.show(status: 'Loading...');
-                          openFile(
-                            url: 'https://smarthealth.care/generatePatientVoucherOPD_android.do?patientProfileID=$patientProfileID&episodeID=$episodeID&loginID=10834&withStationary=YES',
-                            fileName:'$patientProfileID.pdf',
-                          );
-                        },
-                        child: Icon(Icons.download,size: 26,color: Colors.indigo.shade800,),
-                      )
-                    ],
-                  ),
-                );
-              }
-            )
+                    );
+                  }
+                 ),
+                ),
+              )
             )
           ],
         ),
@@ -145,8 +158,8 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
   }
 
   Future openFile({required String url, required String fileName}) async {
-    final name = fileName ?? url.split('/').last;
-    final file = await downloadFile(url,name!);
+    final name = fileName;
+    final file = await downloadFile(url,name);
 
     if(file == null){
       showToast('Sorry ! PDF Not Found');

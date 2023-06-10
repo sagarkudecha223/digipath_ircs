@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:digipath_ircs/Design/ColorFillContainer.dart';
 import 'package:digipath_ircs/Global/Toast.dart';
 import 'package:digipath_ircs/HomePage.dart';
-import 'package:digipath_ircs/NewPages/SecondUploadDocumentPage.dart';
+import 'package:digipath_ircs/AddRecord/SecondUploadDocumentPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
@@ -45,6 +46,8 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   }
 
   void getDocumentData() async{
+
+    documentList.clear();
 
     try{
       Response response = await get(
@@ -102,6 +105,8 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   }
 
   void getImageList() async{
+
+    imageList.clear();
 
       for (int i = 0; i < documentList.length; i++) {
         if(mounted) {
@@ -204,6 +209,27 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
+                        onTap: () async{
+                          Get.to(SecondUploadDocumentPage(filePath: _image!));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(8),
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(Icons.view_timeline_outlined, size: 20,color: Colors.indigo.shade800),
+                              Text('ADD TO',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 10)),
+                              Text('TIMELINE',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 9))
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 20,),
+                      InkWell(
                         onTap: () {
                           EasyLoading.show(status: 'Uploading Image...');
                           uploadDocument();
@@ -223,7 +249,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 30,),
+                      SizedBox(width: 20,),
                       InkWell(
                         onTap: () {
                           Navigator.pop(context, false);
@@ -428,12 +454,14 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                                 insetPadding: EdgeInsets.all(20),
                                 elevation: 16,
-                                child : Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Row(
+                                child : Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text('Select Image From...'.toUpperCase()),
+                                      SizedBox(height: 15,),
+                                      Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                                         children: [
                                           InkWell(
@@ -443,7 +471,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                                             },
                                             child: Column(
                                               children:  [
-                                                Icon(Icons.camera_alt, size: 50,color: Colors.grey.shade800,),
+                                                Icon(Icons.camera_alt, size: 40,color: Colors.grey.shade800,),
                                                 Text('CAMERA',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800),)
                                               ],
                                             ),
@@ -455,15 +483,15 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                                             },
                                             child: Column(
                                               children: [
-                                                Icon(Icons.photo_library_rounded, size: 50,),
-                                                Text('Files',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800))
+                                                Icon(Icons.photo_library_rounded, size: 40,),
+                                                Text('Gallery',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800))
                                               ],
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               );
                             }
@@ -471,15 +499,14 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                     },
                     child: Container(
                       margin: EdgeInsets.all(5),
-                      padding: EdgeInsets.all(12),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle
-                      ),
-                      child: Column(
+                      padding: EdgeInsets.all(10),
+                      decoration: ColorFillContainer(Colors.white),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(Icons.upload_rounded,color: Colors.indigo.shade800),
-                          Text('Upload',style: TextStyle(fontSize: 10,color: Colors.indigo.shade800),)
+                          Icon(Icons.add_photo_alternate_rounded,color: Colors.indigo.shade800),
+                          SizedBox(width: 5,),
+                          Text('Choose Image',style: TextStyle(fontSize: 15,color: Colors.indigo.shade800),)
                         ],
                       ),
                     ),
@@ -516,120 +543,134 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                     ),
                     child: noData?Center(
                       child: Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center),
-                    ): ListView.builder(
-                      itemCount: documentList.length,
-                      itemBuilder: (context, index){
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                                width: 1.5,
-                                color: Colors.grey
-                            ),
-                          ),
-                          padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
-                          margin: EdgeInsets.all(5),
-                          child: Column(
-                            crossAxisAlignment: documentList[index].documentType == '3'?CrossAxisAlignment.start : CrossAxisAlignment.end,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Visibility(
-                                    visible : !(imageList.length<(index+1)),
-                                    child: FloatingActionButton(onPressed: ()async{
-                                      Directory appDocDirectory = await getTemporaryDirectory();
-                                      final myImagePath = "${appDocDirectory.path}/image.jpg";
-                                      File file = await File(myImagePath).writeAsBytes(imageList[index]);
-                                      print(file);
-                                          Get.to(SecondUploadDocumentPage(filePath: file));
-                                      },
-                                      heroTag: null,
-                                      backgroundColor: Colors.indigo,
-                                      elevation: 0.0,
-                                      tooltip: 'ADD TO RECORD',
-                                      mini: true,
-                                      child: Icon(Icons.add_photo_alternate_rounded),),
-                                  )
-                                ],
-                              ),
-                              InkWell(
-                                onTap : (){
-                                  showDialog<String>(
-                                    context: context,
-                                    barrierColor:Colors.transparent,
-                                    builder: (BuildContext context) => TweenAnimationBuilder(
-                                      tween: Tween<double>(begin: 0, end: 1),
-                                      duration: const Duration(milliseconds: 500),
-                                      builder: (BuildContext context, double value, Widget? child) {
-                                        return Opacity(opacity: value,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(top: value * 1),
-                                            child: child,
-                                          ),
-                                        );
-                                      },
-                                      child: AlertDialog(
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                                        backgroundColor: Colors.transparent,
-                                        insetPadding: EdgeInsets.all(10),
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(bottom: 15),
-                                              child: Row(mainAxisAlignment: MainAxisAlignment.end,
-                                                children: [
-                                                  InkWell(child: Icon(Icons.cancel,size: 35,),
-                                                      onTap: ()=>{ Navigator.pop(context, 'Cancel')}),
-                                                ],),
-                                            ),
-                                            Container(
-                                                height: 300,
-                                                width: 300,
-                                                color: Colors.transparent,
-                                                child: PhotoView.customChild(
-                                                  backgroundDecoration: BoxDecoration(color: Colors.transparent),
-                                                  basePosition: Alignment.center,
-                                                  minScale: PhotoViewComputedScale.contained * 1,
-                                                  tightMode: true,
-                                                  maxScale: PhotoViewComputedScale.covered * 2.0,
-                                                  initialScale: PhotoViewComputedScale.contained * 1.1,
-                                                  enableRotation: true,
-                                                  scaleStateController: scaleStateController,
-                                                  child: Container(
-                                                    color: Colors.transparent,
-                                                    width: 300,
-                                                    height: 300,
-                                                    child:imageList.length<(index+1)?Center(child: CircularProgressIndicator()) : Image.memory(imageList[index]),
-                                                  ),
-                                                )
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(left: 5),
-                                  height: 200,
-                                  width: 220,
-                                  child: imageList.length<(index+1)?const Center(child: CircularProgressIndicator()) : Image.memory(imageList[index]),
+                    ): RefreshIndicator(
+                      onRefresh: () {
+                        return Future.delayed(Duration(microseconds: 500),
+                                () {
+                              EasyLoading.show(status: 'Loading...');
+                              getDocumentData();
+                            });
+                      },
+                      child: SingleChildScrollView(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: documentList.length,
+                          itemBuilder: (context, index){
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                    width: 1.5,
+                                    color: Colors.grey
                                 ),
                               ),
-                              SizedBox(height: 5,),
-                              Text(documentList[index].documentDate,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.indigo.shade800),),
-                              SizedBox(height: 5,),
-                              Text(documentList[index].uploadBy,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.indigo.shade800),),
-                              SizedBox(height: 5,),
-                            ],
-                          ),
-                        );
-                      }
+                              padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                              margin: EdgeInsets.all(5),
+                              child: Column(
+                                crossAxisAlignment: documentList[index].documentType == '3'?CrossAxisAlignment.start : CrossAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Visibility(
+                                        visible : !(imageList.length<(index+1)),
+                                        child: FloatingActionButton(
+                                          onPressed: ()async{
+                                          Directory appDocDirectory = await getTemporaryDirectory();
+                                          final myImagePath = "${appDocDirectory.path}/image.jpg";
+                                          File file = await File(myImagePath).writeAsBytes(imageList[index]);
+                                          print(file);
+                                              Get.to(SecondUploadDocumentPage(filePath: file));
+                                          },
+                                          heroTag: null,
+                                          backgroundColor: Colors.indigo,
+                                          elevation: 0.0,
+                                          tooltip: 'ADD TO RECORD',
+                                          mini: true,
+                                          child: Icon(Icons.add_photo_alternate_rounded),),
+                                      )
+                                    ],
+                                  ),
+                                  InkWell(
+                                    onTap : (){
+                                      showDialog<String>(
+                                        context: context,
+                                        barrierColor:Colors.transparent,
+                                        builder: (BuildContext context) => TweenAnimationBuilder(
+                                          tween: Tween<double>(begin: 0, end: 1),
+                                          duration: const Duration(milliseconds: 500),
+                                          builder: (BuildContext context, double value, Widget? child) {
+                                            return Opacity(opacity: value,
+                                              child: Padding(
+                                                padding: EdgeInsets.only(top: value * 1),
+                                                child: child,
+                                              ),
+                                            );
+                                          },
+                                          child: AlertDialog(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                                            backgroundColor: Colors.transparent,
+                                            insetPadding: EdgeInsets.all(10),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 15),
+                                                  child: Row(mainAxisAlignment: MainAxisAlignment.end,
+                                                    children: [
+                                                      InkWell(child: Icon(Icons.cancel,size: 35,),
+                                                          onTap: ()=>{ Navigator.pop(context, 'Cancel')}),
+                                                    ],),
+                                                ),
+                                                Container(
+                                                    height: 300,
+                                                    width: 300,
+                                                    color: Colors.transparent,
+                                                    child: PhotoView.customChild(
+                                                      backgroundDecoration: BoxDecoration(color: Colors.transparent),
+                                                      basePosition: Alignment.center,
+                                                      minScale: PhotoViewComputedScale.contained * 1,
+                                                      tightMode: true,
+                                                      maxScale: PhotoViewComputedScale.covered * 2.0,
+                                                      initialScale: PhotoViewComputedScale.contained * 1.1,
+                                                      enableRotation: true,
+                                                      scaleStateController: scaleStateController,
+                                                      child: Container(
+                                                        color: Colors.transparent,
+                                                        width: 300,
+                                                        height: 300,
+                                                        child:imageList.length<(index+1)?Center(child: CircularProgressIndicator()) : Image.memory(imageList[index]),
+                                                      ),
+                                                    )
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.only(left: 5),
+                                      height: 200,
+                                      width: 220,
+                                      child: imageList.length<(index+1)?const Center(child: CircularProgressIndicator()) : Image.memory(imageList[index]),
+                                    ),
+                                  ),
+                                  SizedBox(height: 5,),
+                                  Text(documentList[index].documentDate,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.indigo.shade800),),
+                                  SizedBox(height: 5,),
+                                  Text(documentList[index].uploadBy,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.indigo.shade800),),
+                                  SizedBox(height: 5,),
+                                ],
+                              ),
+                            );
+                          }
+                        ),
+                      ),
                     )
                 ),
               )

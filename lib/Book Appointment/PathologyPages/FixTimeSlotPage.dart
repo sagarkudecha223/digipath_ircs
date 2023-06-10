@@ -6,8 +6,8 @@ import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import '../Global/Toast.dart';
-import '../ModalClass/TimeSlotsModal.dart';
+import '../../Global/Toast.dart';
+import '../../ModalClass/TimeSlotsModal.dart';
 import 'ConfirmTimeSlotpage.dart';
 
 class FixTimeSlotPage extends StatefulWidget {
@@ -107,7 +107,6 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
                   onDatePressed: (DateTime datetime) {
 
                     date = DateFormat('yyyy-MM-dd').format(datetime);
-                    String tempData  = DateFormat('dd').format(datetime);
                     bool todayDate = DateTime.now().isBefore(datetime);
                     current_date = DateFormat('dd-MMM-yyyy').format(datetime);
                     print('$date....$current_date');
@@ -164,7 +163,7 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
                 width: double.infinity,
                 child: GridView.builder(
                   itemCount: timeSlotsList.length,
-                  padding: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
+                  padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 0),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       childAspectRatio: 3.5 / 2,

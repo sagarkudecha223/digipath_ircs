@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import '../Design/ColorFillContainer.dart';
-import '../Global/global.dart';
+import '../../Design/ColorFillContainer.dart';
+import '../../Global/global.dart';
 
 class PackagesPage extends StatefulWidget {
   const PackagesPage({Key? key}) : super(key: key);
@@ -125,7 +125,6 @@ class _PackagesPageState extends State<PackagesPage> {
                     }else{
                       count =0;
                     }
-                    print(count);
                     return trueServiceList[index].servicemapid == totalPackageList[insideIndex].serviceIDF?
                     Container(
                       decoration: ColorFillContainer(Colors.white),

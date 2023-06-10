@@ -150,26 +150,25 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
             TopPageTextViews('View TimeLine','Can see Timeline Reports here..'),
             noDataText?Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center) :
             Flexible(
-              child: ListView.builder(
-                itemCount: recordlist.length,
-                itemBuilder: (context, index){
-                  return MedicalRecordsCard(medicalReportModal: recordlist[index]);
+              child: RefreshIndicator(
+                onRefresh: () {
+                  return Future.delayed(Duration(microseconds: 500),
+                          () {
+                        EasyLoading.show(status: 'Loading...');
+                        getRecord();
+                      });
                 },
+                child: SingleChildScrollView(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: recordlist.length,
+                    itemBuilder: (context, index){
+                      return MedicalRecordsCard(medicalReportModal: recordlist[index]);
+                    },
+                  ),
+                ),
               ),
-              // child: RefreshIndicator(
-              //   onRefresh: () {
-              //     return Future.delayed(Duration(microseconds: 500),
-              //     () {
-              //       EasyLoading.show(status: 'Loading...');
-              //       getRecord();
-              //     });
-              //   },
-              //   // child: SingleChildScrollView(
-              //   //   child: Column(
-              //   //     children: recordlist.map((key) => MedicalRecordsCard(medicalReportModal:key)).toList(),
-              //   //   ),
-              //   // ),
-              // ),
             ),
           ],
         ),

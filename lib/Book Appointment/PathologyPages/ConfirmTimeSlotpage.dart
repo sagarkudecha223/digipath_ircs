@@ -5,14 +5,14 @@ import 'package:digipath_ircs/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
-import '../Design/ColorFillContainer.dart';
-import '../Design/ContainerDecoration.dart';
-import '../Global/SearchAPI.dart';
-import '../Global/global.dart';
-import '../ModalClass/PathologyServiceModal.dart';
+import '../../Design/ColorFillContainer.dart';
+import '../../Design/ContainerDecoration.dart';
+import '../../Global/SearchAPI.dart';
+import '../../Global/global.dart';
+import '../../ModalClass/PathologyServiceModal.dart';
 import 'EditPackagesPage.dart';
 import 'EditServicePage.dart';
-import 'WebView.dart';
+import 'WebViewPage.dart';
 
 class ConfirmTimeSlotPage extends StatefulWidget {
 

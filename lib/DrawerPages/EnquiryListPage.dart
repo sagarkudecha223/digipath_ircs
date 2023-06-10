@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:digipath_ircs/Global/global.dart';
-import 'package:digipath_ircs/NewPages/NewEnquiryPage.dart';
+import 'package:digipath_ircs/DrawerPages/NewEnquiryPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -93,39 +93,49 @@ class EnquiryListPageState extends State<EnquiryListPage> {
               Text('Searching')
             else
               Flexible(
-                child: Container(
-                  height: double.infinity,
-                  child: ListView.builder(
-                    itemCount: requestByUserModel.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        margin: const EdgeInsets.fromLTRB(25, 5, 25, 5),
-                        padding: const EdgeInsets.fromLTRB(15, 15, 10, 15),
-                        decoration: ContainerDecoration(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text( requestByUserModel.data[index].isClosed?'status: Close'.toUpperCase():'Status: OPEN'.toUpperCase(),
-                              style: TextStyle(color: Colors.indigo.shade800,fontWeight: FontWeight.bold,fontSize: 15),),
-                            SizedBox(height: 3,),
-                            Text(
-                                'TYPE : ${requestByUserModel.data[index].enquiryType}',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
-                            SizedBox(height: 3,),
-                            Text(
-                                'MESSAGE : ${requestByUserModel.data[index].enquiryText}',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
-                          ],
-                        ),
-                      );
-                    },
+                child: RefreshIndicator(
+                  onRefresh: () {
+                    return Future.delayed(const Duration(microseconds: 500),
+                            () {
+                          getAllRequestByUser();
+                        });
+                  },
+                  child: SingleChildScrollView(
+                    physics: ClampingScrollPhysics(),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: requestByUserModel.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          margin: const EdgeInsets.fromLTRB(25, 5, 25, 5),
+                          padding: const EdgeInsets.fromLTRB(15, 15, 10, 15),
+                          decoration: ContainerDecoration(10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text( requestByUserModel.data[index].isClosed?'status: Close'.toUpperCase():'Status: OPEN'.toUpperCase(),
+                                style: TextStyle(color: Colors.indigo.shade800,fontWeight: FontWeight.bold,fontSize: 15),),
+                              SizedBox(height: 3,),
+                              Text(
+                                  'TYPE : ${requestByUserModel.data[index].enquiryType}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14)),
+                              SizedBox(height: 3,),
+                              Text(
+                                  'MESSAGE : ${requestByUserModel.data[index].enquiryText}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14)),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               )

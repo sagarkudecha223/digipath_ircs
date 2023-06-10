@@ -3,15 +3,12 @@ import 'dart:io';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import '../Design/ContainerDecoration.dart';
 import '../Design/TopPageTextViews.dart';
 import '../Global/Toast.dart';
-import '../HomePage.dart';
 import '../ModalClass/PatientOrderSetbyCitizeModel.dart';
 
 class OrderedInvestigation extends StatefulWidget {
@@ -277,7 +274,7 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
     final file = File('${appStorage.path}/$name');
 
     try {
-      final response = await get(
+      final response = await http.get(
         Uri.parse(url),
       );
 

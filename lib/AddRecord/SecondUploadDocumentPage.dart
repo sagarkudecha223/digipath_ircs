@@ -136,12 +136,12 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Upload Document',style: TextStyle(color: Colors.indigo.shade800),),
+      appBar: AppBar(title: Text('Upload Document'.toUpperCase(),style: TextStyle(color: Colors.indigo.shade800),),
         leading: InkWell(
             onTap: (){
               Navigator.pop(context);
             },
-            child: Icon(Icons.arrow_back_ios,color: Colors.indigo.shade800,)),
+            child: Icon(Icons.arrow_back,color: Colors.indigo.shade800,)),
         elevation: 0.0,backgroundColor: Colors.indigo.shade100,
       ),
       body: Container(
@@ -227,9 +227,9 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Flexible(child: Text(selectedProfessional, style: TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15),)),
-                              SizedBox(width: 15,),
-                              Icon(Icons.person_add_alt_sharp,color: Colors.indigo,)
+                              Flexible(child: Text(selectedProfessional, style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15),)),
+                              const SizedBox(width: 15,),
+                              Image.asset('assets/images/doctor.png',color: Colors.indigo,height: 25,width: 25,)
                             ],
                           ),
                         ),
@@ -306,7 +306,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                       decoration: ColorFillContainer(Colors.indigo),
                       margin: EdgeInsets.all(3),
                       padding: EdgeInsets.only(top: 14,bottom: 14,),
-                      child: Text('Submit',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
+                      child: const Text('Submit',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
                     ),
                   ),
                 )

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'DigiPath IRCS',
-      theme: ThemeData(fontFamily: 'NotoSerifToto'),
+      theme: ThemeData(fontFamily: 'Ageo'),
       home: Splash(),
       builder: EasyLoading.init(),
     );

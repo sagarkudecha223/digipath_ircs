@@ -9,6 +9,7 @@ class GlobalAppBar extends AppBar{
       backgroundColor: Colors.indigo[100],
       leading: InkWell(
         onTap: (){
+          FocusManager.instance.primaryFocus?.unfocus();
           Navigator.pop(context);
         },
           child: Icon(Icons.arrow_back_rounded,color: Colors.indigo[900])),

@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
+import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Design/TopPageTextViews.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -155,24 +157,19 @@ class _AddRecordPageState extends State<AddRecordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Record',style: TextStyle(color: Colors.indigo.shade800),),
-      leading: InkWell(
-        onTap: (){
-          Navigator.pop(context);
-        },
-      child: Icon(Icons.arrow_back_ios,color: Colors.indigo.shade800,)),
-      elevation: 0.0,backgroundColor: Colors.indigo.shade100,),
+      appBar: GlobalAppBar(context),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.indigo.shade100,
         child: Column(
           children: [
+            TopPageTextViews('add record', ''),
             Expanded(
               flex: 1,
               child:imageSelected?
                   Container(
-                    margin: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
+                    margin: const EdgeInsets.only(left: 20,right: 20,top: 5,bottom: 5),
                     child: GridView.builder(
                        itemCount: selectedImageList.length,
                         shrinkWrap: true,
@@ -246,7 +243,7 @@ class _AddRecordPageState extends State<AddRecordPage> {
                     flex: 1,
                     child: Container(
                       margin: const EdgeInsets.all(3),
-                      padding: const EdgeInsets.only(top: 14,bottom: 14,),
+                      padding: const EdgeInsets.only(top: 12,bottom: 12,),
                       decoration: ColorFillContainer(Colors.indigo),
                       child: const Text('Delete',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
                     ),
@@ -259,7 +256,7 @@ class _AddRecordPageState extends State<AddRecordPage> {
                      child: Container(
                        decoration: ColorFillContainer(Colors.indigo),
                        margin: const EdgeInsets.all(3),
-                       padding: const EdgeInsets.only(top: 14,bottom: 14,),
+                       padding: const EdgeInsets.only(top: 12,bottom: 12,),
                        child: const Text('Add to Timeline',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
                       ),
                    ),

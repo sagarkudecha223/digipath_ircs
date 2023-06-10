@@ -1,8 +1,7 @@
-import 'package:badges/badges.dart';
 import 'package:digipath_ircs/Global/global.dart';
 import 'package:flutter/material.dart';
-import '../Design/ColorFillContainer.dart';
-import '../ModalClass/PathologyServiceModal.dart';
+import '../../Design/ColorFillContainer.dart';
+import '../../ModalClass/PathologyServiceModal.dart';
 import 'PackagesPage.dart';
 
 class EditPackagesPage extends StatefulWidget {
@@ -83,8 +82,8 @@ class _EditPackagesPageState extends State<EditPackagesPage> {
                           margin: EdgeInsets.only(top: 20,bottom: 10),
                           width: double.infinity,
                           decoration: ColorFillContainer(Colors.green),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
                             child: Text('OK',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),textAlign: TextAlign.center,),
                           ),
                         ),

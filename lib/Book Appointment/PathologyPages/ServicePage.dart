@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:lottie/lottie.dart';
-import '../Design/ColorFillContainer.dart';
-import '../Global/Toast.dart';
-import '../Global/global.dart';
+import '../../Design/ColorFillContainer.dart';
+import '../../Global/Toast.dart';
+import '../../Global/global.dart';
 
 class ServicePage extends StatefulWidget {
   const ServicePage({Key? key}) : super(key: key);
@@ -15,7 +15,8 @@ class ServicePage extends StatefulWidget {
 class _ServicePageState extends State<ServicePage> {
 
   bool searchServiceColumn = false;
-  bool filterEmpty = false;
+  bool noDataBool = false;
+  late String noDataText;
   bool filterColumn = false;
   TextEditingController searchFilterController = TextEditingController();
   Map<String, HighlightedWord> words = {};
@@ -32,12 +33,12 @@ class _ServicePageState extends State<ServicePage> {
 
   void applyFilter(String searchText){
 
-    if(searchText.length >=2){
+    if(searchText.isNotEmpty){
       serviceFilterList.clear();
 
       words = {
         searchText: HighlightedWord(
-          textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 14,fontFamily: 'NotoSerifToto'),
+          textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 14,fontFamily: 'Ageo'),
         ),
       };
 
@@ -51,11 +52,12 @@ class _ServicePageState extends State<ServicePage> {
       }
       if(serviceFilterList.isEmpty){
         setState(() {
-          filterEmpty = true;
+          noDataBool = true;
+          noDataText = 'No Search Found For $searchText';
         });
       }else{
         setState(() {
-          filterEmpty = false;
+          noDataBool = false;
           filterColumn = true;
         });
       }
@@ -63,7 +65,7 @@ class _ServicePageState extends State<ServicePage> {
     else{
       setState(() {
         words = {};
-        filterEmpty = false;
+        noDataBool = false;
         filterColumn = false;
       });
     }
@@ -79,11 +81,11 @@ class _ServicePageState extends State<ServicePage> {
               words = {};
               searchFilterController.clear();
               searchServiceColumn = false;
-              filterEmpty = false;
+              noDataBool = false;
               filterColumn = false;
             });
           },
-          child: const Icon(Icons.cancel,color: Colors.grey,size: 25,)),
+          child: Icon(Icons.cancel,color: Colors.indigo.shade400,size: 25,)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(
@@ -123,8 +125,11 @@ class _ServicePageState extends State<ServicePage> {
                 ),
               ),
               height: 250,
-              child: filterEmpty? Center(
-                child:  Lottie.asset('assets/JSON/noSearchResult.json',repeat: true,height: 200,width: 200),
+              child: noDataBool? Column(
+                children: [
+                  Lottie.asset('assets/JSON/MainemptySearch.json',repeat: true,height: 200,width: 200),
+                  Text(noDataText,style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15))
+                ],
               ) : ListView.builder(
                   itemCount:filterColumn? serviceFilterList.length : serviceList.length,
                   itemBuilder: (context, index) {
@@ -156,7 +161,7 @@ class _ServicePageState extends State<ServicePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Flexible(child: TextHighlight(text: filterColumn? '${serviceFilterList[index].name} (${serviceFilterList[index].amount} RS.)' : '${serviceList[index].name} (${serviceList[index].amount} RS.)',
-                                  words: words, textStyle: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 14,fontFamily: 'NotoSerifToto'))),
+                                  words: words, textStyle: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 15,fontFamily: 'Ageo'))),
                               SizedBox(width: 10,),
                               demoList.contains(filterColumn? serviceFilterList[index].name : serviceList[index].name)?Icon(Icons.cancel_rounded,color: Colors.red,size: 28,) : Icon(Icons.add_circle_outline_rounded,color: Colors.green,size: 28,)
                             ],
@@ -170,6 +175,7 @@ class _ServicePageState extends State<ServicePage> {
         ): InkWell(
             onTap: (){
               setState(() {
+                words = {};
                 searchServiceColumn = true;
                 searchFilterController.clear();
               });

@@ -6,7 +6,6 @@ import '../Design/GlobalAppBar.dart';
 import '../Design/TopPageTextViews.dart';
 import '../Global/SearchAPI.dart';
 import '../Global/Toast.dart';
-import '../Global/global.dart';
 import '../ModalClass/DoctorListModal.dart';
 import 'TimeSlotPage.dart';
 
@@ -40,6 +39,8 @@ class _DoctorListPageState extends State<DoctorListPage> {
   }
 
   void searchDoctorList() async{
+
+    doctorList.clear();
 
     dynamic status = await searchAPI(false ,url,
         {"token" : "eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg"
@@ -122,7 +123,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(firstText,style: TextStyle(color: Colors.grey.shade500,fontSize: 15)),
+        Text(firstText,style: TextStyle(color: Colors.grey.shade600,fontSize: 15)),
         Flexible(child: Text(secondText,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.end,))
       ],
     );
@@ -154,72 +155,85 @@ class _DoctorListPageState extends State<DoctorListPage> {
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(15),
                 ),
-                child: ListView.builder(
-                    itemCount: doctorList.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        visualDensity: const VisualDensity(vertical: -4),
-                        onTap: (){},
-                        contentPadding :EdgeInsets.zero,
-                        title: Container(
-                            padding: EdgeInsets.all(20),
-                            margin: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 5,
-                                    blurStyle: BlurStyle.outer,
-                                    spreadRadius: 1,
-                                    offset: Offset(0, 0)
-                                ),
-                              ],
-                            borderRadius: BorderRadius.circular(13),),
-                            child: Column(
-                              children: [
-                                CommonRow('Dr Name   ', doctorList[index].careProfessionalName),
-                                CommonDivider(),
-                                CommonRow('Hospital    ',  doctorList[index].careProviderName),
-                                CommonDivider(),
-                                CommonRow('Speciality    ',  doctorList[index].specialityType),
-                                CommonDivider(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text('Time    ',style: TextStyle(color: Colors.grey.shade500,fontSize: 15)),
-                                    Flexible(child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text( doctorList[index].ScheeduleWeekDays,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
-                                        Text('${doctorList[index].ScheduleStartTime} - ${doctorList[index].ScheduleEndTime}',style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold))
-                                      ],
-                                    ))
-                                  ],
-                                ),
-                                CommonDivider(),
-                                InkWell(
-                                  onTap: (){
-                                  Get.to( TimeSlotPage(careProviderIDP: doctorList[index].careProviderIDP, CareProfessionalIDP: doctorList[index].careProfessionalIDP, careProfessionalName:  doctorList[index].careProfessionalName));
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(top: 15,bottom: 15),
-                                    width: double.infinity,
-                                    decoration: ColorFillContainer(Colors.lightGreen),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Center(
-                                        child: Text('Book Appointment',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                                      ),
+                child: RefreshIndicator(
+                  onRefresh: () {
+                    return Future.delayed(Duration(microseconds: 500),
+                            () {
+                          EasyLoading.show(status: 'Loading...');
+                          searchDoctorList();
+                        });
+                  },
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: doctorList.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            visualDensity: const VisualDensity(vertical: -4),
+                            onTap: (){},
+                            contentPadding :EdgeInsets.zero,
+                            title: Container(
+                                padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 10),
+                                margin: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 5,
+                                        blurStyle: BlurStyle.outer,
+                                        spreadRadius: 1,
+                                        offset: Offset(0, 0)
                                     ),
-                                  ),
+                                  ],
+                                borderRadius: BorderRadius.circular(13),),
+                                child: Column(
+                                  children: [
+                                    CommonRow('Dr Name   ', doctorList[index].careProfessionalName),
+                                    CommonDivider(),
+                                    CommonRow('Hospital    ',  doctorList[index].careProviderName),
+                                    CommonDivider(),
+                                    CommonRow('Speciality    ',  doctorList[index].specialityType),
+                                    CommonDivider(),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text('Time    ',style: TextStyle(color: Colors.grey.shade600,fontSize: 15)),
+                                        Flexible(child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text( doctorList[index].ScheeduleWeekDays,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),
+                                            Text('${doctorList[index].ScheduleStartTime} - ${doctorList[index].ScheduleEndTime}',style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold))
+                                          ],
+                                        ))
+                                      ],
+                                    ),
+                                    CommonDivider(),
+                                    InkWell(
+                                      onTap: (){
+                                      Get.to( TimeSlotPage(careProviderIDP: doctorList[index].careProviderIDP, CareProfessionalIDP: doctorList[index].careProfessionalIDP, careProfessionalName:  doctorList[index].careProfessionalName));
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.only(top: 5,bottom: 5),
+                                        width: double.infinity,
+                                        decoration: ColorFillContainer(Colors.lightGreen),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(10.0),
+                                          child: Center(
+                                            child: Text('Book Appointment',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 )
-                              ],
-                            )
-                        ),
-                      );
-                    }
+                            ),
+                          );
+                        }
+                    ),
+                  ),
                 ),
               ),
             )

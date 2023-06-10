@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
 import 'package:digipath_ircs/Design/TopPageTextViews.dart';
-import 'package:digipath_ircs/NewPages/RecordingPart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
@@ -9,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../Design/GlobalAppBar.dart';
 import '../ModalClass/AnswerModal.dart';
 import 'IosRecording.dart';
+import 'RecordingPart.dart';
 
 class FreeConsultationPage extends StatefulWidget {
   const FreeConsultationPage({Key? key}) : super(key: key);
@@ -42,33 +42,32 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
     answerList.clear();
     categoryList.clear();
 
-    categoryList.add('Related to blood & Blood Producer');
+    categoryList.add('Related to blood & blood products');
     categoryList.add('Related to Blood Transfusion');
     categoryList.add('Related to Iron Overload');
-    categoryList.add('Related to');
+    categoryList.add('Related to complications of Diseases');
     categoryList.add('Related to bone marrow Transplant');
 
-    answerList.add(AnswerModal(title: 'Quality', isChecked: false, selectedButton: 1));
-    answerList.add(AnswerModal(title: 'Dosage', isChecked: false, selectedButton: 1));
-    answerList.add(AnswerModal(title: 'Different Producer', isChecked: false, selectedButton: 1));
-    answerList.add(AnswerModal(title: 'Quality of Blood', isChecked: false, selectedButton: 1));
+    answerList.add(AnswerModal(title: 'Quality of blood', isChecked: false, selectedButton: 1));
+    answerList.add(AnswerModal(title: 'Dosage related queries', isChecked: false, selectedButton: 1));
+    answerList.add(AnswerModal(title: 'Different Products', isChecked: false, selectedButton: 1));
 
     answerList.add(AnswerModal(title: 'Facilities', isChecked: false, selectedButton: 2));
     answerList.add(AnswerModal(title: 'Transfusion related reactions', isChecked: false, selectedButton: 2));
-    answerList.add(AnswerModal(title: 'Haemoglobin levels are not maintained', isChecked: false, selectedButton: 2));
+    answerList.add(AnswerModal(title: 'Haemoglobin levels are not maintained despite transfusion', isChecked: false, selectedButton: 2));
 
     answerList.add(AnswerModal(title: 'How to Determine', isChecked: false, selectedButton: 3));
-    answerList.add(AnswerModal(title: 'Availability of Iron chelation', isChecked: false, selectedButton: 3));
+    answerList.add(AnswerModal(title: 'Availability of Iron chelators(Chechak)', isChecked: false, selectedButton: 3));
     answerList.add(AnswerModal(title: 'Not Responding to chelation Therapy', isChecked: false, selectedButton: 3));
     answerList.add(AnswerModal(title: 'Side effects of Iron chelation drugs', isChecked: false, selectedButton: 3));
 
-    answerList.add(AnswerModal(title: 'Monitoring for', isChecked: false, selectedButton: 4));
+    answerList.add(AnswerModal(title: 'Monitoring for complications', isChecked: false, selectedButton: 4));
     answerList.add(AnswerModal(title: 'Associated illness', isChecked: false, selectedButton: 4));
     answerList.add(AnswerModal(title: 'Management', isChecked: false, selectedButton: 4));
 
     answerList.add(AnswerModal(title: 'Eligibility', isChecked: false, selectedButton: 5));
     answerList.add(AnswerModal(title: 'Procedure', isChecked: false, selectedButton: 5));
-    answerList.add(AnswerModal(title: 'Financial', isChecked: false, selectedButton: 5));
+    answerList.add(AnswerModal(title: 'Financial support', isChecked: false, selectedButton: 5));
     answerList.add(AnswerModal(title: 'Option for no matching Donor in Family', isChecked: false, selectedButton: 5));
 
       if(language == 'English'){

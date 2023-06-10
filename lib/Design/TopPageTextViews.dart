@@ -8,10 +8,13 @@ class TopPageTextViews extends Container{
   TopPageTextViews(this.topText,this.bottomText) : super(
     child: Column(
       children: [
-        Text(topText, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo[900]),),
-        Padding(
-          padding: const EdgeInsets.only(top: 2.0, bottom: 1),
-          child: Text(bottomText,style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.indigo[900])),
+        Text(topText.toUpperCase(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo[900]),),
+        Visibility(
+          visible: bottomText != '',
+          child: Padding(
+            padding: const EdgeInsets.only(top: 2.0, bottom: 1),
+            child: Text(bottomText,style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.indigo[900])),
+          ),
         )
       ],
     )

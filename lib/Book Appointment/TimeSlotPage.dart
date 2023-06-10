@@ -135,6 +135,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
             }
           }
         }
+        getServiceList();
         verifyButton = true;
         noData = false;
       }else{

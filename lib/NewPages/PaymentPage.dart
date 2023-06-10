@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart';
+import '../Book Appointment/PathologyPages/WebViewPage.dart';
 import '../Design/GlobalAppBar.dart';
 import '../Design/TopPageTextViews.dart';
 import '../Global/global.dart';
 import '../ModalClass/PaymentModal.dart';
-import '../PathologyPages/WebViewPage.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({Key? key}) : super(key: key);
@@ -33,6 +33,7 @@ class _PaymentPageState extends State<PaymentPage> {
   void getPaymentList() async{
 
     EasyLoading.show(status: 'Searching...');
+    paymentList.clear();
 
     try{
       Response response = await post(
@@ -97,44 +98,56 @@ class _PaymentPageState extends State<PaymentPage> {
               padding: EdgeInsets.all(15),
                 child: Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center)) :
             Flexible(
-                child: ListView.builder(
-                    itemCount: paymentList.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.all(15),
-                        margin: EdgeInsets.only(left: 20,right: 20,bottom: 3,top: 5),
-                        width: double.infinity,
-                        decoration: ColorFillContainer(Colors.white),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment : CrossAxisAlignment.start,
-                                children: [
-                                  Text('Date : ${paymentList[index].encounterDate}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
-                                  SizedBox(height: 5,),
-                                  Text('Purpose type : ${paymentList[index].purposeType}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
-                                  SizedBox(height: 5,),
-                                  Text('Amount : ${paymentList[index].amount}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
-                                ],
-                              ),
+                child: RefreshIndicator(
+                  onRefresh: () {
+                    return Future.delayed(Duration(microseconds: 500),
+                            () {
+                          getPaymentList();
+                        });
+                  },
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: paymentList.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: EdgeInsets.all(15),
+                            margin: EdgeInsets.only(left: 20,right: 20,bottom: 3,top: 5),
+                            width: double.infinity,
+                            decoration: ColorFillContainer(Colors.white),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment : CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Date : ${paymentList[index].encounterDate}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
+                                      SizedBox(height: 5,),
+                                      Text('Purpose type : ${paymentList[index].purposeType}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
+                                      SizedBox(height: 5,),
+                                      Text('Amount : ${paymentList[index].amount}',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 15),),
+                                    ],
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap : (){
+                                    String encounterID = paymentList[index].encounterIDP;
+                                    String url = 'https://medicodb.in/CCAvenuePopUp_Android.do?encounterid=$encounterID&callFrom=android&APIFor=redcross&mobileNo=$localMobileNum';
+                                    Get.to(WebViewPage(url: url,));
+                                  },
+                                  child: Container(
+                                    decoration: ColorFillContainer(Colors.indigo.shade500),
+                                    padding : EdgeInsets.all(15),
+                                    child: const Text('PAY',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 15),),
+                                  ),
+                                )
+                              ],
                             ),
-                            InkWell(
-                              onTap : (){
-                                String encounterID = paymentList[index].encounterIDP;
-                                String url = 'https://medicodb.in/CCAvenuePopUp_Android.do?encounterid=$encounterID&callFrom=android&APIFor=redcross&mobileNo=$localMobileNum';
-                                Get.to(WebViewPage(url: url,));
-                              },
-                              child: Container(
-                                decoration: ColorFillContainer(Colors.indigo.shade500),
-                                padding : EdgeInsets.all(15),
-                                child: const Text('PAY',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 15),),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }
+                          );
+                        }
+                    ),
+                  ),
                 )
             )
           ],

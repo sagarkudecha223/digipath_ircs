@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Design/TopPageTextViews.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:highlight_text/highlight_text.dart';
@@ -38,7 +40,7 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
       FocusManager.instance.primaryFocus?.unfocus();
       words = {
         searchText: HighlightedWord(
-          textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: 'NotoSerifToto'),
+          textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: 'Ageo'),
         ),
       };
       goForSearch(searchText);
@@ -64,12 +66,11 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
   }
 
   void filterTheList(String searchText){
-
     filterList.clear();
 
     words = {
       searchText: HighlightedWord(
-        textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: 'NotoSerifToto'),
+        textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: 'Ageo'),
       ),
     };
 
@@ -84,7 +85,8 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
         noDataBool = false;
         filter = true;
       });
-    }else{
+    }
+    else{
       setState((){
         noDataBool = true;
         noDataText = 'No Search Found For ${_controller.text.toString()}';
@@ -155,14 +157,7 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBar(title: Text('Select $searchType',style: TextStyle(color: Colors.indigo.shade800),),
-        leading: InkWell(
-            onTap: (){
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back_ios,color: Colors.indigo.shade800,)),
-        elevation: 0.0,backgroundColor: Colors.indigo.shade100,
-      ),
+      appBar:  GlobalAppBar(context),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -170,16 +165,17 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
         color: Colors.indigo.shade100,
         child: Column(
           children: [
+            TopPageTextViews(searchType, ''),
             TextField(
               autofocus: true,
               controller: _controller,
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white60,
-                  prefixIcon: const Icon(Icons.search,),
+                  prefixIcon: const Icon(Icons.search,color: Colors.indigo,),
                   suffixIcon: IconButton(
                     // color: Colors.grey[600],
-                    icon: const Icon(Icons.cancel),
+                    icon: const Icon(Icons.cancel,color: Colors.indigo),
                     onPressed: () {
                       setState(() {
                         _controller.clear();
@@ -214,7 +210,7 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Lottie.asset('assets/JSON/emptySearch.json',repeat: true,height: 300,width: 300),
+                    Lottie.asset('assets/JSON/MainemptySearch.json',repeat: true,height: 300,width: 300),
                     Text(noDataText,style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15))
                   ],
                 ),
@@ -250,13 +246,13 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              searchType == 'Care Professional'?Image.asset('assets/images/doctor.png',color: Colors.indigo.shade300,height: 25,width: 25,):SizedBox(height: 0,width: 0,),
-                              SizedBox(width: 15,),
+                              searchType == 'Care Professional'?Image.asset('assets/images/doctor.png',color: Colors.indigo.shade300,height: 25,width: 25,):const SizedBox(height: 0,width: 0,),
+                              const SizedBox(width: 15,),
                               Flexible(
                                 child: TextHighlight(
                                     text: filter?filterList[index].text : searchList[index].text,
                                   words: words,
-                                  textStyle: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: 'NotoSerifToto'),
+                                  textStyle: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: 'Ageo'),
                                 )
                               ),
                             ],

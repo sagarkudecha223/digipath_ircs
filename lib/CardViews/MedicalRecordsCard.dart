@@ -8,7 +8,6 @@ import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import '../Design/ContainerDecoration.dart';
 import '../Global/Toast.dart';
-// import '../Global/global.dart';
 import '../ModalClass/MedicalReportModal.dart';
 
 class MedicalRecordsCard extends StatefulWidget {
@@ -256,28 +255,28 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 8),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20, bottom: 8),
                         child: Text('Report is registered',textScaleFactor: 1.0,
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight
                               .w500), textAlign: TextAlign.center,),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10, top: 10),
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 10, top: 10),
                         child: Text('you can see your report after reporting',textScaleFactor: 1.0,
                           style: TextStyle(fontSize: 14, fontWeight: FontWeight
                               .normal), textAlign: TextAlign.center,),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 10, right: 10),
                         child: Divider(thickness: 1, color: Colors.grey,),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 3, bottom: 15),
                         child: InkWell(
                             onTap: () => { Navigator.pop(context, 'Cancel')},
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 100,left: 100,top: 10,bottom: 10),
+                            child: const Padding(
+                              padding: EdgeInsets.only(right: 100,left: 100,top: 10,bottom: 10),
                               child: Text('OK',textScaleFactor: 1.0, style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.normal),
                                 textAlign: TextAlign.center,),
@@ -304,33 +303,31 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 8),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20, bottom: 8),
                         child: Text('Report is just uploaded',textScaleFactor: 1.0,
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight
                               .w500), textAlign: TextAlign.center,),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10, top: 10),
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 10, top: 10),
                         child: Text('You can view after report reporting',textScaleFactor: 1.0,
                           style: TextStyle(fontSize: 14, fontWeight: FontWeight
                               .normal), textAlign: TextAlign.center,),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 10, right: 10),
                         child: Divider(thickness: 1, color: Colors.grey,),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 3, bottom: 15),
                         child: InkWell(
                             onTap: () => { Navigator.pop(context, 'Cancel')},
-                            child: Container(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 100,left: 100,top: 10,bottom: 10),
-                                child: Text('OK',textScaleFactor: 1.0, style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.normal),
-                                  textAlign: TextAlign.center,),
-                              ),
+                            child: const Padding(
+                              padding: EdgeInsets.only(right: 100,left: 100,top: 10,bottom: 10),
+                              child: Text('OK',textScaleFactor: 1.0, style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.normal),
+                                textAlign: TextAlign.center,),
                             )),
                       ),
                     ],
@@ -440,16 +437,16 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-                child: Text(widget.medicalReportModal.CareProviderName.toString(),textScaleFactor: 1.0,style: TextStyle(fontSize: 16.0),),
+                child: Text(widget.medicalReportModal.CareProviderName.toString(),textScaleFactor: 1.0,style: const TextStyle(fontSize: 16.0),),
               ),
-              Divider(height: 5, thickness: 1, color: Colors.grey,),
+              const Divider(height: 5, thickness: 1, color: Colors.grey,),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(widget.medicalReportModal.OnSetDate.toString(),textScaleFactor: 1.0,style: TextStyle(color: Colors.green,fontWeight: FontWeight.w500,fontSize: 16.0),),
+                    Text(widget.medicalReportModal.OnSetDate.toString(),textScaleFactor: 1.0,style: const TextStyle(color: Colors.green,fontWeight: FontWeight.w500,fontSize: 16.0),),
                     Row(
                       children: [
                         Visibility(

@@ -1,7 +1,9 @@
-import 'package:digipath_ircs/NewPages/DoctorListPage.dart';
+import 'package:digipath_ircs/Book%20Appointment/DoctorListPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
+import 'package:highlight_text/highlight_text.dart';
+import 'package:lottie/lottie.dart';
 import '../Design/ColorFillContainer.dart';
 import '../Design/GlobalAppBar.dart';
 import '../Design/TopPageTextViews.dart';
@@ -38,6 +40,9 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
   late String careProviderID = '';
   late String cityID = '';
   late String specialityID = '';
+  bool noDataBool = false;
+  late String noDataText;
+  Map<String, HighlightedWord> words = {};
 
   @override
   void initState() {
@@ -118,9 +123,15 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
 
   void applyFilter(String searchText){
 
+    words = {
+      searchText: HighlightedWord(
+        textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 14,fontFamily: 'Ageo'),
+      ),
+    };
+
     if(searchCityColumn == true){
 
-      if(searchText.length >=2){
+      if(searchText.isNotEmpty){
         filterList.clear();
         for (int i = 0; i < cityList.length; i++) {
           if (cityList[i].name.toLowerCase().contains(searchText.toLowerCase())) {
@@ -143,7 +154,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
     }
     else if(specialityTypeColumn == true){
 
-      if(searchText.length >=2){
+      if(searchText.isNotEmpty){
         filterList.clear();
         for (int i = 0; i < specialistTypeList.length; i++) {
           if (specialistTypeList[i].name.toLowerCase().contains(searchText.toLowerCase())) {
@@ -165,7 +176,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
 
     }
     else if(hospitalColumn == true){
-      if(searchText.length >=2){
+      if(searchText.isNotEmpty){
         filterList.clear();
         for (int i = 0; i < hospitalList.length; i++) {
           if (hospitalList[i].name.toLowerCase().contains(searchText.toLowerCase())) {
@@ -187,7 +198,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
 
     }
     else if(doctorColumn == true){
-      if(searchText.length >=2){
+      if(searchText.isNotEmpty){
         filterList.clear();
         for (int i = 0; i < doctorList.length; i++) {
           if (doctorList[i].name.toLowerCase().contains(searchText.toLowerCase())) {
@@ -206,17 +217,25 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
           filterColumn = false;
         });
       }
-
     }
 
-    if(filterList.isEmpty && searchText.length >=2){
-      showToast('No Result Found');
+    if(filterList.isEmpty && searchText.length >=1){
+      print('Enter');
+      setState((){
+        noDataBool = true;
+        noDataText = 'No Search Found For $searchText';
+      });
+    }
+    else{
+      setState((){
+        noDataBool = false;
+      });
     }
   }
 
   Padding textWithPadding(String text){
-    return Padding(padding: EdgeInsets.only(top: 20,bottom: 2),
-    child: Text(text, style: TextStyle(fontSize: 14,color: Colors.grey),),);
+    return Padding(padding: EdgeInsets.only(top: 20,bottom: 2,left: 5),
+    child: Text(text, style: TextStyle(fontSize: 14,color: Colors.grey.shade600),),);
   }
 
   InputDecoration textFieldDecoration(String hintText){
@@ -230,19 +249,21 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
               specialityTypeColumn = false;
               hospitalColumn = false;
               doctorColumn = false;
+              filterColumn = false;
+              noDataBool = false;
             });
           },
-          child: Icon(Icons.cancel)
+          child: const Icon(Icons.cancel,color: Colors.indigo,)
         ),
         hintText:  hintText,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
               width: 1, color: Colors.grey),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
               width: 1, color: Colors.grey),
         ),
         border: InputBorder.none
@@ -254,11 +275,12 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
         decoration: ColorFillContainer(Colors.grey.shade300),
         width: double.infinity,
         padding: EdgeInsets.all(15),
-        child: Text(text));
+        child: Text(text,style: TextStyle(fontWeight: FontWeight.w600),));
   }
 
   @override
   void dispose() {
+    FocusManager.instance.primaryFocus?.unfocus();
     EasyLoading.dismiss();
     super.dispose();
   }
@@ -295,7 +317,12 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                           Container(
                             width: double.infinity,
                             height: 200,
-                            child: ListView.builder(
+                            child: noDataBool? Column(
+                              children: [
+                                Lottie.asset('assets/JSON/MainemptySearch.json',repeat: true,height: 150,width: 150),
+                                Text(noDataText,style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15))
+                              ],
+                            ) : ListView.builder(
                                 itemCount:filterColumn? filterList.length : cityList.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
@@ -325,7 +352,8 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                                               color: Colors.grey
                                           ),
                                           borderRadius: BorderRadius.circular(8),),
-                                        child: Text(filterColumn? filterList[index].name : cityList[index].name)),
+                                        child: TextHighlight( text: filterColumn? filterList[index].name : cityList[index].name, words: words,
+                                          textStyle: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w500,fontSize: 15,fontFamily: 'Ageo'),)),
                                   );
                                 }
                             ),
@@ -334,9 +362,12 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                       ): InkWell(
                           onTap: (){
                             setState(() {
+                              words = {};
                               searchFilterController.clear();
                               searchCityColumn = true;
                               specialityTypeColumn = false;
+                              noDataBool = false;
+                              filterColumn = false;
                               hospitalColumn = false;
                               doctorColumn = false;
                             });
@@ -353,7 +384,12 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                           Container(
                             width: double.infinity,
                             height: 200,
-                            child: ListView.builder(
+                            child: noDataBool? Column(
+                              children: [
+                                Lottie.asset('assets/JSON/MainemptySearch.json',repeat: true,height: 150,width: 150),
+                                Text(noDataText,style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15))
+                              ],
+                            ) : ListView.builder(
                                 itemCount:filterColumn? filterList.length : specialistTypeList.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
@@ -377,7 +413,8 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                                               color: Colors.grey
                                           ),
                                           borderRadius: BorderRadius.circular(8),),
-                                        child: Text(filterColumn? filterList[index].name : specialistTypeList[index].name)),
+                                        child: TextHighlight(text :filterColumn? filterList[index].name : specialistTypeList[index].name,words: words,
+                                          textStyle: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w500,fontSize: 15,fontFamily: 'Ageo'),)),
                                   );
                                 }
                             ),
@@ -386,10 +423,13 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                       ): InkWell(
                           onTap: (){
                             setState(() {
+                              words = {};
                               searchFilterController.clear();
                               searchCityColumn = false;
                               specialityTypeColumn = true;
                               hospitalColumn = false;
+                              filterColumn = false;
+                              noDataBool = false;
                               doctorColumn = false;
                             });
                           },
@@ -405,7 +445,12 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                           Container(
                             width: double.infinity,
                             height: 200,
-                            child: ListView.builder(
+                            child: noDataBool? Column(
+                              children: [
+                                Lottie.asset('assets/JSON/MainemptySearch.json',repeat: true,height: 150,width: 150),
+                                Text(noDataText,style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15))
+                              ],
+                            ) : ListView.builder(
                                 itemCount:filterColumn? filterList.length : hospitalList.length,
                                 itemBuilder: (context, index) {
                                   return ListTile(
@@ -429,7 +474,8 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                                               color: Colors.grey
                                           ),
                                           borderRadius: BorderRadius.circular(8),),
-                                        child: Text(filterColumn? filterList[index].name : hospitalList[index].name)),
+                                        child: TextHighlight(text:filterColumn? filterList[index].name : hospitalList[index].name,words: words,
+                                            textStyle: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w500,fontSize: 15,fontFamily: 'Ageo'))),
                                   );
                                 }
                             ),
@@ -438,10 +484,13 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                       ): InkWell(
                           onTap: (){
                             setState(() {
+                              words = {};
                               searchFilterController.clear();
                               searchCityColumn = false;
                               specialityTypeColumn = false;
                               hospitalColumn = true;
+                              filterColumn = false;
+                              noDataBool = false;
                               doctorColumn = false;
                             });
                           },
@@ -457,7 +506,12 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                         Container(
                           width: double.infinity,
                           height: 200,
-                          child: ListView.builder(
+                          child: noDataBool? Column(
+                            children: [
+                              Lottie.asset('assets/JSON/MainemptySearch.json',repeat: true,height: 150,width: 150),
+                              Text(noDataText,style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15))
+                            ],
+                          ) : ListView.builder(
                               itemCount:filterColumn? filterList.length : doctorList.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
@@ -481,7 +535,8 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                                             color: Colors.grey
                                         ),
                                         borderRadius: BorderRadius.circular(8),),
-                                      child: Text(filterColumn? filterList[index].name : doctorList[index].name)),
+                                      child: TextHighlight(text:filterColumn? filterList[index].name : doctorList[index].name,words: words,
+                                          textStyle: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w500,fontSize: 15,fontFamily: 'Ageo'))),
                                 );
                               }
                           ),
@@ -490,9 +545,11 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                     ): InkWell(
                         onTap: (){
                           setState(() {
+                            words = {};
                             searchFilterController.clear();
                             searchCityColumn = false;
                             specialityTypeColumn = false;
+                            noDataBool = false;
                             hospitalColumn = false;
                             doctorColumn = true;
                           });
