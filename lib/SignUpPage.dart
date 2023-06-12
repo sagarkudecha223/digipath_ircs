@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:digipath_ircs/Design/TopPageTextViews.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
@@ -280,8 +280,24 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                fromAddMember? TopPageTextViews('Add Family Member', 'family member registration'):
-                TopPageTextViews('QUICK SIGN UP', 'Start your Account of Vinecare'),
+                fromAddMember?Column(
+                  children: [
+                    Text('Add Family Member'.toUpperCase(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo[900]),),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2.0, bottom: 1),
+                      child: Text('family member registration',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.indigo[900])),
+                    )
+                  ],
+                ) :
+                Column(
+                  children: [
+                    Text('QUICK SIGN UP'.toUpperCase(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo[900]),),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2.0, bottom: 1),
+                      child: Text('Start your Account of Vinecare',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.indigo[900])),
+                    )
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15,right: 15),
                   child: Container(
@@ -678,7 +694,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             child: Container(
                               margin: const EdgeInsets.only(top: 20),
                               decoration: BoxDecoration(
-                                color: Colors.green,
+                                color: globalOrange,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Padding(

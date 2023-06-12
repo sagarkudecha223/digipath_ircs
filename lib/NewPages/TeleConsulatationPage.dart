@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:digipath_ircs/Design/TopPageTextViews.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/global.dart';
 import 'package:digipath_ircs/NewPages/UploadDocumentPage.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
 
     try{
 
-      Response response = await get(Uri.parse('https://smarthealth.care/smart_getAllEncounterForCitizen.shc?citizenID=$localCitizenIDP'),
+      Response response = await get(Uri.parse('$urlForIN/smart_getAllEncounterForCitizen.shc?citizenID=$localCitizenIDP'),
       headers: {
         'token' : token
       });
@@ -98,14 +99,14 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'Tele-Consultation'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.indigo[100],
         child: Column(
           children: [
-            TopPageTextViews('Tele-Consultation','Video Consultation'),
+            TopPageTextViews('Video Consultation'),
             noDataText?Container(
                 width: double.infinity,
                 margin: const EdgeInsets.all(25),
@@ -133,7 +134,7 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
                          Get.to(UploadDocumentPage(isDirect: false,));
                        },
                        child: Container(
-                         decoration: ColorFillContainer(Colors.green),
+                         decoration: ColorFillContainer(globalOrange),
                          padding: EdgeInsets.all(15),
                          child: const Text('Add Records Or Initiate Video consultation',textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
                        ),

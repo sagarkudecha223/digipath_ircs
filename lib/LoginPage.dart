@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/ModalClass/MultiAccountModal.dart';
 import 'package:digipath_ircs/MultiAccountPage.dart';
 import 'package:flutter/material.dart';
@@ -255,7 +256,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: Colors.green[500],
+                              color: globalOrange,
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),

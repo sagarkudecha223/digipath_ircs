@@ -61,7 +61,7 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
     try {
       Response response = await get(
           Uri.parse(
-              'https://medicodb.com/getListofDateAsPerCitizenCode.app?CitizenCode=15092100073901'),
+              'https://medicodb.in/getListofDateAsPerCitizenCode.app?CitizenCode=$localCitizenCode'),
           headers: {
             'u': 'dhruv',
             'p': 'demo',
@@ -140,14 +140,14 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'View TimeLine'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.indigo[100],
         child: Column(
           children: [
-            TopPageTextViews('View TimeLine','Can see Timeline Reports here..'),
+            TopPageTextViews('Can see Timeline Reports here..'),
             noDataText?Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center) :
             Flexible(
               child: RefreshIndicator(

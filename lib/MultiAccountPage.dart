@@ -48,7 +48,8 @@ class _MultiAccountPageState extends State<MultiAccountPage> {
         child: Column(
           children: [
             const SizedBox(height: 20,),
-            TopPageTextViews('CITIZEN LIST', 'Registration with Mobile No: $localMobileNum'),
+            Text('CITIZEN LIST'.toUpperCase(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo[900]),),
+            TopPageTextViews('Registration with Mobile No: $localMobileNum'),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 20),

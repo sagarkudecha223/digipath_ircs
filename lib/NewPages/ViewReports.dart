@@ -144,14 +144,14 @@ class _ViewReportPageState extends State<ViewReportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'View Reports'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.indigo[100],
         child: Column(
           children: [
-            TopPageTextViews('View Reports','Can See Pathology Reports Here..'),
+            TopPageTextViews('Can See Pathology Reports Here..'),
             noDataText? Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center) :
             Flexible(
               child: RefreshIndicator(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/Toast.dart';
 import 'package:digipath_ircs/Global/global.dart';
 import 'package:digipath_ircs/HomePage.dart';
@@ -75,7 +76,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
     EasyLoading.show(status: 'Uploading Document...');
 
     try{
-      Response response = await post(Uri.parse('https://smarthealth.care/uploadScanDocAndroid.app?'),
+      Response response = await post(Uri.parse('https://medicodb.in/uploadScanDocAndroid.app?'),
         headers: {
           'u': 'dhruv',
           'p': 'demo',
@@ -136,7 +137,8 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Upload Document'.toUpperCase(),style: TextStyle(color: Colors.indigo.shade800),),
+      appBar: AppBar(title: Text('Upload Document'.toUpperCase(),style: TextStyle(color: Colors.indigo.shade800,fontWeight: FontWeight.bold),),
+        centerTitle: true,
         leading: InkWell(
             onTap: (){
               Navigator.pop(context);
@@ -281,7 +283,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                     child: Container(
                       margin: EdgeInsets.all(3),
                       padding: EdgeInsets.only(top: 14,bottom: 14,),
-                      decoration: ColorFillContainer(Colors.indigo),
+                      decoration: ColorFillContainer(globalOrange),
                       child: const Text('Cancel',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
                     ),
                   ),
@@ -303,7 +305,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                       }
                     },
                     child: Container(
-                      decoration: ColorFillContainer(Colors.indigo),
+                      decoration: ColorFillContainer(globalOrange),
                       margin: EdgeInsets.all(3),
                       padding: EdgeInsets.only(top: 14,bottom: 14,),
                       child: const Text('Submit',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),

@@ -1,3 +1,4 @@
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import '../../Design/ColorFillContainer.dart';
 import '../../Global/global.dart';
@@ -50,7 +51,7 @@ class _EditServicePageState extends State<EditServicePage> {
                         child: Container(
                           margin: EdgeInsets.only(top: 20,bottom: 10),
                           width: double.infinity,
-                          decoration: ColorFillContainer(Colors.green),
+                          decoration: ColorFillContainer(globalOrange),
                           child: const Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Text('OK',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),textAlign: TextAlign.center,),

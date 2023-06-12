@@ -1,4 +1,5 @@
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_week/flutter_calendar_week.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -221,11 +222,11 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,''),
       body: Container(
         height: MediaQuery.of(context).size.height ,
         width: MediaQuery.of(context).size.width ,
-        color: Colors.indigo[100],
+        color: globalPageBackgroundColor,
         child: Column(
           children: [
             Container(
@@ -483,7 +484,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
                                                         mainAxisSize: MainAxisSize.min,
                                                         crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: [
-                                                          ThemeButton(),
+                                                          const ThemeButton(),
                                                           const Padding(
                                                             padding: EdgeInsets.all(10.0),
                                                             child: Text('Confirmation',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
@@ -507,9 +508,9 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
                                                             child: Container(
                                                               padding: EdgeInsets.all(15),
                                                               margin: EdgeInsets.only(top: 35),
-                                                              decoration: ColorFillContainer(Colors.lightGreen),
+                                                              decoration: ColorFillContainer(globalOrange),
                                                               width: double.infinity,
-                                                              child: Center(child: Text('OK',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold))),
+                                                              child: const Center(child: Text('OK',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold))),
                                                             ),
                                                           ),
                                                         ],
@@ -526,12 +527,12 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
                                       },
                                       child: Container(
                                         padding: EdgeInsets.all(15),
-                                        decoration: ColorFillContainer(Colors.lightGreen),
+                                        decoration: ColorFillContainer(globalOrange),
                                         width: double.infinity,
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text('BOOK APPOINTMENT NOW',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                                          children: const [
+                                            Text('BOOK APPOINTMENT NOW',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                                             Icon(Icons.arrow_forward,color: Colors.white,)
                                           ],
                                         ),
@@ -552,11 +553,11 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
                 child: Container(
                     margin: EdgeInsets.only(left: 5,right: 5,bottom: 3),
                     padding: EdgeInsets.all(15),
-                    decoration: ColorFillContainer(Colors.lightGreen),
+                    decoration: ColorFillContainer(globalOrange),
                     width: double.infinity,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: const [
                         Text('VERIFY DATA',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                         Icon(Icons.arrow_forward,color: Colors.white,)
                       ],

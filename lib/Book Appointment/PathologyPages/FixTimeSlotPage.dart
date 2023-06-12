@@ -83,7 +83,7 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,''),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,

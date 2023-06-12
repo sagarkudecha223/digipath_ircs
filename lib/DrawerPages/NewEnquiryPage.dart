@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../Design/ColorFillContainer.dart';
 import '../Design/GlobalAppBar.dart';
 import '../Design/TopPageTextViews.dart';
+import '../Global/Colors.dart';
 import '../Global/SearchAPI.dart';
 import '../Global/Toast.dart';
 import '../Global/global.dart';
@@ -40,7 +41,7 @@ class NewEnquiryPageState extends State<NewEnquiryPage> {
     
     EasyLoading.show(status: 'Loading...');
     
-    dynamic status = await searchAPI(false, 'https://smarthealth.care/getEnquiryType.shc',
+    dynamic status = await searchAPI(false, '$urlForINSC/getEnquiryType.shc',
         {'token': token}, {}, 50);
 
     if(status.toString() != 'Sorry !!! Server Error' && status.toString().isNotEmpty && status.toString() != 'Sorry !!!  Connectivity issue! Try again'){
@@ -69,7 +70,7 @@ class NewEnquiryPageState extends State<NewEnquiryPage> {
 
   void getcityList() async{
 
-    dynamic status = await searchAPI(false, 'https://smarthealth.care/getCityStateCountry.notauth',
+    dynamic status = await searchAPI(false, '$urlForINSC/getCityStateCountry.notauth',
         {'token': token}, {}, 50);
 
     EasyLoading.dismiss();
@@ -110,7 +111,7 @@ class NewEnquiryPageState extends State<NewEnquiryPage> {
 
     String value1 = values[0].toString();
 
-    dynamic status = await searchAPI(true, 'https://smarthealth.care/insertPatientEnquiry.shc',
+    dynamic status = await searchAPI(true, '$urlForINSC/insertPatientEnquiry.shc',
         { 'token' : token },
         {
           'citizenID' : localCitizenIDP,
@@ -177,7 +178,7 @@ class NewEnquiryPageState extends State<NewEnquiryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.indigo[100],
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'ENQUIRY FORM'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -185,7 +186,7 @@ class NewEnquiryPageState extends State<NewEnquiryPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TopPageTextViews('ENQUIRY FORM ','Generate your enquiry'),
+              TopPageTextViews('Generate your enquiry'),
               Container(
                 margin: EdgeInsets.fromLTRB(20, 5, 20, 10),
                 padding: EdgeInsets.all(20),
@@ -403,7 +404,7 @@ class NewEnquiryPageState extends State<NewEnquiryPage> {
                       },
                       child: Container(
                         width: double.infinity,
-                        decoration: ColorFillContainer(Colors.lightGreen),
+                        decoration: ColorFillContainer(globalOrange),
                         padding: EdgeInsets.all(10),
                         child: Text('submit'.toUpperCase(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15),textAlign: TextAlign.center,),
                       ),

@@ -1,20 +1,16 @@
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 
 class TopPageTextViews extends Container{
 
-  final String topText;
   final String bottomText;
 
-  TopPageTextViews(this.topText,this.bottomText) : super(
+  TopPageTextViews(this.bottomText) : super(
     child: Column(
       children: [
-        Text(topText.toUpperCase(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo[900]),),
-        Visibility(
-          visible: bottomText != '',
-          child: Padding(
-            padding: const EdgeInsets.only(top: 2.0, bottom: 1),
-            child: Text(bottomText,style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.indigo[900])),
-          ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+          child: Text(bottomText.toUpperCase(),style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: globalBlue,letterSpacing: 0.5)),
         )
       ],
     )

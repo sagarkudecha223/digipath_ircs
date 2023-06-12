@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
-import 'package:digipath_ircs/Design/TopPageTextViews.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
+import '../Global/Colors.dart';
 import '../ModalClass/SelectedImageModal.dart';
 import 'SecondUploadDocumentPage.dart';
 
@@ -68,9 +68,7 @@ class _AddRecordPageState extends State<AddRecordPage> {
                 toolbarWidgetColor: Colors.white,
                 initAspectRatio: CropAspectRatioPreset.original,
                 lockAspectRatio: false),
-            IOSUiSettings(
-
-            )
+            IOSUiSettings()
           ]
       );
       if (croppedFile != null) {
@@ -157,14 +155,13 @@ class _AddRecordPageState extends State<AddRecordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'add record'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.indigo.shade100,
         child: Column(
           children: [
-            TopPageTextViews('add record', ''),
             Expanded(
               flex: 1,
               child:imageSelected?
@@ -225,7 +222,7 @@ class _AddRecordPageState extends State<AddRecordPage> {
                               show1Dialog();
                           },
                           child: Container(
-                            decoration: ColorFillContainer(Colors.indigo),
+                            decoration: ColorFillContainer(globalOrange),
                             padding: EdgeInsets.only(left: 25,top: 12,right: 25,bottom: 12),
                             child: Text('ADD',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
                           ),
@@ -244,7 +241,7 @@ class _AddRecordPageState extends State<AddRecordPage> {
                     child: Container(
                       margin: const EdgeInsets.all(3),
                       padding: const EdgeInsets.only(top: 12,bottom: 12,),
-                      decoration: ColorFillContainer(Colors.indigo),
+                      decoration: ColorFillContainer(globalOrange),
                       child: const Text('Delete',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
                     ),
                   ),
@@ -254,7 +251,7 @@ class _AddRecordPageState extends State<AddRecordPage> {
                        Get.to(SecondUploadDocumentPage(filePath : selectedImageList[selectedIndex].image));
                      },
                      child: Container(
-                       decoration: ColorFillContainer(Colors.indigo),
+                       decoration: ColorFillContainer(globalOrange),
                        margin: const EdgeInsets.all(3),
                        padding: const EdgeInsets.only(top: 12,bottom: 12,),
                        child: const Text('Add to Timeline',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),

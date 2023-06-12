@@ -51,7 +51,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
 
     try{
       Response response = await get(
-        Uri.parse('https://smarthealth.care/getPatientDocument_smarthealth_new_v2.shc?citizenid=$localCitizenIDP&careProfessionalID=9380'),
+        Uri.parse('$urlForIN/getPatientDocument_smarthealth_new_v2.shc?citizenid=$localCitizenIDP&careProfessionalID=9380'),
         headers: {
           'token' : 'eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg'
         }
@@ -114,7 +114,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
             String imageString = documentList[i].imageString.toString();
             Response response = await get(
                 Uri.parse(
-                    'https://smarthealth.care/getPatientDocumentFile_ByteArray.shc?documentName=$imageString'),
+                    '$urlForIN/getPatientDocumentFile_ByteArray.shc?documentName=$imageString'),
                 headers: {
                   'token': 'eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg'
                 }
@@ -166,7 +166,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   void uploadDocument() async {
 
     Map<String, String> headers = { "token": token};
-    final uri = Uri.parse('https://smarthealth.care/uploadPatientDocument_smarthealth.shc');
+    final uri = Uri.parse('$urlForIN/uploadPatientDocument_smarthealth.shc');
 
     var request = http.MultipartRequest('POST', uri)..files.add(await http.MultipartFile.fromPath('_image1', _image!.path));
     request.headers.addAll(headers);
@@ -412,19 +412,20 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          backgroundColor: Colors.indigo[100],
+          backgroundColor: const Color(0xFF254D99),
           leading: InkWell(
               onTap: (){
-                Get.offAll(
-                  HomePage(),
-                );
+                FocusManager.instance.primaryFocus?.unfocus();
+                Get.offAll(HomePage());
               },
-              child: Icon(Icons.arrow_back_rounded,color: Colors.indigo[900])),
+              child: Icon(Icons.arrow_back_rounded,color: Colors.white)),
+          title: Text('UPLOAD DOCUMENTS'.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+          centerTitle: true,
           actions: [
             IconButton(
               icon: Icon(
                 Icons.home,
-                color: Colors.indigo[900],
+                color: Colors.white,
               ),
               onPressed: () {
                 Get.offAll(
@@ -441,7 +442,6 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('UPLOAD DOCUMENTS', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo[900]),),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

@@ -56,7 +56,7 @@ class _SwitchUserPageState extends State<SwitchUserPage> {
 
     try{
 
-      Response response = await post( Uri.parse('https://smarthealth.care/mobileNumberwisePatientList.notauth?mobile=$localMobileNum'),
+      Response response = await post( Uri.parse('$urlForIN/mobileNumberwisePatientList.notauth?mobile=$localMobileNum'),
         headers: {
           "token" : token
         }
@@ -99,14 +99,14 @@ class _SwitchUserPageState extends State<SwitchUserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'Switch User'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.indigo.shade100,
         child: Column(
           children: [
-            TopPageTextViews('Switch User','Registered with mobile No: $localMobileNum'),
+            TopPageTextViews('Registered with mobile No: $localMobileNum'),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 20),

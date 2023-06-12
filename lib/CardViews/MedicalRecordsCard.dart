@@ -62,7 +62,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              'https://medicodb.com/getPatientReportDataForFundoscopyAndroid.app?EncounterServiceIDF=$EncounterServiceIDP'),
+              'https://medicodb.in/getPatientReportDataForFundoscopyAndroid.app?EncounterServiceIDF=$EncounterServiceIDP'),
           headers: {
             'u': u,
             'p': p,
@@ -86,7 +86,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
             }
 
             openFile(
-              url: 'https://medicodb.com/downloadFundoscopyReportForAndroid.app?PatientReportIDP=$RightPatientReportIDP&PatientReportIDPLeft=$LeftPatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&CitizenIDF=$CitizenIDF&reportType=$imageType',
+              url: 'https://medicodb.in/downloadFundoscopyReportForAndroid.app?PatientReportIDP=$RightPatientReportIDP&PatientReportIDPLeft=$LeftPatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&CitizenIDF=$CitizenIDF&reportType=$imageType',
               fileName:'$EncounterServiceIDP.pdf',
             );
 
@@ -116,7 +116,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              'https://medicodb.com/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
+              'https://medicodb.in/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
           headers: {
             'u': u,
             'p': p,
@@ -140,7 +140,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
               }
 
               openFile(
-                url: 'https://medicodb.com/getECGReportPrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF',
+                url: 'https://medicodb.in/getECGReportPrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF',
                 fileName:'$EncounterServiceIDP.pdf',
               );
             }
@@ -176,7 +176,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              'https://medicodb.com/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
+              'https://medicodb.in/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
           headers: {
             'u': u,
             'p': p,
@@ -199,7 +199,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
                 PatientReportIDP = statusinfo[i]["PatientReportIDP"].toString();
               }
               openFile(
-                url: 'https://medicodb.com/getRadiologyReportAndImagePrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF&selPerPage=1',
+                url: 'https://medicodb.in/getRadiologyReportAndImagePrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF&selPerPage=1',
                 fileName:'$EncounterServiceIDP.pdf',
               );
             }
@@ -345,7 +345,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
 
                 EasyLoading.show(status: 'Loading...'),
                 openFile(
-                  url: 'https://medicodb.com/pathologyReportForAndroid.app?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP',
+                  url: 'https://medicodb.in/pathologyReportForAndroid.app?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP',
                   fileName:'$EncounterServiceIDP.pdf',
                 ),
 
@@ -414,7 +414,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
         else{
           EasyLoading.show(status: 'Loading...'),
           openFile(
-            url: 'https://medicodb.com/getScanDocReportAndroid.do?patientDocumentIDP=$PatientDocumentIDP',
+            url: 'https://medicodb.in/getScanDocReportAndroid.do?patientDocumentIDP=$PatientDocumentIDP',
             fileName:'$PatientDocumentIDP.pdf',
           ),
         }

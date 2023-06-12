@@ -1,3 +1,4 @@
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
@@ -138,14 +139,14 @@ class _DoctorListPageState extends State<DoctorListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'Doctor List'),
       body: Container(
         height: MediaQuery.of(context).size.height ,
         width: MediaQuery.of(context).size.width ,
         color: Colors.indigo[100],
         child: Column(
           children: [
-            TopPageTextViews('Doctor List','select doctor from the listing below'),
+            TopPageTextViews('Select doctor from the listing below'),
             noDataText?Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center) :
             Flexible(
               child: Container(
@@ -218,7 +219,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
                                       child: Container(
                                         margin: EdgeInsets.only(top: 5,bottom: 5),
                                         width: double.infinity,
-                                        decoration: ColorFillContainer(Colors.lightGreen),
+                                        decoration: ColorFillContainer(globalOrange),
                                         child: const Padding(
                                           padding: EdgeInsets.all(10.0),
                                           child: Center(

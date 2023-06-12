@@ -1,4 +1,5 @@
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import '../../Design/ColorFillContainer.dart';
@@ -27,7 +28,7 @@ class _PathologyPageState extends State<PathologyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,''),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -79,7 +80,7 @@ class _PathologyPageState extends State<PathologyPage> {
                       width: double.infinity,
                       margin: EdgeInsets.all(15),
                       padding: EdgeInsets.all(5),
-                      decoration: ColorFillContainer(Colors.green.shade500),
+                      decoration: ColorFillContainer(globalOrange),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text('NEXT',textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),

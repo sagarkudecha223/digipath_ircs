@@ -1,4 +1,5 @@
 import 'package:digipath_ircs/Book%20Appointment/DoctorListPage.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
@@ -125,7 +126,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
 
     words = {
       searchText: HighlightedWord(
-        textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 14,fontFamily: 'Ageo'),
+        textStyle: TextStyle(color: Colors.red.shade500,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: 'Ageo'),
       ),
     };
 
@@ -235,7 +236,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
 
   Padding textWithPadding(String text){
     return Padding(padding: EdgeInsets.only(top: 20,bottom: 2,left: 5),
-    child: Text(text, style: TextStyle(fontSize: 14,color: Colors.grey.shade600),),);
+    child: Text(text, style: TextStyle(fontSize: 14,color: Colors.grey.shade600,fontWeight: FontWeight.w500),),);
   }
 
   InputDecoration textFieldDecoration(String hintText){
@@ -275,7 +276,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
         decoration: ColorFillContainer(Colors.grey.shade300),
         width: double.infinity,
         padding: EdgeInsets.all(15),
-        child: Text(text,style: TextStyle(fontWeight: FontWeight.w600),));
+        child: Text(text,style: TextStyle(fontWeight: FontWeight.w600,color: Colors.grey.shade800),));
   }
 
   @override
@@ -288,7 +289,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'Book Appointment'),
       body: Container(
         height: MediaQuery.of(context).size.height ,
         width: MediaQuery.of(context).size.width ,
@@ -296,7 +297,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TopPageTextViews('Book Appointment','Search to Book Appointment'),
+              TopPageTextViews('Search to Book Appointment'),
               Container(
                 padding: const EdgeInsets.only(left: 20,right: 20),
                 margin: const EdgeInsets.only(left: 15,right: 15,top: 10),
@@ -434,67 +435,67 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                             });
                           },
                           child: textContainer(specialityTypeText)),
-                      textWithPadding('HOSPITAL'),
-                      hospitalColumn? Column(
-                        children: [
-                          TextField(
-                            decoration: textFieldDecoration('Search Hospital'),
-                            controller: searchFilterController,
-                            onChanged: applyFilter,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: 200,
-                            child: noDataBool? Column(
-                              children: [
-                                Lottie.asset('assets/JSON/MainemptySearch.json',repeat: true,height: 150,width: 150),
-                                Text(noDataText,style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15))
-                              ],
-                            ) : ListView.builder(
-                                itemCount:filterColumn? filterList.length : hospitalList.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    visualDensity: const VisualDensity(vertical: -4),
-                                    onTap: (){
-                                      hospitalText = filterColumn? filterList[index].name : hospitalList[index].name;
-                                      careProviderID = filterColumn? filterList[index].id : hospitalList[index].id;
-                                      setState(() {
-                                        filterColumn = false;
-                                        hospitalColumn = false;
-                                      });
-                                    },
-                                    contentPadding :EdgeInsets.zero,
-                                    title: Container(
-                                        width: double.infinity,
-                                        padding: EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              width: 1,
-                                              color: Colors.grey
-                                          ),
-                                          borderRadius: BorderRadius.circular(8),),
-                                        child: TextHighlight(text:filterColumn? filterList[index].name : hospitalList[index].name,words: words,
-                                            textStyle: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w500,fontSize: 15,fontFamily: 'Ageo'))),
-                                  );
-                                }
-                            ),
-                          )
-                        ],
-                      ): InkWell(
-                          onTap: (){
-                            setState(() {
-                              words = {};
-                              searchFilterController.clear();
-                              searchCityColumn = false;
-                              specialityTypeColumn = false;
-                              hospitalColumn = true;
-                              filterColumn = false;
-                              noDataBool = false;
-                              doctorColumn = false;
-                            });
-                          },
-                          child: textContainer(hospitalText)),
+                      // textWithPadding('HOSPITAL'),
+                      // hospitalColumn? Column(
+                      //   children: [
+                      //     TextField(
+                      //       decoration: textFieldDecoration('Search Hospital'),
+                      //       controller: searchFilterController,
+                      //       onChanged: applyFilter,
+                      //     ),
+                      //     Container(
+                      //       width: double.infinity,
+                      //       height: 200,
+                      //       child: noDataBool? Column(
+                      //         children: [
+                      //           Lottie.asset('assets/JSON/MainemptySearch.json',repeat: true,height: 150,width: 150),
+                      //           Text(noDataText,style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15))
+                      //         ],
+                      //       ) : ListView.builder(
+                      //           itemCount:filterColumn? filterList.length : hospitalList.length,
+                      //           itemBuilder: (context, index) {
+                      //             return ListTile(
+                      //               visualDensity: const VisualDensity(vertical: -4),
+                      //               onTap: (){
+                      //                 hospitalText = filterColumn? filterList[index].name : hospitalList[index].name;
+                      //                 careProviderID = filterColumn? filterList[index].id : hospitalList[index].id;
+                      //                 setState(() {
+                      //                   filterColumn = false;
+                      //                   hospitalColumn = false;
+                      //                 });
+                      //               },
+                      //               contentPadding :EdgeInsets.zero,
+                      //               title: Container(
+                      //                   width: double.infinity,
+                      //                   padding: EdgeInsets.all(5),
+                      //                   decoration: BoxDecoration(
+                      //                     color: Colors.white,
+                      //                     border: Border.all(
+                      //                         width: 1,
+                      //                         color: Colors.grey
+                      //                     ),
+                      //                     borderRadius: BorderRadius.circular(8),),
+                      //                   child: TextHighlight(text:filterColumn? filterList[index].name : hospitalList[index].name,words: words,
+                      //                       textStyle: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.w500,fontSize: 15,fontFamily: 'Ageo'))),
+                      //             );
+                      //           }
+                      //       ),
+                      //     )
+                      //   ],
+                      // ): InkWell(
+                      //     onTap: (){
+                      //       setState(() {
+                      //         words = {};
+                      //         searchFilterController.clear();
+                      //         searchCityColumn = false;
+                      //         specialityTypeColumn = false;
+                      //         hospitalColumn = true;
+                      //         filterColumn = false;
+                      //         noDataBool = false;
+                      //         doctorColumn = false;
+                      //       });
+                      //     },
+                      //     child: textContainer(hospitalText)),
                       textWithPadding('DOCTOR'),
                       doctorColumn? Column(
                       children: [
@@ -562,12 +563,12 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                         child: Container(
                           margin: EdgeInsets.only(top: 20),
                           padding: EdgeInsets.all(15),
-                          decoration: ColorFillContainer(Colors.lightGreen),
+                          decoration: ColorFillContainer(globalOrange),
                           width: double.infinity,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Find Doctor',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                              children: const [
+                                Text('Find Appointment',style: TextStyle(color: Colors.white,fontFamily: 'Ageo_Bold',fontSize: 16),),
                                 Icon(Icons.arrow_forward,color: Colors.white,)
                               ],
                             )
@@ -594,12 +595,12 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                         child: Container(
                           margin: EdgeInsets.only(top: 20,bottom: 20),
                           padding: EdgeInsets.all(15),
-                          decoration: ColorFillContainer(Colors.lightGreen),
+                          decoration: ColorFillContainer(globalOrange),
                           width: double.infinity,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Reset',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                              children: const [
+                                Text('Reset',style: TextStyle(color: Colors.white,fontFamily: 'Ageo_Bold',fontSize: 16),),
                                 Icon(Icons.refresh,color: Colors.white,)
                               ],
                             )

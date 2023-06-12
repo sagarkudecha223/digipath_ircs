@@ -113,6 +113,10 @@ flutter:
     - family: Ageo
       fonts:
         - asset: assets/fonts/Ageo.otf
+
+    - family: Ageo_Bold
+      fonts:
+        - asset: assets/fonts/Ageo-Bold.otf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

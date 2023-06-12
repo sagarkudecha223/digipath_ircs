@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:digipath_ircs/Design/ContainerDecoration.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart';
@@ -36,7 +37,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   void getCurrentPrescription() async {
     final response = await http.get(
         Uri.parse(
-            'https://smarthealth.care/citizenCurrentPrescription.shc?CitizenID=1081787'),
+            '$urlForINSC/citizenCurrentPrescription.shc?CitizenID=1081787'),
         headers: {
           "token":
           "eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg"
@@ -54,7 +55,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   void getSubPreviousPrescription() async {
     final response = await http.get(
         Uri.parse(
-            'https://smarthealth.care/displaySubTablednvPreviousPrescription.shc?EncounterID=1339530'),
+            '$urlForINSC/displaySubTablednvPreviousPrescription.shc?EncounterID=1339530'),
         headers: {
           "token":
           "eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg"
@@ -76,7 +77,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'Prescription'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -84,9 +85,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TopPageTextViews('Prescription', 'View Current Prescription'),
-            serching? Text("Searching...")
-                : Container(
+            TopPageTextViews('View Current Prescription'),
+            serching? const Text("Searching...")
+                :citizenCurrentPrescription.data?.length !=0 ?Container(
               margin: EdgeInsets.fromLTRB(20, 25, 20, 5),
               decoration: ContainerDecoration(15),
               child:Container(
@@ -189,9 +190,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                   ],
                 ),
               ),
-            ),
+            ) : Text('No Data Found'),
             serching? SizedBox()
-                : Container(
+                : citizenCurrentPrescription.data?.length !=0 ?Container(
               margin: EdgeInsets.fromLTRB(20, 5, 20, 25),
               padding: EdgeInsets.fromLTRB(0, 0, 0, 25),
               decoration: ContainerDecoration(15),
@@ -235,7 +236,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                   EasyLoading.show(status: 'Loading...');
                                   openFile(
                                     url:
-                                    'https://smarthealth.care/OpenPrescriptionContinuedWithInstruction_citizen.do?ptype=2&ptype=1&frmIsLetterHeadOption=0&'
+                                    '$urlForINSC/OpenPrescriptionContinuedWithInstruction_citizen.do?ptype=2&ptype=1&frmIsLetterHeadOption=0&'
                                         'frmIsGenericReportOption=false&frmLanguage=0&frmIsWithInstruction=false&frmCitizenID=1081787',
                                     fileName: 'prescription.pdf',
                                   );
@@ -447,7 +448,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                           subPreviousPrescription
                                               .data[index]
                                               .dosageInfoEng,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 16,
                                             color: Colors.black,
                                           ),
@@ -465,7 +466,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                   ],
                 ),
               ),
-            ),
+            ) : SizedBox(height: 0,width: 0,),
           ],
         ),
       ),

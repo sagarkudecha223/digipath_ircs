@@ -4,7 +4,8 @@ import '../ModalClass/PathologyPackageModal.dart';
 import '../ModalClass/PathologyServiceModal.dart';
 
 String urlForCOM = 'https://medicodb.com';
-String urlForIN = 'https://smarthealth.care';
+String urlForIN = 'https://medicodb.in';
+String urlForINSC = 'https://smarthealth.care';
 bool loggedIn = false;
 String internetStatus = 'ConnectivityResult.none';
 String localCitizenIDP = '';

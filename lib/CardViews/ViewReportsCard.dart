@@ -1,3 +1,4 @@
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:open_file_plus/open_file_plus.dart';
@@ -87,7 +88,7 @@ class _ViewReportsCardState extends State<ViewReportsCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Date: '+  widget.viewReportModal.OnSetDate.toString(),textScaleFactor: 1.0,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16.0),),
-                    Icon(Reported?Icons.download:Icons.cached_rounded, color: Colors.green,),
+                    Icon(Reported?Icons.download:Icons.cached_rounded, color: globalOrange,),
                   ],),
               ),
               Padding(

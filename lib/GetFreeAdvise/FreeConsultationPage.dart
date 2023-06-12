@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
 import 'package:digipath_ircs/Design/TopPageTextViews.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
@@ -148,7 +149,7 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'QUESTIONNAIRE'),
       body: Container(
         color: Colors.indigo.shade100,
         child: Column(
@@ -158,7 +159,7 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    TopPageTextViews('QUESTIONNAIRE','THALASSEMIA CARE'),
+                    TopPageTextViews('THALASSEMIA CARE'),
                     Container(
                       padding: EdgeInsets.all(20),
                       margin: EdgeInsets.only(left: 20,right: 20,bottom: 5),
@@ -344,7 +345,7 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
               visible: WidgetsBinding.instance.window.viewInsets.bottom == 0.0,
               child: Container(
                 width: double.infinity,
-                decoration: ColorFillContainer(Colors.lightGreen),
+                decoration: ColorFillContainer(globalOrange),
                 padding: EdgeInsets.all(12),
                 margin: EdgeInsets.only(left: 20,right: 20,bottom: 5,top: 2),
                 child: Text('submit'.toUpperCase(),style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white,fontSize: 15),textAlign: TextAlign.center,),

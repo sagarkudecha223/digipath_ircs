@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
+import 'package:digipath_ircs/Global/global.dart';
 import 'package:dio/dio.dart' as foo;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -85,14 +87,14 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'Pending Payment List'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.indigo.shade100,
         child: Column(
           children: [
-            TopPageTextViews('Pending Payment List','pay your pending payment'),
+            TopPageTextViews('pay your pending payment...'.toUpperCase()),
             noDataText?Container(
             width: double.infinity,
             margin: const EdgeInsets.all(25),
@@ -116,7 +118,14 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
                       padding: const EdgeInsets.all(15),
                       margin: const EdgeInsets.only(left: 20,right: 20,bottom: 3,top: 5),
                       width: double.infinity,
-                      decoration: ColorFillContainer(Colors.white),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 1.5,
+                            color: globalBlue
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white
+                      ),
                       child: Row(
                         children: [
                           Expanded(
@@ -137,7 +146,7 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
                               String patientProfileID = paymentList[index].patientProfileID;
                               EasyLoading.show(status: 'Loading...');
                               openFile(
-                                url: 'https://smarthealth.care/generatePatientVoucherOPD_android.do?patientProfileID=$patientProfileID&episodeID=$episodeID&loginID=10834&withStationary=YES',
+                                url: '$urlForIN/generatePatientVoucherOPD_android.do?patientProfileID=$patientProfileID&episodeID=$episodeID&loginID=10834&withStationary=YES',
                                 fileName:'$patientProfileID.pdf',
                               );
                             },

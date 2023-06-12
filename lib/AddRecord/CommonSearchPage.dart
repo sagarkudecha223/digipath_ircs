@@ -157,7 +157,7 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  GlobalAppBar(context),
+      appBar:  GlobalAppBar(context,searchType),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -165,7 +165,6 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
         color: Colors.indigo.shade100,
         child: Column(
           children: [
-            TopPageTextViews(searchType, ''),
             TextField(
               autofocus: true,
               controller: _controller,

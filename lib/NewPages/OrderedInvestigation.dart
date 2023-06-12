@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
@@ -34,7 +35,7 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
   void getPatientOrderSetbyCitizen() async {
     final response = await http.get(
         Uri.parse(
-            'https://smarthealth.care/getPatientOrderSet_byCitizen.shc?citizenID=1081787'),
+            '$urlForINSC/getPatientOrderSet_byCitizen.shc?citizenID=1081787'),
         headers: {
           "token":
           "eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg"
@@ -56,7 +57,7 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'Ordered Investigation'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -64,12 +65,11 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TopPageTextViews(
-                'Ordered Investigation', 'List of Ordered Investigation'),
+            TopPageTextViews('List of Ordered Investigation'),
             if (serching)
               const Text('Searching')
             else
-              Container(
+              patientOrderSetbyCitizeModel.data.length !=0 ?Container(
                 margin: EdgeInsets.fromLTRB(20, 25, 20, 5),
                 child: ListView.builder(
                   shrinkWrap: true,
@@ -231,7 +231,7 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
                                     EasyLoading.show(status: 'Loading...'),
                                     openFile(
                                       url:
-                                      'https://smarthealth.care/getPatientOrderSetReport_SmartHealthByEncounterID.do?ptype=0&txtStationary=false&txtID=1339530&frmUserName=Rajendra  Vaniya',
+                                      '$urlForIN/getPatientOrderSetReport_SmartHealthByEncounterID.do?ptype=0&txtStationary=false&txtID=1339530&frmUserName=Rajendra  Vaniya',
                                       fileName: '${patientOrderSetbyCitizeModel.data[index].careProviderIDP}.pdf',
                                     )
                                   },
@@ -244,7 +244,7 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
                     );
                   },
                 ),
-              ),
+              ) : const Text('No Data Found'),
           ],
         ),
       ),

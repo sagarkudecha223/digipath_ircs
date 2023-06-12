@@ -1,5 +1,6 @@
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
@@ -127,14 +128,14 @@ class _PathologyServicePageState extends State<PathologyServicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,'Service & package'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.indigo.shade100,
         child: Column(
           children: [
-            TopPageTextViews('Select Service & package','Select service & package here'),
+            TopPageTextViews('Select service & package here'),
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -167,7 +168,7 @@ class _PathologyServicePageState extends State<PathologyServicePage> {
                             },
                             child: Container(
                               padding: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
-                              decoration: ColorFillContainer(Colors.green.shade500),
+                              decoration: ColorFillContainer(globalOrange),
                               child: Row(
                                 children: const [
                                   Text('NEXT',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),),

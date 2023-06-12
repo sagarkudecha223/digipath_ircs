@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/Toast.dart';
 import 'package:digipath_ircs/HomePage.dart';
 import 'package:flutter/material.dart';
@@ -192,7 +193,7 @@ class _ConfirmTimeSlotPageState extends State<ConfirmTimeSlotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context,''),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -522,7 +523,7 @@ class _ConfirmTimeSlotPageState extends State<ConfirmTimeSlotPage> {
                                           ],
                                         ),
                                         RadioListTile(
-                                          activeColor: Colors.green,
+                                          activeColor: globalOrange,
                                           visualDensity: const VisualDensity(
                                             horizontal: VisualDensity.minimumDensity,
                                             vertical: VisualDensity.minimumDensity,
@@ -545,7 +546,7 @@ class _ConfirmTimeSlotPageState extends State<ConfirmTimeSlotPage> {
                                           ),
                                         ),
                                         RadioListTile(
-                                          activeColor: Colors.green,
+                                          activeColor: globalOrange,
                                           visualDensity: const VisualDensity(
                                             horizontal: VisualDensity.minimumDensity,
                                             vertical: VisualDensity.minimumDensity,
@@ -570,7 +571,7 @@ class _ConfirmTimeSlotPageState extends State<ConfirmTimeSlotPage> {
                                           },
                                           child: Container(
                                             width: double.infinity,
-                                            decoration: ColorFillContainer(Colors.green),
+                                            decoration: ColorFillContainer(globalOrange),
                                             child: const Padding(
                                               padding: EdgeInsets.all(10.0),
                                               child: Text('Submit',textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
@@ -591,7 +592,7 @@ class _ConfirmTimeSlotPageState extends State<ConfirmTimeSlotPage> {
                   },
                   child: Container(
                     padding: const EdgeInsets.all(10),
-                    decoration: ColorFillContainer(Colors.green.shade500),
+                    decoration: ColorFillContainer(globalOrange),
                     child: const Center(
                       child: Text('Proceed To Pay',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w500),),
                     ),

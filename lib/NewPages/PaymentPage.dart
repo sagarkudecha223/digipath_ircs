@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/Toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -63,7 +64,6 @@ class _PaymentPageState extends State<PaymentPage> {
           noDataText = true;
           noDataTextString = 'No Pending Payment Found';
         }
-
         setState(() {
 
         });
@@ -77,20 +77,21 @@ class _PaymentPageState extends State<PaymentPage> {
       EasyLoading.dismiss();
       showToast('Sorry !!! Server error');
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context),
+      appBar: GlobalAppBar(context, 'Pending Payment List'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo.shade100,
+        color: globalPageBackgroundColor,
         child: Column(
           children: [
-            TopPageTextViews('Pending Payment List','pay your pending payment'),
+            SizedBox(height: 5,),
+            TopPageTextViews('pay your pending payment',),
+            SizedBox(height: 5,),
             noDataText?Container(
               width: double.infinity,
               margin: EdgeInsets.all(25),
@@ -137,7 +138,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                     Get.to(WebViewPage(url: url,));
                                   },
                                   child: Container(
-                                    decoration: ColorFillContainer(Colors.indigo.shade500),
+                                    decoration: ColorFillContainer(const Color(0xFFF7AB39)),
                                     padding : EdgeInsets.all(15),
                                     child: const Text('PAY',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 15),),
                                   ),
