@@ -96,7 +96,7 @@ class _AddRecordPageState extends State<AddRecordPage> {
             builder: (BuildContext context) {
               return Dialog(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                insetPadding: EdgeInsets.all(20),
+                insetPadding: const EdgeInsets.all(20),
                 elevation: 16,
                 child : Column(
                   mainAxisSize: MainAxisSize.min,
@@ -159,14 +159,14 @@ class _AddRecordPageState extends State<AddRecordPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo.shade100,
+        color: globalPageBackgroundColor,
         child: Column(
           children: [
             Expanded(
               flex: 1,
               child:imageSelected?
                   Container(
-                    margin: const EdgeInsets.only(left: 20,right: 20,top: 5,bottom: 5),
+                    margin: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 20),
                     child: GridView.builder(
                        itemCount: selectedImageList.length,
                         shrinkWrap: true,
@@ -223,42 +223,45 @@ class _AddRecordPageState extends State<AddRecordPage> {
                           },
                           child: Container(
                             decoration: ColorFillContainer(globalOrange),
-                            padding: EdgeInsets.only(left: 25,top: 12,right: 25,bottom: 12),
-                            child: Text('ADD',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                            padding: const EdgeInsets.only(left: 25,top: 12,right: 25,bottom: 12),
+                            child: const Text('ADD',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 16),),
                           ),
                         ),
-                        SizedBox(height: 10,),
-                        Text('You have no scan images',style: TextStyle(color: Colors.grey.shade800,fontWeight: FontWeight.bold),)
+                        const SizedBox(height: 10,),
+                        Text('You have no scan images',style: TextStyle(color: globalBlue,fontWeight: FontWeight.bold,fontSize: 16),)
                       ],
               ),
             ),
             Visibility(
               visible: selectedIndex ==100? false : true,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      margin: const EdgeInsets.all(3),
-                      padding: const EdgeInsets.only(top: 12,bottom: 12,),
-                      decoration: ColorFillContainer(globalOrange),
-                      child: const Text('Delete',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
-                    ),
-                  ),
-                  Expanded(
-                   child: InkWell(
-                     onTap: (){
-                       Get.to(SecondUploadDocumentPage(filePath : selectedImageList[selectedIndex].image));
-                     },
-                     child: Container(
-                       decoration: ColorFillContainer(globalOrange),
-                       margin: const EdgeInsets.all(3),
-                       padding: const EdgeInsets.only(top: 12,bottom: 12,),
-                       child: const Text('Add to Timeline',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20,right: 20,bottom: 3),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        margin: const EdgeInsets.all(3),
+                        padding: const EdgeInsets.only(top: 12,bottom: 12,),
+                        decoration: ColorFillContainer(globalOrange),
+                        child: const Text('Delete',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
                       ),
-                   ),
-                  )
-                ],
+                    ),
+                    Expanded(
+                     child: InkWell(
+                       onTap: (){
+                         Get.to(SecondUploadDocumentPage(filePath : selectedImageList[selectedIndex].image));
+                       },
+                       child: Container(
+                         decoration: ColorFillContainer(globalOrange),
+                         margin: const EdgeInsets.all(3),
+                         padding: const EdgeInsets.only(top: 12,bottom: 12,),
+                         child: const Text('Add to Timeline',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
+                        ),
+                     ),
+                    )
+                  ],
+                ),
               ),
             )
           ],

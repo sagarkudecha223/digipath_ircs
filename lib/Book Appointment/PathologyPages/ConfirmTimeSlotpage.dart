@@ -6,6 +6,7 @@ import 'package:digipath_ircs/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
+import '../../Design/BorderContainer.dart';
 import '../../Design/ColorFillContainer.dart';
 import '../../Design/ContainerDecoration.dart';
 import '../../Global/SearchAPI.dart';
@@ -123,7 +124,7 @@ class _ConfirmTimeSlotPageState extends State<ConfirmTimeSlotPage> {
     }
     print('Start Date...$slotEndTime');
 
-    dynamic status = await searchAPI(true ,'$urlForIN/insertAllInOnePathologyRegistrationForAndroid.do?patientProfileIDF&citizenIDF=$localCitizenIDP&'
+    dynamic status = await searchAPI(true ,'$urlForINSC/insertAllInOnePathologyRegistrationForAndroid.do?patientProfileIDF&citizenIDF=$localCitizenIDP&'
         'CareProviderIDP=$careProviderID&UserLoginIDP=$localUserLoginIDP&ReferenceDoctorIDP&TreatingDoctorIDP=$TreatingDoctorIDP&Remarks&'
         'serviceIDP=$removedBrackets&collectionType=$collectionInt&slotStartTime=$slotStartTime&slotEndTime=$slotEndTime&collectionTime=$collectionTime',
         {},{}, 35);
@@ -193,18 +194,20 @@ class _ConfirmTimeSlotPageState extends State<ConfirmTimeSlotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context,''),
+      appBar: GlobalAppBar(context,'book appointment'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo.shade100,
+        color: globalPageBackgroundColor,
         child: Container(
           padding: const EdgeInsets.only(bottom: 10,top: 10,right: 20,left: 20),
-          margin: const EdgeInsets.only(bottom: 10,top: 5,right: 20,left: 20),
-          decoration: ContainerDecoration(15),
+          margin: const EdgeInsets.only(bottom: 10,top: 15,right: 20,left: 20),
+          decoration: BorderContainer(Colors.white,globalBlue),
           child: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
+                SizedBox(height: 15,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

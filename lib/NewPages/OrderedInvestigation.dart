@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import '../Design/BorderContainer.dart';
 import '../Design/ContainerDecoration.dart';
 import '../Design/TopPageTextViews.dart';
 import '../Global/Toast.dart';
@@ -22,7 +24,7 @@ class OrderedInvestigation extends StatefulWidget {
 class OrderedInvestigationState extends State<OrderedInvestigation> {
   late PatientOrderSetbyCitizeModel patientOrderSetbyCitizeModel;
 
-  bool serching = true;
+  bool searching = true;
 
   @override
   void initState() {
@@ -37,8 +39,7 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
         Uri.parse(
             '$urlForINSC/getPatientOrderSet_byCitizen.shc?citizenID=1081787'),
         headers: {
-          "token":
-          "eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg"
+          "token": token
         });
 
     if (response.statusCode == 200) {
@@ -46,7 +47,7 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
           PatientOrderSetbyCitizeModel.fromJson(jsonDecode(response.body));
       EasyLoading.dismiss();
       setState(() {
-        serching = false;
+        searching = false;
       });
     } else {
       EasyLoading.dismiss();
@@ -61,22 +62,22 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo[100],
+        color: globalPageBackgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TopPageTextViews('List of Ordered Investigation'),
-            if (serching)
+            if (searching)
               const Text('Searching')
             else
               patientOrderSetbyCitizeModel.data.length !=0 ?Container(
-                margin: EdgeInsets.fromLTRB(20, 25, 20, 5),
+                margin: const EdgeInsets.fromLTRB(20, 15, 20, 5),
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: patientOrderSetbyCitizeModel.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      decoration: ContainerDecoration(15),
+                      decoration: BorderContainer(Colors.white,globalBlue),
                       child: Container(
                         padding: EdgeInsets.fromLTRB(25, 15, 25, 15),
                         child: Column(
@@ -191,6 +192,7 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
                                     itemBuilder: (BuildContext context,
                                         int insideindex) {
                                       return Container(
+                                        padding: EdgeInsets.only(bottom: 3),
                                         child: Row(
                                           crossAxisAlignment:
                                           CrossAxisAlignment.center,
@@ -226,7 +228,7 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
                                   ),
                                 ),
                                 InkWell(
-                                  child: Icon(Icons.download),
+                                  child: Icon(Icons.download,color: globalBlue,),
                                   onTap: () => {
                                     EasyLoading.show(status: 'Loading...'),
                                     openFile(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import '../Design/BorderContainer.dart';
 import '../Design/ColorFillContainer.dart';
 import '../Design/GlobalAppBar.dart';
 import '../Design/TopPageTextViews.dart';
@@ -182,7 +183,7 @@ class NewEnquiryPageState extends State<NewEnquiryPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo[100],
+        color: globalPageBackgroundColor,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -190,7 +191,7 @@ class NewEnquiryPageState extends State<NewEnquiryPage> {
               Container(
                 margin: EdgeInsets.fromLTRB(20, 5, 20, 10),
                 padding: EdgeInsets.all(20),
-                decoration: ColorFillContainer(Colors.white),
+                decoration: BorderContainer(Colors.white,globalBlue),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -146,7 +146,7 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
                               String patientProfileID = paymentList[index].patientProfileID;
                               EasyLoading.show(status: 'Loading...');
                               openFile(
-                                url: '$urlForIN/generatePatientVoucherOPD_android.do?patientProfileID=$patientProfileID&episodeID=$episodeID&loginID=10834&withStationary=YES',
+                                url: '$urlForINSC/generatePatientVoucherOPD_android.do?patientProfileID=$patientProfileID&episodeID=$episodeID&loginID=10834&withStationary=YES',
                                 fileName:'$patientProfileID.pdf',
                               );
                             },

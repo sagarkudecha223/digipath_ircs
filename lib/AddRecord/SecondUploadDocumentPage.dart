@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
+import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/Toast.dart';
 import 'package:digipath_ircs/Global/global.dart';
@@ -12,6 +13,7 @@ import 'package:get/route_manager.dart';
 import 'package:get/utils.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import '../Design/BorderContainer.dart';
 import 'CommonSearchPage.dart';
 
 class SecondUploadDocumentPage extends StatefulWidget {
@@ -27,7 +29,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
 
   _SecondUploadDocumentPageState(this.filePath);
 
- late String current_date ='';
+ late String currentDate ='';
  String selectedService ='';
  String serviceID='';
  String selectedProfessional ='';
@@ -40,8 +42,8 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
   @override
   void initState() {
     super.initState();
-    current_date = DateFormat('dd-MMM-yyyy  kk:mm:ss').format(DateTime.now());
-    print(current_date);
+    currentDate = DateFormat('dd-MMM-yyyy  kk:mm:ss').format(DateTime.now());
+    print(currentDate);
     compressImage(filePath);
   }
 
@@ -63,7 +65,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
 
   }
 
-   void getBase64FormateFile(String path) {
+  void getBase64FormateFile(String path) {
      File file = File(path);
      print('File is = $file');
      List<int> fileInByte = file.readAsBytesSync();
@@ -83,7 +85,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
         },
         body: {
           'CitizenIDF': localCitizenIDP,
-          'DocumentDate': current_date,
+          'DocumentDate': currentDate,
           'ServiceIDF': serviceID,
           'SeerviceName': selectedService,
           'CareProfessionalIDF': professionalID,
@@ -124,12 +126,12 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
   }
 
   Padding commonDivider(){
-    return const Padding(
-      padding: EdgeInsets.only(top: 6.0,bottom: 25),
+    return Padding(
+      padding: const EdgeInsets.only(top: 6.0,bottom: 25),
       child: Divider(
         height: 1,
         thickness: 1.5,
-        color: Colors.grey,
+        color: globalBlue,
       ),
     );
   }
@@ -137,19 +139,12 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Upload Document'.toUpperCase(),style: TextStyle(color: Colors.indigo.shade800,fontWeight: FontWeight.bold),),
-        centerTitle: true,
-        leading: InkWell(
-            onTap: (){
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back,color: Colors.indigo.shade800,)),
-        elevation: 0.0,backgroundColor: Colors.indigo.shade100,
-      ),
+      appBar: GlobalAppBar(context, 'Upload Document'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo.shade100,
+        padding: const EdgeInsets.only(left: 10,right: 10,bottom: 2),
+        color: globalPageBackgroundColor,
         child: Column(
           children: [
             Expanded(
@@ -158,21 +153,21 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(15),
-                    margin: EdgeInsets.all(10),
-                    decoration: ColorFillContainer(Colors.white),
+                    padding: const EdgeInsets.all(15),
+                    margin: const EdgeInsets.all(10),
+                    decoration: BorderContainer(Colors.white,globalBlue),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 8,),
+                        const SizedBox(height: 8,),
                         topText('Document Date : '),
-                        SizedBox(height: 2,),
+                        const SizedBox(height: 2,),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(current_date, style: TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15),),
-                            Icon(Icons.calendar_month,color: Colors.indigo,)
+                            Text(currentDate, style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15),),
+                            const Icon(Icons.calendar_month,color: Colors.indigo,)
                           ],
                         ),
                         commonDivider(),
@@ -199,9 +194,9 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Flexible(child: Text(selectedService, style: TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15),)),
-                              SizedBox(width: 15),
-                              Icon(Icons.file_present_rounded,color: Colors.indigo,),
+                              Flexible(child: Text(selectedService, style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15),)),
+                              const SizedBox(width: 15),
+                              const Icon(Icons.file_present_rounded,color: Colors.indigo,),
                             ],
                           ),
                         ),
@@ -259,9 +254,9 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Flexible(child: Text(selectedCareProvider, style: TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15),)),
-                              SizedBox(width: 15,),
-                              Icon(Icons.local_hospital_rounded,color: Colors.indigo,)
+                              Flexible(child: Text(selectedCareProvider, style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo,fontSize: 15),)),
+                              const SizedBox(width: 15,),
+                              const Icon(Icons.local_hospital_rounded,color: Colors.indigo,)
                             ],
                           ),
                         ),
@@ -281,8 +276,8 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                       Navigator.pop(context);
                     },
                     child: Container(
-                      margin: EdgeInsets.all(3),
-                      padding: EdgeInsets.only(top: 14,bottom: 14,),
+                      margin: const EdgeInsets.all(3),
+                      padding: const EdgeInsets.only(top: 14,bottom: 14,),
                       decoration: ColorFillContainer(globalOrange),
                       child: const Text('Cancel',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
                     ),
@@ -306,8 +301,8 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                     },
                     child: Container(
                       decoration: ColorFillContainer(globalOrange),
-                      margin: EdgeInsets.all(3),
-                      padding: EdgeInsets.only(top: 14,bottom: 14,),
+                      margin: const EdgeInsets.all(3),
+                      padding: const EdgeInsets.only(top: 14,bottom: 14,),
                       child: const Text('Submit',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),textAlign: TextAlign.center,),
                     ),
                   ),

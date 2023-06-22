@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart';
+import '../Design/BorderContainer.dart';
 import '../Design/ColorFillContainer.dart';
 import '../ModalClass/TeleConsultionModal.dart';
 
@@ -103,14 +104,14 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo[100],
+        color: globalPageBackgroundColor,
         child: Column(
           children: [
             TopPageTextViews('Video Consultation'),
             noDataText?Container(
                 width: double.infinity,
                 margin: const EdgeInsets.all(25),
-                decoration: ColorFillContainer(Colors.white),
+                decoration: BorderContainer(Colors.white,globalBlue),
                 padding: const EdgeInsets.all(15),
                 child: Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center)) :
             ListView.builder(
@@ -119,7 +120,7 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
               itemBuilder: (context, index) {
                return Container(
                  padding: EdgeInsets.all(15),
-                 decoration: ColorFillContainer(Colors.white),
+                 decoration: BorderContainer(Colors.white,globalBlue),
                  margin: EdgeInsets.all(20),
                  child: Column(
                    children: [

@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:digipath_ircs/Design/ContainerDecoration.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import '../Design/BorderContainer.dart';
 import '../Design/TopPageTextViews.dart';
 import '../Global/Toast.dart';
 import '../ModalClass/SubPreviousPrescriptionModel.dart';
@@ -29,7 +31,6 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   @override
   void initState() {
     super.initState();
-
     EasyLoading.show(status: 'Loading...');
     getCurrentPrescription();
   }
@@ -39,8 +40,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
         Uri.parse(
             '$urlForINSC/citizenCurrentPrescription.shc?CitizenID=1081787'),
         headers: {
-          "token":
-          "eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg"
+          "token": token
         });
 
     if (response.statusCode == 200) {
@@ -57,8 +57,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
         Uri.parse(
             '$urlForINSC/displaySubTablednvPreviousPrescription.shc?EncounterID=1339530'),
         headers: {
-          "token":
-          "eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg"
+          "token": token
         });
 
     if (response.statusCode == 200) {
@@ -81,121 +80,119 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo[100],
+        color: globalPageBackgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TopPageTextViews('View Current Prescription'),
             serching? const Text("Searching...")
-                :citizenCurrentPrescription.data?.length !=0 ?Container(
-              margin: EdgeInsets.fromLTRB(20, 25, 20, 5),
-              decoration: ContainerDecoration(15),
-              child:Container(
-                padding: EdgeInsets.fromLTRB(35, 25, 35, 25),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.calendar_month,
-                          // height: 20,
-                          // width: 20,
-                          color: Colors.grey,
-                          size: 20,
+                :citizenCurrentPrescription.data?.length !=0 ?
+            Container(
+              margin: const EdgeInsets.fromLTRB(20, 15, 20, 5),
+              padding: EdgeInsets.fromLTRB(35, 25, 35, 25),
+              decoration: BorderContainer(Colors.white,globalBlue),
+              child:Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.calendar_month,
+                        color: globalBlue,
+                        size: 23,
+                      ),
+                      const SizedBox(
+                        width: 25,
+                        height: 28,
+                      ),
+                      Text(
+                        citizenCurrentPrescription
+                            .data![0].PrescribedDate,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: globalBlue,
+                          fontWeight: FontWeight.w600,
                         ),
-                        SizedBox(
-                          width: 25,
-                          height: 28,
-                        ),
-                        Text(
-                          citizenCurrentPrescription
-                              .data![0].PrescribedDate,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 5,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image(
+                        image: AssetImage('assets/images/doctor.png'),
+                        height: 23,
+                        width: 23,
+                        fit: BoxFit.fill,
+                        color: globalBlue,
+                      ),
+                      SizedBox(
+                        width: 25,
+                        height: 28,
+                      ),
+                      Flexible(
+                        child: Text(
+                          'Dr. ${citizenCurrentPrescription.data![0].DoctorName} (${citizenCurrentPrescription.data![0].FacultyName})',
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black,
+                            color: globalBlue,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 5,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image(
-                          image: AssetImage('assets/images/doctor.png'),
-                          height: 20,
-                          width: 20,
-                          fit: BoxFit.fill,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          width: 25,
-                          height: 28,
-                        ),
-                        Flexible(
-                          child: Text(
-                            'Dr. ${citizenCurrentPrescription.data![0].DoctorName} (${citizenCurrentPrescription.data![0].FacultyName})',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 5,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image(
+                        image: AssetImage('assets/images/doctor.png'),
+                        height: 23,
+                        width: 23,
+                        fit: BoxFit.fill,
+                        color: globalBlue,
+                      ),
+                      SizedBox(
+                        width: 25,
+                        height: 28,
+                      ),
+                      Flexible(
+                        child: Text(
+                          citizenCurrentPrescription.data![0].CareProviderName,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: globalBlue,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 5,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Image(
-                          image: AssetImage('assets/images/doctor.png'),
-                          height: 20,
-                          width: 20,
-                          fit: BoxFit.fill,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(
-                          width: 25,
-                          height: 28,
-                        ),
-                        Flexible(
-                          child: Text(
-                            citizenCurrentPrescription.data![0].CareProviderName,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 12,
-                    ),
-                    Divider(
-                      thickness: 1.5,
-                      height: 2,
-                      color: Colors.grey,
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 12,
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 2,
+                    color: globalBlue,
+                  ),
+                ],
               ),
             ) : Text('No Data Found'),
             serching? SizedBox()
                 : citizenCurrentPrescription.data?.length !=0 ?Container(
               margin: EdgeInsets.fromLTRB(20, 5, 20, 25),
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 25),
-              decoration: ContainerDecoration(15),
+              padding: EdgeInsets.fromLTRB(0, 20, 0, 25),
+              decoration: BorderContainer(Colors.white, globalBlue),
               child: Container(
                 padding: EdgeInsets.fromLTRB(35, 5, 35, 5),
                 child: Column(
@@ -205,9 +202,9 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                       height: 10,
                     ),
                     Divider(
-                      thickness: 1.5,
+                      thickness: 1,
                       height: 2,
-                      color: Colors.grey,
+                      color: globalBlue,
                     ),
                     Column(
                       children: [

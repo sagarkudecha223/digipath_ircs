@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:digipath_ircs/Design/TopPageTextViews.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
+import 'Design/BorderContainer.dart';
 import 'Global/SearchAPI.dart';
 import 'Global/TextFieldDecoration.dart';
 import 'Global/Toast.dart';
@@ -97,8 +99,8 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     super.initState();
+    EasyLoading.show(status: 'Loading...');
     searchCity();
-    getStatus();
   }
 
   Future<String> submitData() async{
@@ -116,7 +118,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     FocusManager.instance.primaryFocus?.unfocus();
 
-    dynamic status = await searchAPI(true ,'$urlForIN/citizen_signup_smarthealth.notauth',
+    dynamic status = await searchAPI(true ,'$urlForINSC/citizen_signup_smarthealth.notauth',
         {'token': token},
         {
           'firstName': personName.text.toString(),
@@ -187,7 +189,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void searchCity() async{
 
-    dynamic status = await searchAPI(false ,'$urlForIN/getCitySelect2_Vinecare.notauth',
+    dynamic status = await searchAPI(false ,'$urlForINSC/getCitySelect2_Vinecare.notauth',
         {},{}, 25);
 
     print(' status after responce: $status');
@@ -215,16 +217,20 @@ class _SignUpPageState extends State<SignUpPage> {
       EasyLoading.dismiss();
       showToast('Sorry !!! Server Error');
     }
+
+    getStatus();
+
   }
 
   void getStatus() async{
 
     meritalStatulList.clear();
 
-    List<dynamic> status = await searchAPI(false ,'$urlForIN/getMaritalStatus.notauth',
+    List<dynamic> status = await searchAPI(false ,'$urlForINSC/getMaritalStatus.notauth',
         {},{}, 25);
 
     print(' status after responce: $status');
+    EasyLoading.dismiss();
 
     if(status.toString() != 'Sorry !!! Server Error' && status.toString().isNotEmpty && status.toString() != 'Sorry !!!  Connectivity issue! Try again'){
 
@@ -266,455 +272,442 @@ class _SignUpPageState extends State<SignUpPage> {
       onWillPop: () async => onBack,
       child: Scaffold(
         appBar: AppBar(
+          title: Text(fromAddMember?'Add Family Member'.toUpperCase() : 'QUICK SIGN UP'.toUpperCase()),
+          centerTitle: true,
+          titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
           leading: InkWell(
               onTap: (){
                 Navigator.pop(context);
               },
-              child: Icon(Icons.arrow_back_rounded,color: Colors.indigo[900])),
-          backgroundColor: Colors.indigo[200],
+              child: Icon(Icons.arrow_back_rounded,color: Colors.white)),
+          backgroundColor: globalBlue,
           elevation: 0.0,
         ),
         body: Container(
-          color: Colors.indigo[200],
+          color: globalPageBackgroundColor,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                fromAddMember?Column(
-                  children: [
-                    Text('Add Family Member'.toUpperCase(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo[900]),),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 2.0, bottom: 1),
-                      child: Text('family member registration',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.indigo[900])),
-                    )
-                  ],
-                ) :
-                Column(
-                  children: [
-                    Text('QUICK SIGN UP'.toUpperCase(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.indigo[900]),),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 2.0, bottom: 1),
-                      child: Text('Start your Account of Vinecare',style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.indigo[900])),
-                    )
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15,right: 15),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15)
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15,right: 15,top: 25,bottom: 25),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          paddingWithText('FIRST NAME',2,0,0,2),
-                          TextField(
-                            maxLength: 15,
-                            controller: personName,
-                            textCapitalization: TextCapitalization.words,
-                            decoration: TextFieldDecoration(
-                                Icon(Icons.person,color: Colors.grey,),
-                                personNamevalid?Icon(Icons.check_circle_outline,color: Colors.green,):Icon(Icons.error_outline,color: Colors.red,)
-                            ),
-                            onChanged: changeText,
+                TopPageTextViews(fromAddMember?'family member registration' : 'Start your Account of Vinecare'),
+                Container(
+                  margin: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
+                  decoration: BorderContainer(globalWhiteColor,globalBlue),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15,right: 15,top: 25,bottom: 25),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        paddingWithText('FIRST NAME',2,0,0,2),
+                        TextField(
+                          maxLength: 15,
+                          controller: personName,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: TextFieldDecoration(
+                              Icon(Icons.person,color: globalBlue,),
+                              personNamevalid?Icon(Icons.check_circle_outline,color: Colors.green,):Icon(Icons.error_outline,color: Colors.red,)
                           ),
-                          paddingWithText('MIDDLE NAME',2,0,0,2),
-                          TextField(
-                            maxLength: 15,
-                            controller: middleName,
-                            textCapitalization: TextCapitalization.words,
-                            decoration: TextFieldDecoration(
-                              Icon(Icons.person,color: Colors.grey,),
-                              Icon(Icons.check_circle_outline,color: Colors.green,),
-                            ),
+                          onChanged: changeText,
+                        ),
+                        paddingWithText('MIDDLE NAME',2,0,0,2),
+                        TextField(
+                          maxLength: 15,
+                          controller: middleName,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: TextFieldDecoration(
+                            Icon(Icons.person,color: globalBlue,),
+                            Icon(Icons.check_circle_outline,color: Colors.green,),
                           ),
-                          paddingWithText('FAMILY NAME',2,0,0,2),
-                          TextField(
-                            maxLength: 15,
-                            controller: familyName,
-                            textCapitalization: TextCapitalization.words,
-                            decoration: TextFieldDecoration(
-                                Icon(Icons.person,color: Colors.grey,),
-                                familyNamevalid?Icon(Icons.check_circle_outline,color: Colors.green,):Icon(Icons.error_outline,color: Colors.red,)
-                            ),
-                            onChanged: changeText,
+                        ),
+                        paddingWithText('FAMILY NAME',2,0,0,2),
+                        TextField(
+                          maxLength: 15,
+                          controller: familyName,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: TextFieldDecoration(
+                              Icon(Icons.person,color: globalBlue,),
+                              familyNamevalid?Icon(Icons.check_circle_outline,color: Colors.green,):Icon(Icons.error_outline,color: Colors.red,)
                           ),
-                          paddingWithText('GENDER',2,0,0,2),
-                          InkWell(
-                            onTap: () {
-                              showDialog<String>(
-                                  context: context,
-                                  builder: (context) =>Dialog(
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                      insetPadding: EdgeInsets.all(20),
-                                      elevation: 16,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Container(
-                                            child: Center(child: Text('Select Gender',textScaleFactor: 1.0,style: TextStyle(color:Colors.white,fontSize: 19,fontWeight: FontWeight.w500,),)),
-                                            decoration: BoxDecoration(
-                                              color: Colors.indigo[300],
-                                              borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
-                                            ),
-                                            height: 50,
-                                          ),
-                                          RadioListTile(
-                                            title: const Text('Male'),
-                                            value: "Male",
-                                            groupValue: genderText,
-                                            onChanged: (value){
-                                              setState(() {
-                                                gendervalid = true;
-                                                genderIDF = '1';
-                                                genderText = value.toString();
-                                                Navigator.pop(context, 'Cancel');
-                                              }
-                                              );
-                                            },
-                                          ),
-                                          RadioListTile(
-                                            title: Text('Female'),
-                                            value: "Female",
-                                            groupValue: genderText,
-                                            onChanged: (value){
-                                              setState(() {
-                                                gendervalid = true;
-                                                genderIDF = '2';
-                                                genderText = value.toString();
-                                                Navigator.pop(context, 'Cancel');
-                                              }
-                                              );
-                                            },
-                                          ),
-                                        ],
-                                      )
-                                  ));
-                              FocusManager.instance.primaryFocus?.unfocus();
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                    width: 1,
-                                    color: gendervalid?Colors.grey:Colors.red
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(genderText),
-                                    Icon(Icons.arrow_drop_down),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          paddingWithText('MARITAL STATUS',2,0,20,2),
-                          InkWell(
-                            onTap: () {
-                                setState(() {
-                                  mStatusList = true;
-                                });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                    width: 1,
-                                    color: maritalStatusvalid?Colors.grey:Colors.red
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(maritalStatusText),
-                                    const Icon(Icons.arrow_drop_down),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: mStatusList,
-                            child: ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:meritalStatulList.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: (){
-                                    maritalStatusText = meritalStatulList[index].name;
-                                    maritalStatusIDF = meritalStatulList[index].id;
-                                    setState(() {
-                                        maritalStatusvalid = true;
-                                        mStatusList = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.all(1),
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: Colors.indigo.shade50,
-                                        border: Border.all(
-                                            width: 1,
-                                            color: Colors.grey
-                                        ),
-                                        borderRadius: BorderRadius.circular(8),),
-                                      child: Text(meritalStatulList[index].name)),
-                                );
-                              },
-                            ),
-                          ),
-                          paddingWithText('DATE OF BIRTH',2,0,20,2),
-                          InkWell(
-                            onTap: _pickStartDateDialog,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                    width: 1,
-                                    color: Colors.grey
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
+                          onChanged: changeText,
+                        ),
+                        paddingWithText('GENDER',2,0,0,2),
+                        InkWell(
+                          onTap: () {
+                            showDialog<String>(
+                                context: context,
+                                builder: (context) =>Dialog(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                    insetPadding: EdgeInsets.all(20),
+                                    elevation: 16,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Icon(Icons.calendar_month_outlined,color: Colors.grey,),
-                                        const SizedBox(width: 5,),
-                                        Text(startDate),
+                                        Container(
+                                          child: Center(child: Text('Select Gender',textScaleFactor: 1.0,style: TextStyle(color:Colors.white,fontSize: 19,fontWeight: FontWeight.w500,),)),
+                                          decoration: BoxDecoration(
+                                            color: Colors.indigo[300],
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+                                          ),
+                                          height: 50,
+                                        ),
+                                        RadioListTile(
+                                          title: const Text('Male'),
+                                          value: "Male",
+                                          groupValue: genderText,
+                                          onChanged: (value){
+                                            setState(() {
+                                              gendervalid = true;
+                                              genderIDF = '1';
+                                              genderText = value.toString();
+                                              Navigator.pop(context, 'Cancel');
+                                            }
+                                            );
+                                          },
+                                        ),
+                                        RadioListTile(
+                                          title: Text('Female'),
+                                          value: "Female",
+                                          groupValue: genderText,
+                                          onChanged: (value){
+                                            setState(() {
+                                              gendervalid = true;
+                                              genderIDF = '2';
+                                              genderText = value.toString();
+                                              Navigator.pop(context, 'Cancel');
+                                            }
+                                            );
+                                          },
+                                        ),
                                       ],
-                                    ),
-                                    const Icon(Icons.check_circle_outline,color: Colors.green,),
-                                  ],
-                                ),
+                                    )
+                                ));
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  width: 1,
+                                  color: gendervalid?Colors.grey:Colors.red
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(genderText),
+                                  Icon(Icons.arrow_drop_down),
+                                ],
                               ),
                             ),
                           ),
-                          paddingWithText('MOBILE NUMBER',2,0,20,2),
-                          TextField(
-                            keyboardType: TextInputType.number,
-                            controller: mobileNumber,
-                            maxLength: 10,
-                            decoration: TextFieldDecoration(
-                                const Icon(Icons.phone_iphone_rounded,color: Colors.grey,),
-                                numbervalid?const Icon(Icons.check_circle_outline,color: Colors.green,):const Icon(Icons.error_outline,color: Colors.red,)
+                        ),
+                        paddingWithText('MARITAL STATUS',2,0,20,2),
+                        InkWell(
+                          onTap: () {
+                            if(meritalStatulList.isNotEmpty){
+                              setState(() {
+                                mStatusList = true;
+                              });
+                            }else{
+                              EasyLoading.show(status: 'Loading...');
+                              getStatus();
+                            }
+
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  width: 1,
+                                  color: maritalStatusvalid?Colors.grey:Colors.red
+                              ),
                             ),
-                            onChanged: changeText,
-                          ),
-                          paddingWithText('EMAIL',2,0,0,2),
-                          TextField(
-                            keyboardType: TextInputType.emailAddress,
-                            controller: emailAddress,
-                            decoration: TextFieldDecoration(
-                                const Icon(Icons.email_rounded,color: Colors.grey,),
-                                const Icon(Icons.check_circle_outline,color: Colors.green,)
-                            ),
-                            onChanged: changeText,
-                          ),
-                          paddingWithText('RESIDENTIAL ADDRESS',2,0,10,2),
-                          TextField(
-                            maxLength: 50,
-                            maxLines: 2,
-                            controller: addressController,
-                            decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(
-                                      width: 1, color: Colors.grey),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(
-                                      width: 1, color: Colors.grey),
-                                ),
-                                border: InputBorder.none
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(maritalStatusText),
+                                  const Icon(Icons.arrow_drop_down),
+                                ],
+                              ),
                             ),
                           ),
-                          paddingWithText('CITY',2,0,0,2),
-                          InkWell(
-                            onTap: (){
-                               if(citylist.isEmpty){
-                                  EasyLoading.show(status: 'Loading...');
-                                  searchCity();
-                                }else{
+                        ),
+                        Visibility(
+                          visible: mStatusList,
+                          child: ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount:meritalStatulList.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: (){
+                                  maritalStatusText = meritalStatulList[index].name;
+                                  maritalStatusIDF = meritalStatulList[index].id;
                                   setState(() {
-                                    seachCityView = true;
-                                    FocusManager.instance.primaryFocus?.unfocus();
+                                      maritalStatusvalid = true;
+                                      mStatusList = false;
                                   });
-                              }
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.all(1),
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.indigo.shade50,
+                                      border: Border.all(
+                                          width: 1,
+                                          color: Colors.grey
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),),
+                                    child: Text(meritalStatulList[index].name)),
+                              );
                             },
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                    width: 1,
-                                    color: cityvalid?Colors.grey:Colors.red
-                                ),
+                          ),
+                        ),
+                        paddingWithText('DATE OF BIRTH',2,0,20,2),
+                        InkWell(
+                          onTap: _pickStartDateDialog,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text(cityText),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.calendar_month_outlined,color: globalBlue,),
+                                      const SizedBox(width: 5,),
+                                      Text(startDate),
+                                    ],
+                                  ),
+                                  const Icon(Icons.check_circle_outline,color: Colors.green,),
+                                ],
                               ),
                             ),
                           ),
-                          const SizedBox(height: 1,),
-                          Visibility(
-                            visible: seachCityView,
-                            child: Column(
-                              children: <Widget>[
-                                TextField(
-                                  controller: seachCity,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
-                                    prefixIcon: const Icon(Icons.search),
-                                    suffixIcon: InkWell(
+                        ),
+                        paddingWithText('MOBILE NUMBER',2,0,20,2),
+                        TextField(
+                          keyboardType: TextInputType.number,
+                          controller: mobileNumber,
+                          maxLength: 10,
+                          decoration: TextFieldDecoration(
+                              Icon(Icons.phone_iphone_rounded,color: globalBlue,),
+                              numbervalid?const Icon(Icons.check_circle_outline,color: Colors.green,):const Icon(Icons.error_outline,color: Colors.red,)
+                          ),
+                          onChanged: changeText,
+                        ),
+                        paddingWithText('EMAIL',2,0,0,2),
+                        TextField(
+                          keyboardType: TextInputType.emailAddress,
+                          controller: emailAddress,
+                          decoration: TextFieldDecoration(
+                              Icon(Icons.email_rounded,color: globalBlue,),
+                              const Icon(Icons.check_circle_outline,color: Colors.green,)
+                          ),
+                          onChanged: changeText,
+                        ),
+                        paddingWithText('RESIDENTIAL ADDRESS',2,0,10,2),
+                        TextField(
+                          maxLength: 50,
+                          maxLines: 2,
+                          controller: addressController,
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: const BorderSide(
+                                    width: 1, color: Colors.grey),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: const BorderSide(
+                                    width: 1, color: Colors.grey),
+                              ),
+                              border: InputBorder.none
+                          ),
+                        ),
+                        paddingWithText('CITY',2,0,0,2),
+                        InkWell(
+                          onTap: (){
+                             if(citylist.isEmpty){
+                                EasyLoading.show(status: 'Loading...');
+                                searchCity();
+                              }else{
+                                setState(() {
+                                  seachCityView = true;
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                });
+                            }
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  width: 1,
+                                  color: cityvalid?Colors.grey:Colors.red
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(cityText),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 1,),
+                        Visibility(
+                          visible: seachCityView,
+                          child: Column(
+                            children: <Widget>[
+                              TextField(
+                                controller: seachCity,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
+                                  prefixIcon: const Icon(Icons.search),
+                                  suffixIcon: InkWell(
+                                    onTap: (){
+                                      setState(() {
+                                        seachCityView = false;
+                                        seachCity.clear();
+                                        filterColumn = false;
+                                      });
+                                    },
+                                    child: const Icon(Icons.cancel)
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: const BorderSide(
+                                        width: 1, color: Colors.grey),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: const BorderSide(
+                                        width: 1, color: Colors.grey),
+                                  ),
+                                  hintText: 'Search City',
+                                ),
+                                onChanged: filterSearchCity,
+                              ),
+                              SizedBox(
+                                height: 200,
+                                child: ListView.builder(
+                                  // shrinkWrap: true,
+                                  itemCount:filterColumn? filterlist.length : citylist.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      visualDensity: const VisualDensity(vertical: -4),
                                       onTap: (){
+                                        cityText = filterColumn? filterlist[index].text : citylist[index].text;
+                                        cityID = filterColumn? filterlist[index].id : citylist[index].id;
                                         setState(() {
+                                          cityvalid = true;
                                           seachCityView = false;
-                                          seachCity.clear();
                                           filterColumn = false;
+                                          seachCity.clear();
                                         });
                                       },
-                                      child: const Icon(Icons.cancel)
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      borderSide: const BorderSide(
-                                          width: 1, color: Colors.grey),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      borderSide: const BorderSide(
-                                          width: 1, color: Colors.grey),
-                                    ),
-                                    hintText: 'Search City',
-                                  ),
-                                  onChanged: filterSearchCity,
+                                      contentPadding :EdgeInsets.zero,
+                                      title: Container(
+                                          padding: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                width: 1,
+                                                color: Colors.grey
+                                            ),
+                                            borderRadius: BorderRadius.circular(8),),
+                                          child: Text(filterColumn? filterlist[index].text : citylist[index].text)),
+                                    );
+                                  },
                                 ),
-                                SizedBox(
-                                  height: 200,
-                                  child: ListView.builder(
-                                    // shrinkWrap: true,
-                                    itemCount:filterColumn? filterlist.length : citylist.length,
-                                    itemBuilder: (context, index) {
-                                      return ListTile(
-                                        visualDensity: const VisualDensity(vertical: -4),
-                                        onTap: (){
-                                          cityText = filterColumn? filterlist[index].text : citylist[index].text;
-                                          cityID = filterColumn? filterlist[index].id : citylist[index].id;
-                                          setState(() {
-                                            cityvalid = true;
-                                            seachCityView = false;
-                                            filterColumn = false;
-                                            seachCity.clear();
-                                          });
-                                        },
-                                        contentPadding :EdgeInsets.zero,
-                                        title: Container(
-                                            padding: const EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                  width: 1,
-                                                  color: Colors.grey
-                                              ),
-                                              borderRadius: BorderRadius.circular(8),),
-                                            child: Text(filterColumn? filterlist[index].text : citylist[index].text)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async{
+                            if(personNamevalid ==false){
+                                showToast('First name should not be blank !!!');
+                            }
+                            else if(familyNamevalid == false){
+                              showToast('Family name should not be blank !!!');
+                            }
+                            else if(gendervalid == false){
+                              showToast('Please Select Gender');
+                            }
+                            else if(maritalStatusvalid == false){
+                              showToast('Please select Marital Status');
+                            }
+                            else if(mobileNumber.text.isEmpty){
+                              showToast('Mobile number should not be blank !!!');
+                            }
+                            else if(numbervalid == false){
+                              showToast('Please enter valid Mobile number');
+                            }
+                            else if(cityvalid == false){
+                              showToast('Please Select City');
+                            }
+                            else{
+                              EasyLoading.show(status: 'Sending OTP..');
+                              var status = await submitData();
+
+                              if(status == 'true'){
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                showDialog<String>(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) =>StatefulBuilder(
+                                    builder: (context, StateSetter setState) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                        insetPadding: const EdgeInsets.all(20),
+                                        elevation: 16,
+                                        child: const Padding(
+                                          padding:  EdgeInsets.all(20.0),
+                                          child: OTPPage(),
+                                        ),
                                       );
                                     },
                                   ),
-                                ),
-                              ],
+                                );
+                              }else{
+                               showToast('Please Try Again');
+                              }
+                            }
+                            },
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            decoration: BoxDecoration(
+                              color: globalOrange,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(fromAddMember?'Add Family Member'.toUpperCase() : 'CREATE ACCOUNT',style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                                    ],
+                                  ),
+                                  const Icon(Icons.arrow_forward,color: Colors.white,),
+                                ],
+                              ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () async{
-                              if(personNamevalid ==false){
-                                  showToast('First name should not be blank !!!');
-                              }
-                              else if(familyNamevalid == false){
-                                showToast('Family name should not be blank !!!');
-                              }
-                              else if(gendervalid == false){
-                                showToast('Please Select Gender');
-                              }
-                              else if(maritalStatusvalid == false){
-                                showToast('Please select Marital Status');
-                              }
-                              else if(mobileNumber.text.isEmpty){
-                                showToast('Mobile number should not be blank !!!');
-                              }
-                              else if(numbervalid == false){
-                                showToast('Please enter valid Mobile number');
-                              }
-                              else if(cityvalid == false){
-                                showToast('Please Select City');
-                              }
-                              else{
-                                EasyLoading.show(status: 'Sending OTP..');
-                                var status = await submitData();
-
-                                if(status == 'true'){
-                                  FocusManager.instance.primaryFocus?.unfocus();
-                                  showDialog<String>(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (context) =>StatefulBuilder(
-                                      builder: (context, StateSetter setState) {
-                                        return Dialog(
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                          insetPadding: const EdgeInsets.all(20),
-                                          elevation: 16,
-                                          child: const Padding(
-                                            padding:  EdgeInsets.all(20.0),
-                                            child: OTPPage(),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  );
-                                }else{
-                                 showToast('Please Try Again');
-                                }
-                              }
-                              },
-                            child: Container(
-                              margin: const EdgeInsets.only(top: 20),
-                              decoration: BoxDecoration(
-                                color: globalOrange,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(fromAddMember?'Add Family Member' : 'CREATE ACCOUNT',style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                                      ],
-                                    ),
-                                    const Icon(Icons.arrow_forward,color: Colors.white,),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ),
                 )

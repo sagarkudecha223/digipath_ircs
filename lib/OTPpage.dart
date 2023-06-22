@@ -33,7 +33,7 @@ class _OTPPageState extends State<OTPPage> {
     accountList.clear();
     EasyLoading.show(status: 'Verifying OTP...');
 
-    dynamic status = await searchAPI(true ,'$urlForIN/submitOTP_smarthealth_shc.notauth',{},
+    dynamic status = await searchAPI(true ,'$urlForINSC/submitOTP_smarthealth_shc.notauth',{},
       {
         'otp': OTP,
         'mobile':mobile,
@@ -63,7 +63,7 @@ class _OTPPageState extends State<OTPPage> {
   void reSendOTP() async{
 
     EasyLoading.show(status: 'Re-sending OTP...');
-    dynamic status = await searchAPI(true ,'$urlForIN/resendVerificationSMS.notauth',{},
+    dynamic status = await searchAPI(true ,'$urlForINSC/resendVerificationSMS.notauth',{},
         {
           'citizenID': citizenID,
           'loginID':ULID,

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../Design/BorderContainer.dart';
 import '../Design/GlobalAppBar.dart';
 import '../ModalClass/AnswerModal.dart';
 import 'IosRecording.dart';
@@ -163,7 +164,7 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
                     Container(
                       padding: EdgeInsets.all(20),
                       margin: EdgeInsets.only(left: 20,right: 20,bottom: 5),
-                      decoration: ColorFillContainer(Colors.white),
+                      decoration: BorderContainer(Colors.white,globalBlue),
                       child: Column(
                         children: [
                           Row(
@@ -287,7 +288,7 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
                     Container(
                       padding: const EdgeInsets.all(20),
                       margin: const EdgeInsets.only(left: 20,right: 20,bottom: 5),
-                      decoration: ColorFillContainer(Colors.white),
+                      decoration: BorderContainer(Colors.white,globalBlue),
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -318,7 +319,7 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
                       ),
                     ),
                     Container(
-                      decoration: ColorFillContainer(Colors.white),
+                      decoration: BorderContainer(Colors.white,globalBlue),
                       padding: EdgeInsets.all(20),
                       margin: EdgeInsets.only(left: 20,right: 20,bottom: 5),
                       child: TextField(
@@ -332,7 +333,7 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
                       ),
                     ),
                     Container(
-                      decoration: ColorFillContainer(Colors.white),
+                      decoration: BorderContainer(Colors.white,globalBlue),
                       padding: EdgeInsets.all(20),
                       margin: EdgeInsets.only(left: 20,right: 20,bottom: 5),
                       child: Platform.isIOS?IosRecordingPart():RecordingPart(),
@@ -347,7 +348,7 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
                 width: double.infinity,
                 decoration: ColorFillContainer(globalOrange),
                 padding: EdgeInsets.all(12),
-                margin: EdgeInsets.only(left: 20,right: 20,bottom: 5,top: 2),
+                margin: EdgeInsets.only(left: 20,right: 20,bottom: 5,top: 3),
                 child: Text('submit'.toUpperCase(),style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white,fontSize: 15),textAlign: TextAlign.center,),
               ),
             )

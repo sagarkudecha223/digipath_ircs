@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:digipath_ircs/Design/BorderContainer.dart';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/Toast.dart';
 import 'package:digipath_ircs/HomePage.dart';
 import 'package:digipath_ircs/AddRecord/SecondUploadDocumentPage.dart';
@@ -51,9 +53,9 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
 
     try{
       Response response = await get(
-        Uri.parse('$urlForIN/getPatientDocument_smarthealth_new_v2.shc?citizenid=$localCitizenIDP&careProfessionalID=9380'),
+        Uri.parse('$urlForINSC/getPatientDocument_smarthealth_new_v2.shc?citizenid=$localCitizenIDP&careProfessionalID=9380'),
         headers: {
-          'token' : 'eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg'
+          'token' : token
         }
       );
 
@@ -114,9 +116,9 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
             String imageString = documentList[i].imageString.toString();
             Response response = await get(
                 Uri.parse(
-                    '$urlForIN/getPatientDocumentFile_ByteArray.shc?documentName=$imageString'),
+                    '$urlForINSC/getPatientDocumentFile_ByteArray.shc?documentName=$imageString'),
                 headers: {
-                  'token': 'eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg'
+                  'token': token
                 }
             );
             if (response.statusCode == 200) {
@@ -214,7 +216,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                         },
                         child: Container(
                           margin: EdgeInsets.all(5),
-                          padding: EdgeInsets.all(8),
+                          padding: EdgeInsets.all(12),
                           decoration: const BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle
@@ -223,7 +225,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                             children: [
                               Icon(Icons.view_timeline_outlined, size: 20,color: Colors.indigo.shade800),
                               Text('ADD TO',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 10)),
-                              Text('TIMELINE',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 9))
+                              Text('TIMELINE',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 10))
                             ],
                           ),
                         ),
@@ -244,7 +246,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           child: Column(
                             children: [
                               Icon(Icons.file_upload_rounded, size: 25,color: Colors.indigo.shade800),
-                              Text('UPLOAD',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 10))
+                              Text('UPLOAD',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 11))
                             ],
                           ),
                         ),
@@ -264,7 +266,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                           child: Column(
                             children: [
                               Icon(Icons.cancel_rounded, size: 25,color: Colors.indigo.shade800),
-                              Text('Cancel',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 11))
+                              Text('Cancel'.toUpperCase(),style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 10))
                             ],
                           ),
                         ),
@@ -406,7 +408,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async{
-        Get.offAll(HomePage());
+        Get.offAll(const HomePage());
           return false;
       },
       child: Scaffold(
@@ -419,11 +421,12 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                 Get.offAll(HomePage());
               },
               child: Icon(Icons.arrow_back_rounded,color: Colors.white)),
-          title: Text('UPLOAD DOCUMENTS'.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
+          title: Text('UPLOAD DOCUMENTS'.toUpperCase()),
+          titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
           centerTitle: true,
           actions: [
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.home,
                 color: Colors.white,
               ),
@@ -438,7 +441,8 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
         body: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.indigo[100],
+          padding: EdgeInsets.all(20),
+          color: globalPageBackgroundColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -455,12 +459,12 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                                 insetPadding: EdgeInsets.all(20),
                                 elevation: 16,
                                 child : Padding(
-                                  padding: const EdgeInsets.all(15.0),
+                                  padding: const EdgeInsets.all(20.0),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text('Select Image From...'.toUpperCase()),
-                                      SizedBox(height: 15,),
+                                      Text('Select Image From...'.toUpperCase(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: globalBlue),),
+                                      SizedBox(height: 25,),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                                         children: [
@@ -471,8 +475,8 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                                             },
                                             child: Column(
                                               children:  [
-                                                Icon(Icons.camera_alt, size: 40,color: Colors.grey.shade800,),
-                                                Text('CAMERA',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800),)
+                                                Icon(Icons.camera_alt, size: 40,color: globalBlue,),
+                                                Text('CAMERA',style: TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo.shade800),)
                                               ],
                                             ),
                                           ),
@@ -483,8 +487,8 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                                             },
                                             child: Column(
                                               children: [
-                                                Icon(Icons.photo_library_rounded, size: 40,),
-                                                Text('Gallery',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800))
+                                                Icon(Icons.photo_library_rounded, size: 40,color: globalBlue,),
+                                                Text('Gallery',style: TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo.shade800))
                                               ],
                                             ),
                                           ),
@@ -534,144 +538,129 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                 ],
               ),
               Flexible(
-                child: Container(
-                    padding: const EdgeInsets.only(left: 5,right: 5),
-                    margin: const EdgeInsets.only(left: 15,right: 15,top: 0,bottom: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.indigo[100],
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: noData?Center(
-                      child: Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center),
-                    ): RefreshIndicator(
-                      onRefresh: () {
-                        return Future.delayed(Duration(microseconds: 500),
-                                () {
-                              EasyLoading.show(status: 'Loading...');
-                              getDocumentData();
-                            });
-                      },
-                      child: SingleChildScrollView(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: documentList.length,
-                          itemBuilder: (context, index){
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(
-                                    width: 1.5,
-                                    color: Colors.grey
-                                ),
-                              ),
-                              padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
-                              margin: EdgeInsets.all(5),
-                              child: Column(
-                                crossAxisAlignment: documentList[index].documentType == '3'?CrossAxisAlignment.start : CrossAxisAlignment.end,
+                child: noData?Center(
+                  child: Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center),
+                ): RefreshIndicator(
+                  onRefresh: () {
+                    return Future.delayed(Duration(microseconds: 500),
+                            () {
+                          EasyLoading.show(status: 'Loading...');
+                          getDocumentData();
+                        });
+                  },
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: documentList.length,
+                      itemBuilder: (context, index){
+                        return Container(
+                          decoration: BorderContainer(Colors.white, globalBlue),
+                          padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                          margin: EdgeInsets.all(5),
+                          child: Column(
+                            crossAxisAlignment: documentList[index].documentType == '3'?CrossAxisAlignment.start : CrossAxisAlignment.end,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Visibility(
-                                        visible : !(imageList.length<(index+1)),
-                                        child: FloatingActionButton(
-                                          onPressed: ()async{
-                                          Directory appDocDirectory = await getTemporaryDirectory();
-                                          final myImagePath = "${appDocDirectory.path}/image.jpg";
-                                          File file = await File(myImagePath).writeAsBytes(imageList[index]);
-                                          print(file);
-                                              Get.to(SecondUploadDocumentPage(filePath: file));
-                                          },
-                                          heroTag: null,
-                                          backgroundColor: Colors.indigo,
-                                          elevation: 0.0,
-                                          tooltip: 'ADD TO RECORD',
-                                          mini: true,
-                                          child: Icon(Icons.add_photo_alternate_rounded),),
-                                      )
-                                    ],
-                                  ),
-                                  InkWell(
-                                    onTap : (){
-                                      showDialog<String>(
-                                        context: context,
-                                        barrierColor:Colors.transparent,
-                                        builder: (BuildContext context) => TweenAnimationBuilder(
-                                          tween: Tween<double>(begin: 0, end: 1),
-                                          duration: const Duration(milliseconds: 500),
-                                          builder: (BuildContext context, double value, Widget? child) {
-                                            return Opacity(opacity: value,
-                                              child: Padding(
-                                                padding: EdgeInsets.only(top: value * 1),
-                                                child: child,
-                                              ),
-                                            );
-                                          },
-                                          child: AlertDialog(
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                                            backgroundColor: Colors.transparent,
-                                            insetPadding: EdgeInsets.all(10),
-                                            content: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.only(bottom: 15),
-                                                  child: Row(mainAxisAlignment: MainAxisAlignment.end,
-                                                    children: [
-                                                      InkWell(child: Icon(Icons.cancel,size: 35,),
-                                                          onTap: ()=>{ Navigator.pop(context, 'Cancel')}),
-                                                    ],),
-                                                ),
-                                                Container(
-                                                    height: 300,
-                                                    width: 300,
-                                                    color: Colors.transparent,
-                                                    child: PhotoView.customChild(
-                                                      backgroundDecoration: BoxDecoration(color: Colors.transparent),
-                                                      basePosition: Alignment.center,
-                                                      minScale: PhotoViewComputedScale.contained * 1,
-                                                      tightMode: true,
-                                                      maxScale: PhotoViewComputedScale.covered * 2.0,
-                                                      initialScale: PhotoViewComputedScale.contained * 1.1,
-                                                      enableRotation: true,
-                                                      scaleStateController: scaleStateController,
-                                                      child: Container(
-                                                        color: Colors.transparent,
-                                                        width: 300,
-                                                        height: 300,
-                                                        child:imageList.length<(index+1)?Center(child: CircularProgressIndicator()) : Image.memory(imageList[index]),
-                                                      ),
-                                                    )
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.only(left: 5),
-                                      height: 200,
-                                      width: 220,
-                                      child: imageList.length<(index+1)?const Center(child: CircularProgressIndicator()) : Image.memory(imageList[index]),
-                                    ),
-                                  ),
-                                  SizedBox(height: 5,),
-                                  Text(documentList[index].documentDate,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.indigo.shade800),),
-                                  SizedBox(height: 5,),
-                                  Text(documentList[index].uploadBy,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.indigo.shade800),),
-                                  SizedBox(height: 5,),
+                                  Visibility(
+                                    visible : !(imageList.length<(index+1)),
+                                    child: FloatingActionButton(
+                                      onPressed: ()async{
+                                      Directory appDocDirectory = await getTemporaryDirectory();
+                                      final myImagePath = "${appDocDirectory.path}/image.jpg";
+                                      File file = await File(myImagePath).writeAsBytes(imageList[index]);
+                                      print(file);
+                                          Get.to(SecondUploadDocumentPage(filePath: file));
+                                      },
+                                      heroTag: null,
+                                      backgroundColor: Colors.indigo,
+                                      elevation: 0.0,
+                                      tooltip: 'ADD TO RECORD',
+                                      mini: true,
+                                      child: Icon(Icons.add_photo_alternate_rounded),),
+                                  )
                                 ],
                               ),
-                            );
-                          }
-                        ),
-                      ),
-                    )
+                              InkWell(
+                                onTap : (){
+                                  showDialog<String>(
+                                    context: context,
+                                    barrierColor:Colors.transparent,
+                                    builder: (BuildContext context) => TweenAnimationBuilder(
+                                      tween: Tween<double>(begin: 0, end: 1),
+                                      duration: const Duration(milliseconds: 500),
+                                      builder: (BuildContext context, double value, Widget? child) {
+                                        return Opacity(opacity: value,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(top: value * 1),
+                                            child: child,
+                                          ),
+                                        );
+                                      },
+                                      child: AlertDialog(
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                                        backgroundColor: Colors.transparent,
+                                        insetPadding: EdgeInsets.all(10),
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(bottom: 15),
+                                              child: Row(mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  InkWell(child: Icon(Icons.cancel,size: 35,),
+                                                      onTap: ()=>{ Navigator.pop(context, 'Cancel')}),
+                                                ],),
+                                            ),
+                                            Container(
+                                                height: 300,
+                                                width: 300,
+                                                color: Colors.transparent,
+                                                child: PhotoView.customChild(
+                                                  backgroundDecoration: BoxDecoration(color: Colors.transparent),
+                                                  basePosition: Alignment.center,
+                                                  minScale: PhotoViewComputedScale.contained * 1,
+                                                  tightMode: true,
+                                                  maxScale: PhotoViewComputedScale.covered * 2.0,
+                                                  initialScale: PhotoViewComputedScale.contained * 1.1,
+                                                  enableRotation: true,
+                                                  scaleStateController: scaleStateController,
+                                                  child: Container(
+                                                    color: Colors.transparent,
+                                                    width: 300,
+                                                    height: 300,
+                                                    child:imageList.length<(index+1)?Center(child: CircularProgressIndicator()) : Image.memory(imageList[index]),
+                                                  ),
+                                                )
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 5),
+                                  height: 200,
+                                  width: 220,
+                                  child: imageList.length<(index+1)?const Center(child: CircularProgressIndicator()) : Image.memory(imageList[index]),
+                                ),
+                              ),
+                              SizedBox(height: 5,),
+                              Text(documentList[index].documentDate,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.indigo.shade800),),
+                              SizedBox(height: 5,),
+                              Text(documentList[index].uploadBy,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.indigo.shade800),),
+                              SizedBox(height: 5,),
+                            ],
+                          ),
+                        );
+                      }
+                    ),
+                  ),
                 ),
               )
             ],

@@ -1,3 +1,4 @@
+import 'package:digipath_ircs/Design/BorderContainer.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +29,11 @@ class _PathologyPageState extends State<PathologyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context,''),
+      appBar: GlobalAppBar(context,'visit type'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo.shade100,
+        color: globalPageBackgroundColor,
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -46,14 +47,14 @@ class _PathologyPageState extends State<PathologyPage> {
               height: MediaQuery.of(context).size.height*0.40,
             ),
             Container(
-              decoration: ColorFillContainer(Colors.white),
-              margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+              decoration: BorderContainer(Colors.white,globalBlue),
+              margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
               child: Column(
                 children: [
                   RadioListTile(
                     title: Text("Home Collection",textScaleFactor: 1.0,style: TextStyle(fontSize: 16,color: Colors.indigo.shade800,fontWeight: FontWeight.w600),),
                     value: "Home Collection",
-                    activeColor: Colors.red,
+                    activeColor: globalBlue,
                     groupValue: collectionType,
                     onChanged: (value){
                       setState(() {
@@ -65,7 +66,7 @@ class _PathologyPageState extends State<PathologyPage> {
                     title: Text("Center Visit",textScaleFactor: 1.0 ,style: TextStyle(fontSize: 16,color: Colors.indigo.shade800,fontWeight: FontWeight.w600),),
                     value: "Center Visit",
                     groupValue: collectionType,
-                    activeColor: Colors.red,
+                    activeColor: globalBlue,
                     onChanged: (value){
                       setState(() {
                         collectionType = value.toString();

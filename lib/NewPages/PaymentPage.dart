@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart';
 import '../Book Appointment/PathologyPages/WebViewPage.dart';
+import '../Design/BorderContainer.dart';
 import '../Design/GlobalAppBar.dart';
 import '../Design/TopPageTextViews.dart';
 import '../Global/global.dart';
@@ -89,9 +90,7 @@ class _PaymentPageState extends State<PaymentPage> {
         color: globalPageBackgroundColor,
         child: Column(
           children: [
-            SizedBox(height: 5,),
             TopPageTextViews('pay your pending payment',),
-            SizedBox(height: 5,),
             noDataText?Container(
               width: double.infinity,
               margin: EdgeInsets.all(25),
@@ -116,7 +115,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             padding: EdgeInsets.all(15),
                             margin: EdgeInsets.only(left: 20,right: 20,bottom: 3,top: 5),
                             width: double.infinity,
-                            decoration: ColorFillContainer(Colors.white),
+                            decoration: BorderContainer(Colors.white,globalBlue),
                             child: Row(
                               children: [
                                 Expanded(

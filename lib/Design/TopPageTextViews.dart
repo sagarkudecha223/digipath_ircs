@@ -9,7 +9,7 @@ class TopPageTextViews extends Container{
     child: Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+          padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
           child: Text(bottomText.toUpperCase(),style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: globalBlue,letterSpacing: 0.5)),
         )
       ],

@@ -2,6 +2,7 @@ import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:open_file_plus/open_file_plus.dart';
+import '../Design/BorderContainer.dart';
 import '../Global/Toast.dart';
 import '../ModalClass/ViewReportsModal.dart';
 import 'dart:io';
@@ -59,26 +60,10 @@ class _ViewReportsCardState extends State<ViewReportsCard> {
             }
       },
       child: Container(
-        margin: EdgeInsets.fromLTRB(10, 4, 10, 4),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(
-              width: 1.5,
-              color: Colors.grey
-          ),
-          boxShadow: const [
-            BoxShadow(
-                color: Colors.grey,
-                blurRadius: 4,
-                blurStyle: BlurStyle.outer,
-                spreadRadius: 0,
-                offset: Offset(0, 0)
-            ),
-          ],
-        ),
+        margin: const EdgeInsets.fromLTRB(15, 4, 15, 4),
+        decoration: BorderContainer(globalWhiteColor, globalBlue),
         child: Padding(
-          padding:  EdgeInsets.fromLTRB(8, 8, 8, 3),
+          padding:  const EdgeInsets.fromLTRB(8, 8, 8, 3),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -87,17 +72,17 @@ class _ViewReportsCardState extends State<ViewReportsCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Date: '+  widget.viewReportModal.OnSetDate.toString(),textScaleFactor: 1.0,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16.0),),
-                    Icon(Reported?Icons.download:Icons.cached_rounded, color: globalOrange,),
+                    Text('Date: ${widget.viewReportModal.OnSetDate}',textScaleFactor: 1.0,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16.0,color: globalBlue),),
+                    Icon(Reported?Icons.download:Icons.cached_rounded, color: globalBlue,),
                   ],),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 2, 10, 5),
-                child: Text('Name: '+ widget.viewReportModal.ServiceName.toString(),textScaleFactor: 1.0,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18),),
+                child: Text('Name: ${widget.viewReportModal.ServiceName}',textScaleFactor: 1.0,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18),),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8,bottom: 8),
-                child: Text('Status: '+ reportStatusText,textScaleFactor: 1.0,),
+                child: Text('Status: $reportStatusText',textScaleFactor: 1.0,),
               ),
             ],
           ),

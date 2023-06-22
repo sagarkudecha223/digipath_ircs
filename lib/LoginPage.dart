@@ -56,8 +56,8 @@ class _LoginPageState extends State<LoginPage> {
 
     FocusManager.instance.primaryFocus?.unfocus();
 
-    dynamic status = await searchAPI(true ,'$urlForIN/getOTPForCitizenLoginByMobile_smarthealth_shc.do?mobile=$number',
-        {'token': 'eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg',
+    dynamic status = await searchAPI(true ,'$urlForINSC/getOTPForCitizenLoginByMobile_smarthealth_shc.do?mobile=$number',
+        {'token': token
         },{'mobile': number}, 45);
 
     print(' status after responce: $status');
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
     accountList.clear();
     FocusManager.instance.primaryFocus?.unfocus();
 
-    dynamic status = await searchAPI(true ,'$urlForIN/validateMobileOTP_smarthealth.notauth',
+    dynamic status = await searchAPI(true ,'$urlForINSC/validateMobileOTP_smarthealth.notauth',
         {},{'otp':OTP, 'mobile':number }, 45);
 
     print(' status after responce: $status');

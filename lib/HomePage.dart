@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:digipath_ircs/DrawerPages/EditProfilePage.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/global.dart';
 import 'package:digipath_ircs/Book%20Appointment/BookApointmentPage.dart';
@@ -18,14 +19,14 @@ import 'LoginPage.dart';
 import 'ModalClass/HomePageTitleModal.dart';
 import 'AddRecord/AddRecordPage.dart';
 import 'DrawerPages/EnquiryListPage.dart';
-import 'GetFreeAdvise/FreeConsultationPage.dart';
 import 'NewPages/OrderedInvestigation.dart';
-import 'NewPages/PaymentHistoryPage.dart';
+import 'DrawerPages/PaymentHistoryPage.dart';
 import 'NewPages/PaymentPage.dart';
 import 'NewPages/PrescriptionPage.dart';
 import 'NewPages/TeleConsulatationPage.dart';
 import 'NewPages/UploadDocumentPage.dart';
 import 'NewPages/ViewReports.dart';
+import 'Thelessemia/FreeConsultationPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -120,7 +121,7 @@ class _homeState extends State<HomePage> {
             context: context,
             builder: (BuildContext context) => TweenAnimationBuilder(
               tween: Tween<double>(begin: 0, end: 1),
-              duration: Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 500),
               builder: (BuildContext context, double value, Widget? child) {
                 return Opacity(opacity: value,
                   child: Padding(
@@ -167,7 +168,7 @@ class _homeState extends State<HomePage> {
             ),
           ),
           centerTitle: true,
-          title: Text('Home'),
+          title: Text('Home'.toUpperCase()),
           titleTextStyle: TextStyle(color: globalWhiteColor,fontWeight: FontWeight.bold,fontSize: 19),
           elevation: 0.0,
           actions: [
@@ -255,12 +256,15 @@ class _homeState extends State<HomePage> {
                   child: Icon(Icons.person, color: globalBlue,),
                 ),
                 title: TextWidget('Edit Profile Details',16,FontWeight.w600,globalBlue),
-                onTap: (){},
+                onTap: (){
+                  _scaffoldKey.currentState?.openEndDrawer();
+                  Get.to(EditProfilePage());
+                },
               ),
               divider,
               ListTile(
                   dense: true,
-                  visualDensity: VisualDensity(vertical: -3),
+                  visualDensity: const VisualDensity(vertical: -3),
                   leading: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Icon(Icons.payment_rounded, color: globalBlue,),

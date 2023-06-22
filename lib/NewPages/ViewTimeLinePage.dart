@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -61,7 +62,7 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
     try {
       Response response = await get(
           Uri.parse(
-              'https://medicodb.in/getListofDateAsPerCitizenCode.app?CitizenCode=$localCitizenCode'),
+              '$urlForIN/getListofDateAsPerCitizenCode.app?CitizenCode=15092100073901'),
           headers: {
             'u': 'dhruv',
             'p': 'demo',
@@ -144,7 +145,7 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo[100],
+        color: globalPageBackgroundColor,
         child: Column(
           children: [
             TopPageTextViews('Can see Timeline Reports here..'),
@@ -161,7 +162,7 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
                 child: SingleChildScrollView(
                   child: ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: recordlist.length,
                     itemBuilder: (context, index){
                       return MedicalRecordsCard(medicalReportModal: recordlist[index]);

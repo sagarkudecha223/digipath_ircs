@@ -4,6 +4,7 @@ import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
+import '../../Design/BorderContainer.dart';
 import '../../Design/TopPageTextViews.dart';
 import '../../Global/SearchAPI.dart';
 import '../../Global/Toast.dart';
@@ -37,7 +38,7 @@ class _PathologyServicePageState extends State<PathologyServicePage> {
     trueServiceList.clear();
     serviceList.clear();
 
-    dynamic status = await searchAPI(false ,'$urlForIN/getServiceListWithPriceByServiceCategoryForAndroid.do?serviceCategoryID=9&careProviderID=4286',
+    dynamic status = await searchAPI(false ,'$urlForINSC/getServiceListWithPriceByServiceCategoryForAndroid.do?serviceCategoryID=9&careProviderID=4286',
         {},{}, 35);
 
     print(' status after responce: $status');
@@ -87,7 +88,7 @@ class _PathologyServicePageState extends State<PathologyServicePage> {
 
     totalPackageList.clear();
 
-    List<dynamic> status = await searchAPI(false ,'$urlForIN/getAllPackageServiceFacilityList.do?careProviderID=4286',
+    List<dynamic> status = await searchAPI(false ,'$urlForINSC/getAllPackageServiceFacilityList.do?careProviderID=4286',
         {},{}, 35);
 
     print(' status after responce: $status');
@@ -132,7 +133,7 @@ class _PathologyServicePageState extends State<PathologyServicePage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo.shade100,
+        color: globalPageBackgroundColor,
         child: Column(
           children: [
             TopPageTextViews('Select service & package here'),
@@ -141,7 +142,7 @@ class _PathologyServicePageState extends State<PathologyServicePage> {
                 width: double.infinity,
                 margin: const EdgeInsets.fromLTRB(15, 5, 15, 5),
                 padding: const EdgeInsets.all(15),
-                decoration: ColorFillContainer(Colors.white),
+                decoration: BorderContainer(Colors.white,globalBlue),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.max,

@@ -1,4 +1,6 @@
+import 'package:digipath_ircs/Design/BorderContainer.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_week/flutter_calendar_week.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -83,7 +85,7 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context,''),
+      appBar: GlobalAppBar(context,'Time slots'),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -91,12 +93,9 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
         child: Column(
           children: [
             Container(
-                margin: EdgeInsets.all(5),
+                margin: EdgeInsets.only(left: 5,right: 5,top: 15,bottom: 5),
                 padding: EdgeInsets.only(top:10,left: 5,right: 5),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15)
-                ),
+                decoration: BorderContainer(globalWhiteColor,globalBlue),
                 child: CalendarWeek(
                   controller: _controller,
                   backgroundColor: Colors.transparent,
@@ -126,7 +125,7 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
                   dateBackgroundColor: Colors.black12,
                   todayBackgroundColor : todaySelect?Colors.indigo.shade800 : Colors.black12,
                   dateStyle: TextStyle(color: Colors.indigo[800],fontWeight: FontWeight.bold),
-                  dayOfWeekStyle: TextStyle(color: Colors.indigo[800],fontWeight: FontWeight.bold),
+                  dayOfWeekStyle: TextStyle(color: Colors.indigo[800],fontWeight: FontWeight.bold,fontSize: 12),
                   todayDateStyle: TextStyle(color:todaySelect?Colors.white : Colors.indigo[800],fontWeight: FontWeight.bold),
                   weekendsStyle: TextStyle(color: Colors.indigo[800],fontWeight: FontWeight.bold),
                   onDateLongPressed: (DateTime datetime) {
@@ -145,7 +144,7 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
                           DateFormat.yMMMM().format(time),
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
-                          style: TextStyle(color:Colors.indigo[800], fontWeight: FontWeight.bold),
+                          style: TextStyle(color:Colors.indigo[800], fontWeight: FontWeight.bold,fontSize: 16),
                         )
                     ),
                   ),
@@ -153,12 +152,9 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
             ),
             Expanded(
               child: Container(
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
                 padding: EdgeInsets.only(top:30,left: 5,right: 5),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15)
-                ),
+                decoration: BorderContainer(globalWhiteColor, globalBlue),
                 height: double.infinity,
                 width: double.infinity,
                 child: GridView.builder(
@@ -185,11 +181,11 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
                       child: Container(
                           margin: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                              color: timeSlotsList[index].isEnable == 'false'? Colors.red.shade300 : selectedIndex == index ? Colors.grey : Colors.greenAccent.shade200,
+                              color: timeSlotsList[index].isEnable == 'false'? globalRed : selectedIndex == index ? Colors.black12 : globalGreen,
                               borderRadius: BorderRadius.circular(15)
                           ),
                           height: 20,width: 100,
-                          child: Center(child: Text(timeSlotsList[index].time,style: TextStyle(fontSize: 16,color:  selectedIndex == index ? Colors.white : Colors.grey.shade800,
+                          child: Center(child: Text(timeSlotsList[index].time,style: TextStyle(fontSize: 16,color:  selectedIndex == index ? Colors.black : globalWhiteColor,
                               fontWeight: FontWeight.w500),textAlign: TextAlign.center,))
                       ),
                     );

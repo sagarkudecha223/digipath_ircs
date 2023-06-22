@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/Toast.dart';
 import 'package:digipath_ircs/Global/global.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../Design/BorderContainer.dart';
 import '../Design/ColorFillContainer.dart';
 import '../Design/TopPageTextViews.dart';
 import '../HomePage.dart';
@@ -56,7 +58,7 @@ class _SwitchUserPageState extends State<SwitchUserPage> {
 
     try{
 
-      Response response = await post( Uri.parse('$urlForIN/mobileNumberwisePatientList.notauth?mobile=$localMobileNum'),
+      Response response = await post( Uri.parse('$urlForINSC/mobileNumberwisePatientList.notauth?mobile=$localMobileNum'),
         headers: {
           "token" : token
         }
@@ -103,15 +105,15 @@ class _SwitchUserPageState extends State<SwitchUserPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo.shade100,
+        color: globalPageBackgroundColor,
         child: Column(
           children: [
             TopPageTextViews('Registered with mobile No: $localMobileNum'),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 20),
+                padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
                 margin: const EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 10),
-                decoration: PageMainContainterDecoration(),
+                decoration: BorderContainer(Colors.white,globalBlue),
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: accountList.length,

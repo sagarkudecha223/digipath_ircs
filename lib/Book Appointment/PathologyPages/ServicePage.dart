@@ -114,13 +114,14 @@ class _ServicePageState extends State<ServicePage> {
               controller: searchFilterController,
               onChanged: applyFilter,
             ),
+            const SizedBox(height: 1),
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(2),
+              padding: EdgeInsets.only(left: 3,right: 3,top: 2,bottom: 2),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                    width: 1,
+                    width: 0.8,
                     color: Colors.grey
                 ),
               ),
@@ -187,39 +188,37 @@ class _ServicePageState extends State<ServicePage> {
                 child: Text('SELECT SERVICE',style: TextStyle(color: Colors.grey.shade800),)
             )
         ),
-        Container(
-          child: ListView.builder(
-            itemCount: selectedServiceList.length,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index){
-              return ListTile(
-                visualDensity: VisualDensity(vertical: -4),
-                contentPadding :EdgeInsets.zero,
-                title: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.25),
-                      borderRadius: BorderRadius.circular(8),),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(child: Text('${selectedServiceList[index].name} (${selectedServiceList[index].amount} RS.)',style: TextStyle(fontWeight: FontWeight.w600,color: Colors.grey.shade800,fontSize: 14))),
-                        SizedBox(width: 10,),
-                        InkWell(
-                            onTap: (){
-                              setState(() {
-                                demoList.remove(selectedServiceList[index].name);
-                                selectedServiceList.remove(selectedServiceList[index]);
-                              });
-                            },
-                            child: Icon(Icons.cancel_rounded,color: Colors.red,size: 28,)
-                        )
-                      ],
-                    )),
-              );
-            },
-          ),
+        ListView.builder(
+          itemCount: selectedServiceList.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index){
+            return ListTile(
+              visualDensity: const VisualDensity(vertical: -4),
+              contentPadding :EdgeInsets.zero,
+              title: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.25),
+                    borderRadius: BorderRadius.circular(8),),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(child: Text('${selectedServiceList[index].name} (${selectedServiceList[index].amount} RS.)',style: TextStyle(fontWeight: FontWeight.w600,color: Colors.grey.shade800,fontSize: 14))),
+                      SizedBox(width: 10,),
+                      InkWell(
+                          onTap: (){
+                            setState(() {
+                              demoList.remove(selectedServiceList[index].name);
+                              selectedServiceList.remove(selectedServiceList[index]);
+                            });
+                          },
+                          child: Icon(Icons.cancel_rounded,color: Colors.red,size: 28,)
+                      )
+                    ],
+                  )),
+            );
+          },
         ),
       ],
     );

@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:lottie/lottie.dart';
+import '../Design/BorderContainer.dart';
 import '../Design/ColorFillContainer.dart';
 import '../Design/GlobalAppBar.dart';
 import '../Design/TopPageTextViews.dart';
@@ -55,7 +56,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
 
     EasyLoading.show(status: 'Loading...');
 
-    dynamic status = await searchAPI(false ,'$urlForIN/findCareProfessionalForAppointment.do?cityID&facultyID&careProviderID&doctorID',
+    dynamic status = await searchAPI(false ,'$urlForINSC/findCareProfessionalForAppointment.do?cityID&facultyID&careProviderID&doctorID',
         {},{}, 35);
 
     print(' status after responce: $status');
@@ -293,7 +294,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
       body: Container(
         height: MediaQuery.of(context).size.height ,
         width: MediaQuery.of(context).size.width ,
-        color: Colors.indigo[100],
+        color: globalPageBackgroundColor,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -301,7 +302,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
               Container(
                 padding: const EdgeInsets.only(left: 20,right: 20),
                 margin: const EdgeInsets.only(left: 15,right: 15,top: 10),
-                decoration: PageMainContainterDecoration(),
+                decoration: BorderContainer(Colors.white,globalBlue),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -558,7 +559,7 @@ class _BookApointmentPageState extends State<BookApointmentPage> {
                         child: textContainer(doctorText)),
                       InkWell(
                         onTap: (){
-                          Get.to(DoctorListPage(url: '$urlForIN/appointmentSearchCareProfessionalAndroid.shc?DoctorIDF=$doctorIDF&appointmentTypeTeleOrClinic=0&availabilityEndTime=24&availabilityStartTime=00&careProviderID=$careProviderID&cityID=$cityID&selectedWeekArray=%5Btrue,true,true,true,true,true,true%5D&specialityID=$specialityID'));
+                          Get.to(DoctorListPage(url: '$urlForINSC/appointmentSearchCareProfessionalAndroid.shc?DoctorIDF=$doctorIDF&appointmentTypeTeleOrClinic=0&availabilityEndTime=24&availabilityStartTime=00&careProviderID=$careProviderID&cityID=$cityID&selectedWeekArray=%5Btrue,true,true,true,true,true,true%5D&specialityID=$specialityID'));
                         },
                         child: Container(
                           margin: EdgeInsets.only(top: 20),

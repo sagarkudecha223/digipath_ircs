@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:digipath_ircs/Design/BorderContainer.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:dio/dio.dart' as foo;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -8,6 +10,7 @@ import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import '../Design/ContainerDecoration.dart';
 import '../Global/Toast.dart';
+import '../Global/global.dart';
 import '../ModalClass/MedicalReportModal.dart';
 
 class MedicalRecordsCard extends StatefulWidget {
@@ -62,7 +65,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              'https://medicodb.in/getPatientReportDataForFundoscopyAndroid.app?EncounterServiceIDF=$EncounterServiceIDP'),
+              '$urlForIN/getPatientReportDataForFundoscopyAndroid.app?EncounterServiceIDF=$EncounterServiceIDP'),
           headers: {
             'u': u,
             'p': p,
@@ -116,7 +119,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              'https://medicodb.in/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
+              '$urlForIN/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
           headers: {
             'u': u,
             'p': p,
@@ -176,7 +179,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              'https://medicodb.in/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
+              '$urlForIN/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
           headers: {
             'u': u,
             'p': p,
@@ -231,6 +234,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
 
   @override
   void dispose() {
+    EasyLoading.dismiss();
     super.dispose();
   }
 
@@ -238,7 +242,6 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: ()=>{
-
         if(widget.medicalReportModal.Document == '0'){
           if(widget.medicalReportModal.ReportStatus == '1'){
             showDialog(
@@ -345,7 +348,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
 
                 EasyLoading.show(status: 'Loading...'),
                 openFile(
-                  url: 'https://medicodb.in/pathologyReportForAndroid.app?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP',
+                  url: '$urlForIN/pathologyReportForAndroid.app?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP',
                   fileName:'$EncounterServiceIDP.pdf',
                 ),
 
@@ -414,14 +417,14 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
         else{
           EasyLoading.show(status: 'Loading...'),
           openFile(
-            url: 'https://medicodb.in/getScanDocReportAndroid.do?patientDocumentIDP=$PatientDocumentIDP',
+            url: '$urlForIN/getScanDocReportAndroid.do?patientDocumentIDP=$PatientDocumentIDP',
             fileName:'$PatientDocumentIDP.pdf',
           ),
         }
       },
       child: Container(
-        margin: EdgeInsets.fromLTRB(10, 4, 10, 4),
-        decoration: ContainerDecoration(15),
+        margin: const EdgeInsets.fromLTRB(15, 4, 15, 4),
+        decoration: BorderContainer(Colors.white, globalBlue),
         child: Padding(
           padding:  EdgeInsets.fromLTRB(8, 8, 8, 3),
           child: Column(
@@ -429,7 +432,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                child: Text(widget.medicalReportModal.Document == '1'?widget.medicalReportModal.ServiceAlias : widget.medicalReportModal.ServiceName.toString(),textScaleFactor: 1.0,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                child: Text(widget.medicalReportModal.Document == '1'?widget.medicalReportModal.ServiceAlias : widget.medicalReportModal.ServiceName.toString(),textScaleFactor: 1.0,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: globalBlue),),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
@@ -446,22 +449,23 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(widget.medicalReportModal.OnSetDate.toString(),textScaleFactor: 1.0,style: const TextStyle(color: Colors.green,fontWeight: FontWeight.w500,fontSize: 16.0),),
+                    Text(widget.medicalReportModal.OnSetDate.toString(),textScaleFactor: 1.0,
+                      style: TextStyle(color: globalBlue,fontWeight: FontWeight.w600,fontSize: 16.0),),
                     Row(
                       children: [
                         Visibility(
                             visible: widget.medicalReportModal.ReportStatus == '1',
-                            child: Image.asset('assets/images/registered.png',color: Colors.green,)),
+                            child: Image.asset('assets/images/registered.png',color: globalBlue,)),
                         Visibility(
                             visible: widget.medicalReportModal.ReportStatus == '2',
-                            child: Icon(Icons.cloud_upload,color: Colors.green,)),
+                            child: Icon(Icons.cloud_upload,color: globalBlue,)),
                         Visibility(
                             visible: widget.medicalReportModal.ReportStatus == '3',
-                            child: Image.asset('assets/images/reported.png',color: Colors.green,)),
+                            child: Image.asset('assets/images/reported.png',color:globalBlue,)),
                         Visibility(
                             visible: widget.medicalReportModal.Document == '1',
-                            child: Icon(Icons.scanner,color: Colors.green,)),
-                        SizedBox(width: 5.0,),
+                            child: Icon(Icons.scanner,color: globalBlue,)),
+                        const SizedBox(width: 5.0,),
                         Text(reportStatusText,textScaleFactor: 1.0,),
                       ],
                     ),

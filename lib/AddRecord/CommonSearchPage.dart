@@ -1,6 +1,7 @@
 import 'dart:convert';
+import 'package:digipath_ircs/Design/BorderContainer.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
-import 'package:digipath_ircs/Design/TopPageTextViews.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:highlight_text/highlight_text.dart';
@@ -147,7 +148,6 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
     }
   }
 
-
   @override
   void dispose() {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -232,14 +232,7 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
                     contentPadding :EdgeInsets.zero,
                     title: Container(
                         padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                              width: 1,
-                              color: Colors.grey
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                        decoration: BorderContainer(Colors.white,globalBlue),
                         child: Padding(
                           padding: const EdgeInsets.all(6.0),
                           child: Row(

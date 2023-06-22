@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import '../../Design/ColorFillContainer.dart';
 import '../../Global/global.dart';
@@ -21,9 +22,9 @@ class _PackagesPageState extends State<PackagesPage> {
       MaterialState.focused,
     };
     if (states.any(interactiveStates.contains)) {
-      return Colors.blue;
+      return globalBlue;
     }
-    return Colors.blue;
+    return globalBlue;
   }
 
   @override
@@ -31,7 +32,7 @@ class _PackagesPageState extends State<PackagesPage> {
     return ListView.builder(
       itemCount:trueServiceList.length,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index){
         int itemCount = 0;
         for(int i=0; i<totalPackageList.length; i++){
@@ -42,8 +43,8 @@ class _PackagesPageState extends State<PackagesPage> {
         trueServiceList[index].itemCount = itemCount;
         return Container(
           decoration: ColorFillContainer(Colors.indigo.shade50),
-          margin: EdgeInsets.all(2),
-          padding: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(2),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               Row(

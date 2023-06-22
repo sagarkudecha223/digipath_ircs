@@ -2,11 +2,13 @@ import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
+import '../Design/BorderContainer.dart';
 import '../Design/ColorFillContainer.dart';
 import '../Design/GlobalAppBar.dart';
 import '../Design/TopPageTextViews.dart';
 import '../Global/SearchAPI.dart';
 import '../Global/Toast.dart';
+import '../Global/global.dart';
 import '../ModalClass/DoctorListModal.dart';
 import 'TimeSlotPage.dart';
 
@@ -44,7 +46,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
     doctorList.clear();
 
     dynamic status = await searchAPI(false ,url,
-        {"token" : "eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg"
+        {"token" : token
         },{}, 45);
 
     print(' status after responce: $status');
@@ -113,7 +115,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
       padding: const EdgeInsets.only(top: 15,bottom: 15),
       child: Divider(
         thickness: 0.5,
-        color: Colors.grey[500],
+        color: globalBlue,
         height: 1,
       ),
     );
@@ -124,8 +126,8 @@ class _DoctorListPageState extends State<DoctorListPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(firstText,style: TextStyle(color: Colors.grey.shade600,fontSize: 15)),
-        Flexible(child: Text(secondText,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.end,))
+        Text(firstText,style: TextStyle(color: Colors.grey.shade800,fontSize: 15)),
+        Flexible(child: Text(secondText, style:TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Colors.grey.shade800),textAlign: TextAlign.end,))
       ],
     );
   }
@@ -143,7 +145,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
       body: Container(
         height: MediaQuery.of(context).size.height ,
         width: MediaQuery.of(context).size.width ,
-        color: Colors.indigo[100],
+        color: globalPageBackgroundColor,
         child: Column(
           children: [
             TopPageTextViews('Select doctor from the listing below'),
@@ -151,7 +153,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
             Flexible(
               child: Container(
                 padding: const EdgeInsets.only(left: 5,right: 5),
-                margin: const EdgeInsets.only(left: 5,right: 5,top: 5,bottom: 5),
+                margin: const EdgeInsets.only(left: 5,right: 5,bottom: 5),
                 decoration: BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(15),
@@ -177,18 +179,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
                             title: Container(
                                 padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 10),
                                 margin: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Colors.grey,
-                                        blurRadius: 5,
-                                        blurStyle: BlurStyle.outer,
-                                        spreadRadius: 1,
-                                        offset: Offset(0, 0)
-                                    ),
-                                  ],
-                                borderRadius: BorderRadius.circular(13),),
+                                decoration: BorderContainer(Colors.white,globalBlue),
                                 child: Column(
                                   children: [
                                     CommonRow('Dr Name   ', doctorList[index].careProfessionalName),
@@ -220,10 +211,11 @@ class _DoctorListPageState extends State<DoctorListPage> {
                                         margin: EdgeInsets.only(top: 5,bottom: 5),
                                         width: double.infinity,
                                         decoration: ColorFillContainer(globalOrange),
-                                        child: const Padding(
+                                        child:
+                                        Padding(
                                           padding: EdgeInsets.all(10.0),
                                           child: Center(
-                                            child: Text('Book Appointment',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                                            child: Text('Book Appointment'.toUpperCase(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                                           ),
                                         ),
                                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import '../Global/Colors.dart';
 import '../HomePage.dart';
 
 class GlobalAppBar extends AppBar{
@@ -8,7 +9,7 @@ class GlobalAppBar extends AppBar{
 
   GlobalAppBar(BuildContext context, this.titleText) : super(
     elevation: 0.0,
-    backgroundColor: const Color(0xFF254D99),
+    backgroundColor: globalBlue,
     leading: InkWell(
         onTap: (){
           FocusManager.instance.primaryFocus?.unfocus();

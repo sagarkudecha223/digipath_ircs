@@ -60,9 +60,9 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
   void getServiceList() async{
 
     dynamic status = await searchAPI(false,
-        '$urlForIN/careProfessionalSetting_smarthealth.shc?careProfesionalID=$CareProfessionalIDP&careProviderID=$careProviderIDP',
+        '$urlForINSC/careProfessionalSetting_smarthealth.shc?careProfesionalID=$CareProfessionalIDP&careProviderID=$careProviderIDP',
         {
-          "token": "eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg"
+          "token": token
         }, {}, 25);
 
     print(' status after responce: $status');
@@ -109,8 +109,8 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
     timeSlotsList.clear();
     EasyLoading.show(status: 'Loading...');
 
-    dynamic status = await searchAPI(false,'$urlForIN/getAppointmentTimeSlabSmartHealthReact.shc?careProviderIDP=$careProviderIDP&CareProfessionalIDP=$CareProfessionalIDP&date=$date&current_date=$currentDate',
-        {"token": "eyJhbGciOiJSUzI1NiJ9.eyJ1bmFtZSI6IjI2MDk3MTQ1NDA5MSIsInNlc3Npb25pZCI6IkQyN0I4QTBBQzNERjZCQzlEQUEwNUU2NTlDODk2NTk1Iiwic3ViIjoiSldUX1RPS0VOIiwianRpIjoiNWQxYWU3ZmYtMzJhOC00YWYxLWE4OTItODE1MWRiMDRlNzE3IiwiaWF0IjoxNjc4MTcyMTQzfQ.J4pK2XBzMaZNlgGAFxB1yFLUJoWKhzqHBKJbZfxwau7aBhMyb1ovWevVVgHQR5DsKJUhPbedNnhqvSOdLNO6uWn2qEwlGVpsslDCz1oftzA3NymnUF5xRoYoTkqjcM_3Raw6sVST9jAlw0hKmS_1tVJKBWdI1754FC-1o2qZ0mPOn-AT_1DGhWkFg88FRdtZAD2Zb7NUJ0vmvVlXzvkvhFEZsb-NksM4neAtWozUGqV-ZQ23JI21QDEZIC6Xj3khEJqNwVxNUrXH6CAdDU2QiDc7RJ6aN9HdqEdRvUSnvjA88qjBtQeNgp88rMMQ5g36WlzO0vQO4uO-Ek4pax9rpg"
+    dynamic status = await searchAPI(false,'$urlForINSC/getAppointmentTimeSlabSmartHealthReact.shc?careProviderIDP=$careProviderIDP&CareProfessionalIDP=$CareProfessionalIDP&date=$date&current_date=$currentDate',
+        {"token": token
         }, {}, 25);
 
     print(' status after responce: $status');
@@ -177,7 +177,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
     /// &SlotInterval=00:10&CareProvider=3345&CareProfessional=9379&selectedTime=13:00&purDetail=2,New Consultation&selectedDate=27-Apr-2023&
     /// serviceIDF=2&citizen_mobile=260971454091&loginID=4710&callFromCitizen=callFromCitizen&CITIZEN_URL=https://smarthealth.care/login?mobile='
 
-    dynamic status = await searchAPI(true,'$urlForIN/saveAppointmentCitizenForAppointmentSmartHealth.shc?'
+    dynamic status = await searchAPI(true,'$urlForINSC/saveAppointmentCitizenForAppointmentSmartHealth.shc?'
             'citizenIDP=$localCitizenIDP&ScheduleTimeSlotIDP=${timeSlotsList[0].ScheduleTimeSlotIDP}&SlotInterval=${timeSlotsList[0].SlotInterval}'
             '&CareProvider=$careProviderIDP&CareProfessional=$CareProfessionalIDP&selectedTime=$selectedTime&purDetail=$selectedServiceIDP,$selectedService'
             '&selectedDate=$current_date&serviceIDF=$selectedServiceIDP&citizen_mobile=$localMobileNum&loginID=$localUserLoginIDP&callFromCitizen=callFromCitizen&CITIZEN_URL=https://smarthealth.care/login?mobile=',
@@ -222,7 +222,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GlobalAppBar(context,''),
+      appBar: GlobalAppBar(context,'book appointment'),
       body: Container(
         height: MediaQuery.of(context).size.height ,
         width: MediaQuery.of(context).size.width ,
@@ -286,23 +286,15 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
                         )
                     ),
                   ),
-                  decorations: [
-                    // DecorationItem(
-                    //   decorationAlignment: FractionalOffset.center,
-                    //   date: DateTime.now().add(Duration(days: 1)),
-                    // ),
-                    // DecorationItem(
-                    //     date: DateTime.now().add(Duration(days: 3))),
-                  ],
                 )
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 8.0,top: 10,bottom: 5),
-              child: Text('Time Slots',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black87,fontSize: 18,letterSpacing: 0.5),),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0,top: 10,bottom: 5),
+              child: Text('Time Slots',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey.shade800,fontSize: 18,letterSpacing: 0.5),),
             ),
             Expanded(
               child: Container(
-                margin: EdgeInsets.all(5),
+                margin: EdgeInsets.only(left: 10,top: 5,bottom: 5,right: 10),
                 padding: EdgeInsets.only(top:10,left: 5,right: 5),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -551,7 +543,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
                   }
                 },
                 child: Container(
-                    margin: EdgeInsets.only(left: 5,right: 5,bottom: 3),
+                    margin: EdgeInsets.only(left: 10,bottom: 5,right: 10),
                     padding: EdgeInsets.all(15),
                     decoration: ColorFillContainer(globalOrange),
                     width: double.infinity,

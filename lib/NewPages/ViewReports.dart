@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../CardViews/ViewReportsCard.dart';
 import '../Design/GlobalAppBar.dart';
 import '../Design/TopPageTextViews.dart';
+import '../Global/Colors.dart';
 import '../Global/SearchAPI.dart';
 import '../Global/Toast.dart';
 import '../Global/global.dart';
@@ -92,53 +93,6 @@ class _ViewReportPageState extends State<ViewReportPage> {
         showToast(e.toString());
       }
     }
-
-    // dynamic status = await searchAPI(false ,'https://medicodb.in/patientListForPathologyReport.do?requestFrom=patient&citizenID=1028107&startDate=01-April-2023&endDate=14-April-2023&careProviderID=4286',
-    //     {},{}, 25);
-    //
-    // print(' status after responce: $status');
-    // EasyLoading.dismiss();
-    //
-    // if(status.toString() != 'Sorry !!! Server Error' || status.toString().isNotEmpty){
-    //   List<dynamic> statusinfo = status['data'];
-    //
-    //   if(!(statusinfo == null)) {
-    //     for (int i = 0; i < statusinfo.length; i++) {
-    //       String ServiceName = statusinfo[i]["serviceAlias"].toString();
-    //       String OnSetDate = statusinfo[i]["onSetDate"].toString();
-    //       String ReportStatus = statusinfo[i]["reportStatus"].toString();
-    //       String ServiceMapIDP = statusinfo[i]["serviceMapIDF"].toString();
-    //       String EncounterServiceIDP = statusinfo[i]["encounterServiceIDP"].toString();
-    //       String  CitizenIDF = statusinfo[i]["citizenIDF"].toString();
-    //       String EncounterServiceNumber = statusinfo[i]["encounterServiceNumber"].toString();
-    //
-    //       searchReportList.add(ViewReportModal(
-    //         ServiceName: ServiceName,OnSetDate: OnSetDate, ReportStatus: ReportStatus,
-    //         ServiceMapIDP: ServiceMapIDP, EncounterServiceIDP: EncounterServiceIDP,CitizenIDF: CitizenIDF,
-    //         EncounterServiceNumber: EncounterServiceNumber,));
-    //     }
-    //
-    //     setState(() {
-    //       EasyLoading.dismiss();
-    //     });
-    //   }
-    //   else{
-    //     setState(() {
-    //       noDataText = true;
-    //       noDataTextString = 'No matching data found';
-    //       EasyLoading.dismiss();
-    //       showToast('Sorry ! No matching data found');
-    //     });
-    //   }
-    // }
-    // else{
-    //   setState(() {
-    //     EasyLoading.dismiss();
-    //     noDataText = true;
-    //     noDataTextString = 'Sorry !!! Server Error';
-    //     showToast('Sorry !!! Server Error');
-    //   });
-    // }
   }
 
   @override
@@ -148,7 +102,7 @@ class _ViewReportPageState extends State<ViewReportPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo[100],
+        color: globalPageBackgroundColor,
         child: Column(
           children: [
             TopPageTextViews('Can See Pathology Reports Here..'),
