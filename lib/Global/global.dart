@@ -2,11 +2,13 @@ library app.globals;
 import '../ModalClass/MultiAccountModal.dart';
 import '../ModalClass/PathologyPackageModal.dart';
 import '../ModalClass/PathologyServiceModal.dart';
+import 'SearchAPI.dart';
 
 String urlForCOM = 'https://medicodb.com';
 String urlForIN = 'https://medicodb.in';
 String urlForINSC = 'https://smarthealth.care';
 bool loggedIn = false;
+bool isOnline = false;
 String internetStatus = 'ConnectivityResult.none';
 String localCitizenIDP = '';
 String localUserName = '';
@@ -23,6 +25,9 @@ String ULID = '';
 String mobile = '';
 String citizenID = '';
 
+String vcgroupIDP = '';
+String roomName = '';
+
 List<PathologyServiceModal> serviceList = <PathologyServiceModal>[];
 List<PathologyServiceModal> selectedServiceList = <PathologyServiceModal>[];
 List demoList = [];
@@ -33,3 +38,12 @@ List<PathologyServiceModal> finalSelectedPackageList = <PathologyServiceModal>[]
 List<PathologyPackageModal> totalPackageList = <PathologyPackageModal>[];
 
 List<MultiAccountModal> accountList = <MultiAccountModal>[];
+
+void updateVcGroup(String vcgroupID) async{
+
+ dynamic status = await searchAPI(false ,'$urlForINSC/updateVcGroup.shc?vcgroupID=$vcgroupID',
+      {'token' : token},{},50);
+
+  print(' status after responce: $status');
+
+}

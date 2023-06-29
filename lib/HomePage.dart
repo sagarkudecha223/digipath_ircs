@@ -430,7 +430,7 @@ class _homeState extends State<HomePage> {
                                     Get.to(PaymentPage());
                                   }
                                   else if(index == 2){
-                                    Get.to(UploadDocumentPage(isDirect: true));
+                                    Get.to(UploadDocumentPage(isDirect: true, encounterID: '', startTime: '', endTime: '', appointmentDate: '',));
                                   }
                                   else if(index == 3){
                                     Get.to(ViewReportPage());

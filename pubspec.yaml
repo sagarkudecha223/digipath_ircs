@@ -64,6 +64,7 @@ dependencies:
   audioplayers: ^0.20.1
   highlight_text: ^1.6.0
   url_launcher: ^6.1.11
+  jitsi_meet_wrapper: ^0.0.6
 
 dev_dependencies:
   flutter_test:

@@ -93,6 +93,9 @@ class InternetCheck{
     }
     else{
       EasyLoading.dismiss();
+      if(isOnline == true){
+        updateVcGroup(vcgroupIDP);
+      }
     }
     return result;
   }

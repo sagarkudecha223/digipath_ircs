@@ -126,7 +126,7 @@ class _OTPPageState extends State<OTPPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 15,bottom: 15),
+      padding: const EdgeInsets.only(top: 5,bottom: 15),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children:  [
@@ -140,9 +140,10 @@ class _OTPPageState extends State<OTPPage> {
                       Navigator.pop(context);
                     },
                     child: const Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.only(right: 8.0,bottom: 8.0),
                       child: Icon(Icons.cancel,size: 26,color: Colors.blueGrey),
-                    )),
+                    )
+                ),
               )
             ],
           ),

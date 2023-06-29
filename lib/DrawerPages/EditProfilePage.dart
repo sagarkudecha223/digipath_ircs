@@ -1,6 +1,7 @@
 import 'package:digipath_ircs/Design/BorderContainer.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:digipath_ircs/Design/TopPageTextViews.dart';
+import 'package:digipath_ircs/DrawerPages/EditOTPPage.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/HomePage.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +101,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     dynamic status = await searchAPI(false ,'$urlForINSC/getPatientDetails.shc?citizenID=$localCitizenIDP',
         {'token' : token},
-        {}, 25);
+        {}, 50);
 
     print(' status after responce: $status');
     EasyLoading.dismiss();
@@ -410,7 +411,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Future<void> showConfirmEmailDialog(){
+  Future<void> showConfirmEmailDialog(String header){
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -423,12 +424,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('confirm Email Address information'.toUpperCase(),style: TextStyle(fontSize: 20,color: globalBlue,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                Text('confirm $header information'.toUpperCase(),style: TextStyle(fontSize: 20,color: globalBlue,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
                 divider(),
-                CommonRowPadding('Email Address:', emailAddress.text),
+                CommonRowPadding('$header:', header=='Email Address'?emailAddress.text:mobileNumber.text),
                 divider(),
                 InkWell(
-                  onTap: submitEmailInfo,
+                  onTap: (){
+                    header=='Email Address'?submitEmailInfo():
+                    submitPhoneNumberInfo();
+                  },
                   child: Container(
                     margin: const EdgeInsets.only(top: 20),
                     decoration: BoxDecoration(
@@ -442,7 +446,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         children: [
                           Row(
                             children: [
-                              Text('edit address information'.toUpperCase(),style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                              Text('edit $header information'.toUpperCase(),style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                             ],
                           ),
                           const Icon(Icons.arrow_forward,color: Colors.white,),
@@ -457,6 +461,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
         );
       }
     );
+  }
+
+  Future<void> submitPhoneNumberInfo()async {
+    Navigator.pop(context);
+    var data = await showDialog<String>(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) =>StatefulBuilder(
+        builder: (context, StateSetter setState){
+          return Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            insetPadding: const EdgeInsets.all(20),
+            elevation: 16,
+            child: Padding(
+              padding:  EdgeInsets.all(20.0),
+              child: EditOTPPage(submitUrl: '$urlForINSC/updatePatientContactInfo.shc?Mobile_ContactIDP=$ContactIDPNumber&mobile=${mobileNumber.text}&Email_ContactIDP=$ContactIDPEmail&email=$ContactDetailsEmail',),
+            ),
+          );
+        },
+      ),
+    );
+    if(data == 'true'){
+      localMobileNum = mobileNumber.text;
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setString('mobile', mobileNumber.text);
+      showHomeDialog('Mobile number Information Edit successfully');
+    }
   }
 
   Future<void> showConfirmAddressDialog(){
@@ -529,7 +560,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
-                          child: Text('Cancel',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                          child: Text('OK',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
                           onTap: (){
                             Navigator.pop(context);
                           },
@@ -830,7 +861,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       visible: contactView,
                       child: Container(
                           width: double.infinity,
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -846,7 +877,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 ),
                               ),
                               InkWell(
-                                onTap: (){
+                                onTap: () async{
+                                  showConfirmEmailDialog('Phone Number');
+
+                                  // FocusManager.instance.primaryFocus?.unfocus();
 
                                 },
                                 child: Container(
@@ -885,7 +919,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               ),
                               InkWell(
                                 onTap: (){
-                                  showConfirmEmailDialog();
+                                  showConfirmEmailDialog('Email Address');
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.only(top: 20),

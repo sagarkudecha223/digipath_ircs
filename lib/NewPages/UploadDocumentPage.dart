@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:get/utils.dart';
 import 'dart:typed_data';
 import 'package:digipath_ircs/Design/BorderContainer.dart';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
@@ -12,24 +13,37 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:intl/intl.dart';
+import 'package:jitsi_meet_wrapper/jitsi_meet_wrapper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../Global/SearchAPI.dart';
 import '../Global/global.dart';
 import '../ModalClass/DocumentModal.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'ShowWaitingDialog.dart';
 
 class UploadDocumentPage extends StatefulWidget {
   final bool isDirect;
-  const UploadDocumentPage({required this.isDirect,Key? key}) : super(key: key);
+  final String encounterID;
+  final String startTime;
+  final String endTime;
+  final String appointmentDate;
+  const UploadDocumentPage({required this.isDirect,Key? key, required this.encounterID, required this.startTime, required this.endTime, required this.appointmentDate}) : super(key: key);
 
   @override
-  State<UploadDocumentPage> createState() => _UploadDocumentPageState(isDirect);
+  State<UploadDocumentPage> createState() => _UploadDocumentPageState(isDirect,encounterID,startTime,endTime,appointmentDate);
 }
 
 class _UploadDocumentPageState extends State<UploadDocumentPage> {
   late bool isDirect;
-  _UploadDocumentPageState(this.isDirect);
+  late String encounterID;
+  late String startTime;
+  late String endTime;
+  late String appointmentDate;
+  _UploadDocumentPageState(this.isDirect,this.encounterID,this.startTime,this.endTime,this.appointmentDate);
 
   bool noData = true;
   bool loadImage = true;
@@ -81,7 +95,6 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
           if(documentList.isNotEmpty){
             getImageList();
             noData = false;
-
           }else{
             noData = true;
           }
@@ -168,7 +181,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   void uploadDocument() async {
 
     Map<String, String> headers = { "token": token};
-    final uri = Uri.parse('$urlForIN/uploadPatientDocument_smarthealth.shc');
+    final uri = Uri.parse('$urlForINSC/uploadPatientDocument_smarthealth.shc');
 
     var request = http.MultipartRequest('POST', uri)..files.add(await http.MultipartFile.fromPath('_image1', _image!.path));
     request.headers.addAll(headers);
@@ -184,13 +197,107 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
       EasyLoading.dismiss();
       showToast('Image uploaded successfully');
       Navigator.pop(context);
-      Get.offAll(UploadDocumentPage(isDirect: true,));
+      Get.offAll(UploadDocumentPage(isDirect: true, encounterID: '', startTime: '', endTime: '', appointmentDate: '',));
 
     }else{
       EasyLoading.dismiss();
       showToast('Sorry !!! Image Not uploaded successfully, Try Again');
       Navigator.pop(context);
     }
+  }
+
+  void startVideoCall() async{
+
+    EasyLoading.show(status: 'Creating Room...');
+
+    dynamic status = await searchAPI(true ,'$urlForINSC/insertVcGroup.shc',
+        {'token' : token},
+        {'loginID' : localUserLoginIDP,
+          'citizenName' : localUserName,
+          'encounterID' : encounterID
+        },
+        50);
+
+    print(' status after responce: $status');
+    EasyLoading.dismiss();
+
+    if(status.toString() != 'Sorry !!! Server Error' && status.toString().isNotEmpty  && status.toString() != 'Sorry !!!  Connectivity issue! Try again'){
+
+      String statusInfo = status['Status'].toString();
+      if(statusInfo == 'true'){
+
+        List<dynamic> data = status['data'];
+        for(int i=0; i<data.length; i++){
+          vcgroupIDP = data[i]['vcgroupIDP'].toString();
+          roomName = data[i]['roomName'].toString();
+        }
+
+        if(roomName.isNotEmpty){
+          roomName = roomName.removeAllWhitespace;
+          joinMeeting(roomName, vcgroupIDP);
+        }
+        else{
+          showToast('Sorry no data found, Please Try again !!!');
+        }
+      }
+      else{
+        showToast('Sorry no data found !!!');
+      }
+
+    }else{
+      showToast('Sorry !!! Server Error');
+    }
+  }
+
+  joinMeeting(String roomName, vcgroupIDP) async {
+
+    // Map<FeatureFlag, Object> featureFlags = {};
+
+    var options = JitsiMeetingOptions(
+      roomNameOrUrl: roomName,
+        userDisplayName : localUserName
+      // featureFlags: featureFlags,
+    );
+
+    debugPrint("JitsiMeetingOptions: $options");
+    await JitsiMeetWrapper.joinMeeting(
+      options: options,
+      listener: JitsiMeetingListener(
+        onConferenceJoined: (url) async {
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          isOnline = true;
+          preferences.setBool('isOnline', true);
+          preferences.setString('vcgroupID', vcgroupIDP);
+          debugPrint("onConferenceJoined: url: $url ::::::: isOnline : $isOnline");
+        },
+        onConferenceTerminated: (url, error) {
+          debugPrint("onConferenceTerminated: url: $url, error: $error");
+        },
+        onClosed: () async{
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          isOnline = false;
+          preferences.setBool('isOnline', false);
+          preferences.setString('vcgroupID', '');
+          updateVcGroup(vcgroupIDP);
+          debugPrint("onClosed ::::::: isOnline : $isOnline");
+        }
+      ),
+    );
+  }
+
+  Future<void> showWaitingDialog(int hour, minutes, seconds) async{
+    return showDialog(
+      context: context,
+      builder: ( BuildContext context ){
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          insetPadding: EdgeInsets.all(20),
+          backgroundColor: Colors.indigo.shade50,
+          elevation: 16,
+          child: ShowWaitingDialogPage(hour: hour, minutes: minutes, seconds: seconds,),
+        );
+      }
+    );
   }
 
   Future<void> show2Simple() async {
@@ -397,6 +504,23 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
     }
   }
 
+  getTimeDiffrence(var requestDate) async{
+
+    EasyLoading.show(status: 'Loading...');
+
+    Response response = await get(Uri.parse('https://smarthealth.care/getDateTimeDifferenceWithServer.notauth?requestDate=$requestDate'));
+
+    EasyLoading.dismiss();
+
+    if(response.statusCode == 200) {
+      dynamic data = jsonDecode(response.body.toString());
+      return data;
+    }
+    else{
+      return null;
+    }
+  }
+
   @override
   void dispose() {
     scaleStateController.dispose();
@@ -408,7 +532,11 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async{
-        Get.offAll(const HomePage());
+        if(isDirect == false){
+          Navigator.pop(context);
+        }else{
+          Get.offAll(const HomePage());
+        }
           return false;
       },
       child: Scaffold(
@@ -418,7 +546,11 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
           leading: InkWell(
               onTap: (){
                 FocusManager.instance.primaryFocus?.unfocus();
-                Get.offAll(HomePage());
+                if(isDirect == false){
+                  Navigator.pop(context);
+                }else{
+                  Get.offAll(HomePage());
+                }
               },
               child: Icon(Icons.arrow_back_rounded,color: Colors.white)),
           title: Text('UPLOAD DOCUMENTS'.toUpperCase()),
@@ -447,6 +579,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
+                mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
@@ -515,22 +648,78 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 20,),
-                  Visibility(
-                    visible: !isDirect,
-                    child: InkWell(
-                      child: Container(
-                        margin: EdgeInsets.all(5),
-                        padding: EdgeInsets.all(12),
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(Icons.video_call,color: Colors.indigo.shade800),
-                            Text('Video Call',style: TextStyle(fontSize: 10,color: Colors.indigo.shade800),)
-                          ],
+                  const SizedBox(width: 20,),
+                  InkWell(
+                    onTap: () async{
+
+                      String time24 = startTime;
+                      DateTime time = DateFormat('H:m').parse(time24);
+                      String time12 = DateFormat('h:mm a').format(time);
+
+                      var appointmentTime = '$appointmentDate $time12';
+                      print('appointmentTime :::$appointmentTime');
+
+                      dynamic timeDiff = await getTimeDiffrence(appointmentTime);
+                      print(timeDiff);
+
+                      if(timeDiff !=null){
+
+                        var hour = timeDiff['diffHours'];
+                        var minutes = timeDiff['diffMinutes'];
+                        if(minutes>0){
+                          minutes = minutes - 5;
+                        }
+                        var seconds = timeDiff['diffSeconds'];
+
+                        if(minutes>0){
+                          showWaitingDialog(hour, minutes, seconds);
+                        }
+                        else {
+
+                          String time24 = endTime;
+                          DateTime time = DateFormat('H:m').parse(time24);
+                          String time12 = DateFormat('h:mm a').format(time);
+
+                          var appointmentTime = '$appointmentDate $time12';
+                          print('else :: appointmentTime :::$appointmentTime');
+
+                          dynamic timeDiff = await getTimeDiffrence(appointmentTime);
+                          print('else :: $timeDiff');
+
+                          if(timeDiff !=null){
+                            var minutes = timeDiff['diffMinutes'];
+
+                            if(minutes<=0){
+                              showToast('Meeting is Ended ! Please Book new Appointment');
+                            }else{
+                              startVideoCall();
+                            }
+                          }else{
+                            showToast('Please Try again !!!');
+                          }
+
+                        }
+                      }
+                      else{
+                        showToast('Please Try Again');
+                      }
+
+                    },
+                    child: Visibility(
+                      visible: !isDirect,
+                      child: InkWell(
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(10),
+                          decoration: ColorFillContainer(Colors.white),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(Icons.video_call,color: Colors.indigo.shade800),
+                              const SizedBox(width: 5,),
+                              Text('Video Call',style: TextStyle(fontSize: 15,color: Colors.indigo.shade800),)
+                            ],
+                          ),
                         ),
                       ),
                     ),

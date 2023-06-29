@@ -34,9 +34,11 @@ class _SplashState extends State<Splash> {
     localUserLoginIDP = preferences.getString('userLoginIDP')!;
     localMobileNum = preferences.getString('mobile')!;
     localCitizenCode = preferences.getString('CitizenCode')!;
+    vcgroupIDP = preferences.getString('vcgroupID')??'';
+    isOnline = preferences.getBool('isOnline')??false;
 
     print('get Data form Local Storage :  localCitizenIDP =$localCitizenIDP + localUserName= $localUserName +'
-        ' localUserLoginIDP =  $localUserLoginIDP + localMobileNum = $localMobileNum + localCitizenCode = $localCitizenCode');
+        ' localUserLoginIDP =  $localUserLoginIDP + localMobileNum = $localMobileNum + localCitizenCode = $localCitizenCode + isOnline= $isOnline');
   }
 
   void navigateUser(){

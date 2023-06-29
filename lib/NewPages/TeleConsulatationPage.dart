@@ -37,7 +37,7 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
 
     try{
 
-      Response response = await get(Uri.parse('$urlForIN/smart_getAllEncounterForCitizen.shc?citizenID=$localCitizenIDP'),
+      Response response = await get(Uri.parse('$urlForINSC/smart_getAllEncounterForCitizen.shc?citizenID=$localCitizenIDP'),
       headers: {
         'token' : token
       });
@@ -98,6 +98,12 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
   }
 
   @override
+  void dispose() {
+    EasyLoading.dismiss();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GlobalAppBar(context,'Tele-Consultation'),
@@ -121,7 +127,7 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
                return Container(
                  padding: EdgeInsets.all(15),
                  decoration: BorderContainer(Colors.white,globalBlue),
-                 margin: EdgeInsets.all(20),
+                 margin: EdgeInsets.only(left: 20,right: 20,top: 10),
                  child: Column(
                    children: [
                      Padding(
@@ -132,7 +138,8 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
                      SizedBox(height: 10,),
                      InkWell(
                        onTap : (){
-                         Get.to(UploadDocumentPage(isDirect: false,));
+                         Get.to(UploadDocumentPage(isDirect: false, encounterID: teleConsulationList[index].encounterIDP, startTime: teleConsulationList[index].startTime,
+                           endTime: teleConsulationList[index].endTime, appointmentDate: teleConsulationList[index].appointmentDate,));
                        },
                        child: Container(
                          decoration: ColorFillContainer(globalOrange),
