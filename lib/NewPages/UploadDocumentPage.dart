@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:digipath_ircs/NewPages/TeleConsulatationPage.dart';
 import 'package:get/utils.dart';
 import 'dart:typed_data';
 import 'package:digipath_ircs/Design/BorderContainer.dart';
@@ -52,6 +53,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   List<Uint8List> imageList = <Uint8List>[];
   CroppedFile? _croppedFile;
   late PhotoViewScaleStateController scaleStateController;
+  bool dataLoaded = false;
 
   @override
   void initState() {
@@ -147,6 +149,11 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
           }
         }
     }
+      if(mounted){
+        setState(() {
+          dataLoaded = true;
+        });
+      }
   }
 
   File? _image;
@@ -197,7 +204,8 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
       EasyLoading.dismiss();
       showToast('Image uploaded successfully');
       Navigator.pop(context);
-      Get.offAll(UploadDocumentPage(isDirect: true, encounterID: '', startTime: '', endTime: '', appointmentDate: '',));
+      print('isDirect :: $isDirect');
+      Get.offAll(UploadDocumentPage(isDirect: isDirect, encounterID: encounterID, startTime: startTime, endTime: endTime, appointmentDate: appointmentDate,));
 
     }else{
       EasyLoading.dismiss();
@@ -732,10 +740,17 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                 ): RefreshIndicator(
                   onRefresh: () {
                     return Future.delayed(Duration(microseconds: 500),
-                            () {
+                      () {
+                        if(dataLoaded == false){
+                          showToast('Please Wait.. data loading..');
+                        }else{
+                          setState(() {
+                            dataLoaded = false;
+                          });
                           EasyLoading.show(status: 'Loading...');
                           getDocumentData();
-                        });
+                        }
+                      });
                   },
                   child: SingleChildScrollView(
                     child: ListView.builder(

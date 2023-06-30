@@ -10,6 +10,7 @@ import 'package:get/route_manager.dart';
 import 'package:http/http.dart';
 import '../Design/BorderContainer.dart';
 import '../Design/ColorFillContainer.dart';
+import '../HomePage.dart';
 import '../ModalClass/TeleConsultionModal.dart';
 
 class TeleConsultationPage extends StatefulWidget {
@@ -34,6 +35,7 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
   void getTeleConsulation() async{
 
     EasyLoading.show(status: 'loading...');
+    teleConsulationList.clear();
 
     try{
 
@@ -42,6 +44,7 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
         'token' : token
       });
 
+      print(' Response ::::::::::::$response');
       EasyLoading.dismiss();
 
       if(response.statusCode == 200){
@@ -85,6 +88,9 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
           });
         }
 
+      }else{
+        noDataTextString = 'Sorry ! Server Error';
+        noDataText = true;
       }
 
     }catch(e){
@@ -105,55 +111,101 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: GlobalAppBar(context,'Tele-Consultation'),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        color: globalPageBackgroundColor,
-        child: Column(
-          children: [
-            TopPageTextViews('Video Consultation'),
-            noDataText?Container(
-                width: double.infinity,
-                margin: const EdgeInsets.all(25),
-                decoration: BorderContainer(Colors.white,globalBlue),
-                padding: const EdgeInsets.all(15),
-                child: Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center)) :
-            ListView.builder(
-            itemCount: teleConsulationList.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-               return Container(
-                 padding: EdgeInsets.all(15),
-                 decoration: BorderContainer(Colors.white,globalBlue),
-                 margin: EdgeInsets.only(left: 20,right: 20,top: 10),
-                 child: Column(
-                   children: [
-                     Padding(
-                       padding: const EdgeInsets.all(8.0),
-                       child: Text('You have an appointment with Dr.${teleConsulationList[index].tDr} On ${teleConsulationList[index].appointmentDate} At ${teleConsulationList[index].startTime}'
-                           ' Please upload all your previous medical records prior to video consultation',textAlign: TextAlign.start,style: TextStyle(fontWeight: FontWeight.w600),),
-                     ),
-                     SizedBox(height: 10,),
-                     InkWell(
-                       onTap : (){
-                         Get.to(UploadDocumentPage(isDirect: false, encounterID: teleConsulationList[index].encounterIDP, startTime: teleConsulationList[index].startTime,
-                           endTime: teleConsulationList[index].endTime, appointmentDate: teleConsulationList[index].appointmentDate,));
-                       },
-                       child: Container(
-                         decoration: ColorFillContainer(globalOrange),
-                         padding: EdgeInsets.all(15),
-                         child: const Text('Add Records Or Initiate Video consultation',textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
-                       ),
-                     )
-                   ],
-                 ),
-
-               );
-              }
+    return WillPopScope(
+      onWillPop: () async{
+          Get.offAll(const HomePage());
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: const Color(0xFF254D99),
+          leading: InkWell(
+              onTap: (){
+                  Get.offAll(HomePage());
+              },
+              child: Icon(Icons.arrow_back_rounded,color: Colors.white)),
+          title: Text('Tele-Consultation'.toUpperCase()),
+          titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.home,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Get.offAll(
+                  HomePage(),
+                );
+              },
             )
           ],
+        ),
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: globalPageBackgroundColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TopPageTextViews('Video Consultation'),
+              noDataText?Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.all(25),
+                  decoration: BorderContainer(Colors.white,globalBlue),
+                  padding: const EdgeInsets.all(15),
+                  child: Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center)) :
+              Flexible(
+                child: RefreshIndicator(
+                  onRefresh: () {
+                    return Future.delayed(Duration(microseconds: 500),() {
+                      setState(() {
+                        noDataText = true;
+                      });
+                      getTeleConsulation();
+                    });
+                  },
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: teleConsulationList.length,
+                        itemBuilder: (context, index) {
+                       return Container(
+                         padding: EdgeInsets.all(15),
+                         decoration: BorderContainer(Colors.white,globalBlue),
+                         margin: EdgeInsets.only(left: 20,right: 20,top: 10),
+                         child: Column(
+                           children: [
+                             Padding(
+                               padding: const EdgeInsets.all(8.0),
+                               child: Text('You have an appointment with Dr.${teleConsulationList[index].tDr} On ${teleConsulationList[index].appointmentDate} At ${teleConsulationList[index].startTime}'
+                                   ' Please upload all your previous medical records prior to video consultation',textAlign: TextAlign.start,style: TextStyle(fontWeight: FontWeight.w600),),
+                             ),
+                             SizedBox(height: 10,),
+                             InkWell(
+                               onTap : (){
+                                 Get.to(UploadDocumentPage(isDirect: false, encounterID: teleConsulationList[index].encounterIDP, startTime: teleConsulationList[index].startTime,
+                                   endTime: teleConsulationList[index].endTime, appointmentDate: teleConsulationList[index].appointmentDate,));
+                               },
+                               child: Container(
+                                 decoration: ColorFillContainer(globalOrange),
+                                 padding: EdgeInsets.all(15),
+                                 child: const Text('Add Records Or Initiate Video consultation',textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
+                               ),
+                             )
+                           ],
+                         ),
+
+                       );
+                      }
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
