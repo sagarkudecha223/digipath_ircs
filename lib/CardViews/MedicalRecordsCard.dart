@@ -8,7 +8,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import '../Design/ContainerDecoration.dart';
 import '../Global/Toast.dart';
 import '../Global/global.dart';
 import '../ModalClass/MedicalReportModal.dart';
@@ -37,8 +36,8 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
   late String PatientDocumentIDP = widget.medicalReportModal.PatientDocumentIDP;
   late String imageType = widget.medicalReportModal.ImageType;
 
-  String u = 'dhruv';
-  String p  = 'demo';
+  // String u = 'dhruv';
+  // String p  = 'demo';
 
   @override
   void initState() {
@@ -65,11 +64,11 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              '$urlForIN/getPatientReportDataForFundoscopyAndroid.app?EncounterServiceIDF=$EncounterServiceIDP'),
-          headers: {
-            'u': u,
-            'p': p,
-          }
+              '$urlForINSC/getPatientReportDataForFundoscopyAndroid.app?EncounterServiceIDF=$EncounterServiceIDP'),
+          // headers: {
+          //   'u': u,
+          //   'p': p,
+          // }
       );
 
       if (mounted) {
@@ -89,7 +88,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
             }
 
             openFile(
-              url: 'https://medicodb.in/downloadFundoscopyReportForAndroid.app?PatientReportIDP=$RightPatientReportIDP&PatientReportIDPLeft=$LeftPatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&CitizenIDF=$CitizenIDF&reportType=$imageType',
+              url: '$urlForINSC/downloadFundoscopyReportForAndroid.app?PatientReportIDP=$RightPatientReportIDP&PatientReportIDPLeft=$LeftPatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&CitizenIDF=$CitizenIDF&reportType=$imageType',
               fileName:'$EncounterServiceIDP.pdf',
             );
 
@@ -119,11 +118,11 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              '$urlForIN/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
-          headers: {
-            'u': u,
-            'p': p,
-          }
+              '$urlForINSC/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
+          // headers: {
+          //   'u': u,
+          //   'p': p,
+          // }
       );
 
       if (mounted) {
@@ -143,7 +142,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
               }
 
               openFile(
-                url: 'https://medicodb.in/getECGReportPrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF',
+                url: '$urlForINSC/getECGReportPrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF',
                 fileName:'$EncounterServiceIDP.pdf',
               );
             }
@@ -179,11 +178,11 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
     try {
       Response response = await get(
           Uri.parse(
-              '$urlForIN/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
-          headers: {
-            'u': u,
-            'p': p,
-          }
+              '$urlForINSC/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
+          // headers: {
+          //   'u': u,
+          //   'p': p,
+          // }
       );
 
       if (mounted) {
@@ -202,7 +201,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
                 PatientReportIDP = statusinfo[i]["PatientReportIDP"].toString();
               }
               openFile(
-                url: 'https://medicodb.in/getRadiologyReportAndImagePrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF&selPerPage=1',
+                url: '$urlForINSC/getRadiologyReportAndImagePrintAndroid.app?patientReportIDP=$PatientReportIDP&Age=$Age&EncounterServiceNumber=$EncounterServiceNumber&reportType=2&CitizenIDF=$CitizenIDF&selPerPage=1',
                 fileName:'$EncounterServiceIDP.pdf',
               );
             }
@@ -348,8 +347,8 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
 
                 EasyLoading.show(status: 'Loading...'),
                 openFile(
-                  url: '$urlForIN/pathologyReportForAndroid.app?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP',
-                  fileName:'$EncounterServiceIDP.pdf',
+                  url: '$urlForINSC/pathologyReportForAndroid.app?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP',
+                  fileName:'PathologyReport.pdf',
                 ),
 
                 // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchPagePDFView(encounterServiceIDP: widget.medicalReportModal.EncounterServiceIDP, ServiceMapIDP: widget.medicalReportModal.ServiceMapIDP, reportOf: 'checkReport',)))
@@ -417,7 +416,7 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
         else{
           EasyLoading.show(status: 'Loading...'),
           openFile(
-            url: '$urlForIN/getScanDocReportAndroid.do?patientDocumentIDP=$PatientDocumentIDP',
+            url: '$urlForINSC/getScanDocReportAndroid.do?patientDocumentIDP=$PatientDocumentIDP',
             fileName:'$PatientDocumentIDP.pdf',
           ),
         }
@@ -507,8 +506,8 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
           url,
           options: foo.Options(
             headers: {
-              'u': u,
-              'p': p
+              'u': 'dhruv',
+              'p': 'demo'
             },
             responseType: foo.ResponseType.bytes,
             followRedirects: false,

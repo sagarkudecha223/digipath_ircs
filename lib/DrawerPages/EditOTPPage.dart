@@ -179,7 +179,7 @@ class _EditOTPPageState extends State<EditOTPPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text('OTP send Successfully',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.w600),),
+                Text(otpTextBool?'Please Re-send the OTP' : 'OTP send Successfully',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.w600),),
                 const SizedBox(height: 10,),
                 const Padding(
                   padding: EdgeInsets.only(left: 10.0,right: 10,top: 5,bottom: 5),
@@ -222,14 +222,14 @@ class _EditOTPPageState extends State<EditOTPPage> {
                 InkWell(
                   onTap: (){
                     FocusManager.instance.primaryFocus?.unfocus();
-                    if(otpTextBool == false){
+                    if(otpTextBool == true){
+                      sendOTP();
+                    }else{
                       if(otpController.text.length ==6){
                         oTPVerification(otpController.text.toString());
                       }else{
                         showToast('Please enter valid OTP');
                       }
-                    }else{
-                      sendOTP();
                     }
                   },
                   child: Container(

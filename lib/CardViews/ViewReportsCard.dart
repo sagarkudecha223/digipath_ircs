@@ -1,4 +1,5 @@
 import 'package:digipath_ircs/Global/Colors.dart';
+import 'package:digipath_ircs/Global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:open_file_plus/open_file_plus.dart';
@@ -35,7 +36,7 @@ class _ViewReportsCardState extends State<ViewReportsCard> {
       reportStatusText = 'Reported';
       Reported = true;
     }
-    else if(widget.viewReportModal.ReportStatus == '2'){
+    else{
       reportStatusText = 'In-process';
     }
   }
@@ -54,8 +55,8 @@ class _ViewReportsCardState extends State<ViewReportsCard> {
                 EasyLoading.show(status: 'Loading...'),
                 openFile(
                   // https://medicodb.in/getPathologyReportAndroid.do?prmServiceMapID=370742&prmEncounterServiceID=1833113&txtStationary=true
-                  url: 'https://medicodb.in/getPathologyReportAndroid.do?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP&txtStationary=true',
-                  fileName:'demo.pdf',
+                  url: '$urlForINSC/getPathologyReportAndroid.do?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP&txtStationary=true',
+                  fileName:'PathologyReport.pdf',
                 ),
             }
       },

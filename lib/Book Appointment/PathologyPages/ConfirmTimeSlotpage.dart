@@ -8,7 +8,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/route_manager.dart';
 import '../../Design/BorderContainer.dart';
 import '../../Design/ColorFillContainer.dart';
-import '../../Design/ContainerDecoration.dart';
 import '../../Global/SearchAPI.dart';
 import '../../Global/global.dart';
 import '../../ModalClass/PathologyServiceModal.dart';
@@ -146,7 +145,7 @@ class _ConfirmTimeSlotPageState extends State<ConfirmTimeSlotPage> {
               Get.offAll(HomePage());
             }
             else{
-              String url = 'https://medicodb.in/CCAvenuePopUp_Android.do?encounterid=$encounterID&callFrom=android&APIFor=redcross&mobileNo=$localMobileNum';
+              String url = '$urlForINSC/CCAvenuePopUp_Android.do?encounterid=$encounterID&callFrom=android&APIFor=redcross&mobileNo=$localMobileNum';
               print( 'url is :::: $url ');
               Get.to(WebViewPage(url: url));
             }

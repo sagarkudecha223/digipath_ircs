@@ -39,7 +39,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
     try{
       Response response = await post(
-        Uri.parse('https://medicodb.in/getCitizenPaymentHistory.do?citizenID=1028107'),
+        Uri.parse('$urlForINSC/getCitizenPaymentHistory.do?citizenID=$localCitizenIDP'),
       );
 
       EasyLoading.dismiss();
@@ -133,7 +133,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                 InkWell(
                                   onTap : (){
                                     String encounterID = paymentList[index].encounterIDP;
-                                    String url = 'https://medicodb.in/CCAvenuePopUp_Android.do?encounterid=$encounterID&callFrom=android&APIFor=redcross&mobileNo=$localMobileNum';
+                                    String url = '$urlForINSC/CCAvenuePopUp_Android.do?encounterid=$encounterID&callFrom=android&APIFor=redcross&mobileNo=$localMobileNum';
                                     Get.to(WebViewPage(url: url,));
                                   },
                                   child: Container(

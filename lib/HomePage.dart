@@ -70,7 +70,7 @@ class _homeState extends State<HomePage> {
     titleList.add(HomePagetitleModal(icon: Icons.view_timeline_outlined, color: globalLightBlue, title: 'VIEW TIMELINE'));
     titleList.add(HomePagetitleModal(icon: Icons.video_camera_front_outlined, color: globalLightBlue, title: ' TELE-CONSULTATION'));
     titleList.add(HomePagetitleModal(icon: Icons.medical_services_outlined,color: globalLightBlue, title: 'PRESCRIPTION'));
-    titleList.add(HomePagetitleModal(icon: Icons.add_photo_alternate_rounded,color: globalLightBlue, title: 'ADD RECORD'));
+    // titleList.add(HomePagetitleModal(icon: Icons.add_photo_alternate_rounded,color: globalLightBlue, title: 'ADD RECORD'));
     titleList.add(HomePagetitleModal(icon: Icons.inventory_sharp,color: globalLightBlue, title: 'ORDERED INVESTIGATION'));
     titleList.add(HomePagetitleModal(icon: Icons.chat_rounded,color: globalOrange, title: 'थैलासीमिया साथी'));
 
@@ -87,7 +87,7 @@ class _homeState extends State<HomePage> {
                 blurRadius: 3,
                 blurStyle: BlurStyle.outer,
                 spreadRadius: 0,
-                offset: Offset(0, 0)
+                offset: const Offset(0, 0)
             ),
           ],
           color: colors),
@@ -306,7 +306,7 @@ class _homeState extends State<HomePage> {
               divider,
               ListTile(
                   dense: true,
-                  visualDensity: VisualDensity(vertical: -3),
+                  visualDensity: const VisualDensity(vertical: -3),
                   leading: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Icon(Icons.family_restroom_rounded, color: globalBlue,),
@@ -364,17 +364,17 @@ class _homeState extends State<HomePage> {
                                           },
                                           child: Dialog(
                                             backgroundColor: Colors.white.withOpacity(0.7),
-                                            insetPadding : EdgeInsets.all(15),
+                                            insetPadding : const EdgeInsets.all(15),
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
                                             elevation: 16,
                                             child: Container(
-                                              padding: EdgeInsets.all(10),
+                                              padding: const EdgeInsets.all(10),
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  SizedBox(height: 10,),
+                                                  const SizedBox(height: 10,),
                                                   Text('Book Appointment for...',style: TextStyle(fontSize: 18,fontFamily: 'Ageo_Bold',color: Colors.indigo.shade900,fontWeight: FontWeight.bold,),),
-                                                  SizedBox(height: 20,),
+                                                  const SizedBox(height: 20,),
                                                   InkWell(
                                                     onTap: (){
                                                       Navigator.pop(context);
@@ -396,7 +396,7 @@ class _homeState extends State<HomePage> {
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(height: 20,),
+                                                  const SizedBox(height: 20,),
                                                   InkWell(
                                                     onTap: (){
                                                       Navigator.pop(context);
@@ -444,13 +444,13 @@ class _homeState extends State<HomePage> {
                                   else if(index == 6){
                                     Get.to(PrescriptionPage());
                                   }
-                                  else if(index == 7){
-                                    Get.to(AddRecordPage());
-                                  }
-                                  else if(index ==8){
+                                  // else if(index == 7){
+                                  //   Get.to(AddRecordPage());
+                                  // }
+                                  else if(index ==7){
                                       Get.to(OrderedInvestigation());
                                   }
-                                  else if(index == 9){
+                                  else if(index == 8){
                                     Get.to(FreeConsultationPage());
                                   }
                                 },

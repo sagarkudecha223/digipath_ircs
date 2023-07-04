@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:intl/intl.dart';
 import '../CardViews/ViewReportsCard.dart';
+import '../Design/BorderContainer.dart';
 import '../Design/GlobalAppBar.dart';
 import '../Design/TopPageTextViews.dart';
 import '../Global/Colors.dart';
@@ -23,22 +25,40 @@ class _ViewReportPageState extends State<ViewReportPage> {
   List<ViewReportModal> searchReportList =  <ViewReportModal>[];
   bool noDataText = true;
   String noDataTextString = 'Searching...';
+  bool calenderView = true;
+
+  String startDate =DateFormat('dd-MMM-yyyy').format(DateTime.now().subtract(const Duration(days: 15)));
+  String endDate = DateFormat('dd-MMM-yyyy').format(DateTime.now());
+
+  DateTime selectedStartDate = DateTime.now().subtract(const Duration(days: 15));
+  DateTime selectedEndDate = DateTime.now();
+
+  late int year;
+  late int month;
+  late int day;
 
   @override
   void initState() {
     super.initState();
+
+    year = int.parse(startDate.substring(7, 11));
+    month = int.parse(selectedStartDate.month.toString());
+    day = int.parse(startDate.substring(0, 2));
     EasyLoading.show(status: 'Loading...');
-    getReportsData();
+    getReportsData(startDate,endDate);
   }
 
-  void getReportsData() async{
+  void getReportsData(String startDated, endDated) async{
 
     searchReportList.clear();
+    print('$urlForINSC/patientListForPathologyReport.do?requestFrom=patient&citizenID=$localCitizenIDP&startDate=$startDated&endDate=$endDated&careProviderID=4286');
 
     try{
       Response response = await get(                                                                     /// 1028107
-          Uri.parse('https://medicodb.in/patientListForPathologyReport.do?requestFrom=patient&citizenID=1028107&startDate=01-April-2023&endDate=14-April-2023&careProviderID=4286'),
+          Uri.parse('$urlForINSC/patientListForPathologyReport.do?requestFrom=patient&citizenID=$localCitizenIDP&startDate=$startDated&endDate=$endDated&careProviderID=4286'),
       );
+
+      EasyLoading.dismiss();
 
       if (response.statusCode == 200) {
         var status = jsonDecode(response.body.toString());
@@ -95,6 +115,73 @@ class _ViewReportPageState extends State<ViewReportPage> {
     }
   }
 
+  void _pickStartDateDialog() {
+    showDatePicker(
+        context: context,
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                primary: Color(0xFF549DD6),
+                onPrimary: Colors.white,
+                onSurface: Colors.black,
+              )
+            ),
+            child: child!,
+          );
+        },
+        initialDate: selectedStartDate,
+        firstDate: DateTime(1999),
+        lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        startDate = DateFormat('dd-MMM-yyyy').format(pickedDate);
+        selectedStartDate = pickedDate;
+        year = int.parse(startDate.substring(7, 11));
+        month = int.parse(selectedStartDate.month.toString());
+        day = int.parse(startDate.substring(0, 2));
+
+        if(selectedStartDate.compareTo(selectedEndDate) > 0){
+          selectedEndDate = DateTime.now();
+          endDate =DateFormat('dd-MMM-yyyy').format(DateTime.now());
+        }
+
+      });
+    });
+  }
+
+  void _pickEndDateDialog() {
+    showDatePicker(
+        context: context,
+        initialDate: selectedEndDate,
+        firstDate: DateTime(year,month,day),
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: const ColorScheme.light(
+                primary: Color(0xFF549DD6),
+                onPrimary: Colors.white,
+                onSurface: Colors.black,
+              )
+            ),
+            child: child!,
+          );
+        },
+        lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        endDate = DateFormat('dd-MMM-yyyy').format(pickedDate);
+        selectedEndDate = pickedDate;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,19 +193,104 @@ class _ViewReportPageState extends State<ViewReportPage> {
         child: Column(
           children: [
             TopPageTextViews('Can See Pathology Reports Here..'),
+            Visibility(
+              visible: calenderView,
+              child: Container(
+                padding: EdgeInsets.all(5),
+                margin: EdgeInsets.only(left: 20,right: 20,bottom: 5),
+                decoration: BorderContainer(Colors.grey.shade100,globalBlue),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: _pickStartDateDialog,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 3),
+                                child: Text('Start Date:'.toUpperCase(),textScaleFactor: 1.0,style: TextStyle(fontSize: 12,fontWeight: FontWeight.normal,color: globalBlue),),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 0),
+                                child: Text(startDate,textScaleFactor: 1.0,
+                                  style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: _pickEndDateDialog,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 10, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 3),
+                                child: Text('End Date:'.toUpperCase(),textScaleFactor: 1.0,style: TextStyle(fontSize: 12,fontWeight: FontWeight.normal,color:globalBlue),),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 0),
+                                child: Text(endDate,textScaleFactor: 1.0,
+                                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 15, 0),
+                      padding: EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          shape: BoxShape.circle
+                      ),
+                      child:InkWell(
+                          onTap: (){
+                            EasyLoading.show(status: 'Loading...');
+                            getReportsData(startDate, endDate);
+                          },
+                          child: Icon(Icons.search,color:globalBlue)),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             noDataText? Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center) :
             Flexible(
               child: RefreshIndicator(
                 onRefresh: () {
-                  return Future.delayed(Duration(microseconds: 500),
-                          () {
-                        EasyLoading.show(status: 'Loading...');
-                        getReportsData();
-                      });
+                  return Future.delayed(const Duration(microseconds: 500),() {
+                    startDate =DateFormat('dd-MMM-yyyy').format(DateTime.now().subtract(const Duration(days: 15)));
+                    endDate = DateFormat('dd-MMM-yyyy').format(DateTime.now());
+                    selectedStartDate = DateTime.now().subtract(const Duration(days: 15));
+                    selectedEndDate = DateTime.now();
+                    year = int.parse(startDate.substring(7, 11));
+                    month = int.parse(selectedStartDate.month.toString());
+                    day = int.parse(startDate.substring(0, 2));
+                    EasyLoading.show(status: 'Loading...');
+                    getReportsData(startDate,endDate);
+                  });
                 },
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: searchReportList.map((key) => ViewReportsCard(viewReportModal:key)).toList(),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: searchReportList.length,
+                    itemBuilder: (context, index){
+                      return ViewReportsCard(viewReportModal: searchReportList[index],);
+                    }
                   ),
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:digipath_ircs/HomePage.dart';
 import 'package:digipath_ircs/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -9,10 +10,11 @@ import 'Global/Toast.dart';
 import 'Global/global.dart';
 
 class OTPPage extends StatefulWidget {
-  const OTPPage({Key? key}) : super(key: key);
+  final bool fromAddMember;
+  const OTPPage({Key? key, required this.fromAddMember}) : super(key: key);
 
   @override
-  State<OTPPage> createState() => _OTPPageState();
+  State<OTPPage> createState() => _OTPPageState(fromAddMember);
 }
 
 class _OTPPageState extends State<OTPPage> {
@@ -21,6 +23,9 @@ class _OTPPageState extends State<OTPPage> {
   bool otpTextBool = false;
   bool _oldPasswordVisible = false;
   String buttonText = 'Verify';
+  late bool fromAddMember;
+
+  _OTPPageState(this.fromAddMember);
 
   @override
   void initState() {
@@ -49,7 +54,11 @@ class _OTPPageState extends State<OTPPage> {
       if(statusInfo == 'true'){
 
         showToast(status['message'].toString());
-        Get.offAll(LoginPage());
+        if(fromAddMember == true){
+          Get.offAll(HomePage());
+        }else{
+          Get.offAll(LoginPage());
+        }
 
       }else{
         showToast('OTP is not valid...Try Again');
@@ -150,11 +159,11 @@ class _OTPPageState extends State<OTPPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text('OTP send Successfully',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.w600),),
+              Text(otpTextBool?'Please Re-send the OTP' : 'OTP send Successfully',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.w600),),
               const SizedBox(height: 10,),
               const Padding(
                 padding: EdgeInsets.only(left: 10.0,right: 10,top: 5,bottom: 5),
-                child: Text('Enter OTP press on verify to complete registration process',textAlign: TextAlign.center,style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.w600),),
+                child: Text('Enter OTP and press on verify button to complete process',textAlign: TextAlign.center,style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.w600),),
               ),
               const SizedBox(height: 20,),
               Visibility(
@@ -193,14 +202,14 @@ class _OTPPageState extends State<OTPPage> {
               InkWell(
                 onTap: (){
                   FocusManager.instance.primaryFocus?.unfocus();
-                  if(otpController.text.length ==6){
-                    if(otpTextBool == false){
-                      VerifyOTP(otpController.text.toString());
-                    }else{
-                      reSendOTP();
-                    }
+                  if(otpTextBool == true){
+                    reSendOTP();
                   }else{
-                    showToast('Please enter valid OTP');
+                    if(otpController.text.length ==6){
+                        VerifyOTP(otpController.text.toString());
+                    }else{
+                      showToast('Please enter valid OTP');
+                    }
                   }
                 },
                 child: Container(

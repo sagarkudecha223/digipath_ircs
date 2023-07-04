@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:digipath_ircs/Design/ContainerDecoration.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/global.dart';
@@ -27,6 +26,8 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
   late citizenCurrentPrescriptionModel citizenCurrentPrescription;
   late SubPreviousPrescriptionModel subPreviousPrescription;
   bool serching = true;
+  String noDataTextString = 'Searching...';
+  bool noDataText = true;
 
   @override
   void initState() {
@@ -37,38 +38,69 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
 
   void getCurrentPrescription() async {
     final response = await http.get(
-        Uri.parse(
-            '$urlForINSC/citizenCurrentPrescription.shc?CitizenID=1081787'),
+        Uri.parse('$urlForINSC/citizenCurrentPrescription.shc?CitizenID=$localCitizenIDP'),
         headers: {
           "token": token
         });
 
     if (response.statusCode == 200) {
-      citizenCurrentPrescription =
-          citizenCurrentPrescriptionModel.fromJson(jsonDecode(response.body));
-      getSubPreviousPrescription();
-    } else {
+
+      var status = jsonDecode(response.body.toString());
+      List<dynamic> statusinfo = status['data'];
+      if(statusinfo.isNotEmpty){
+
+        citizenCurrentPrescription =citizenCurrentPrescriptionModel.fromJson(jsonDecode(response.body));
+        getSubPreviousPrescription(citizenCurrentPrescription.data![0].EncounterID);
+
+      }else{
+        if(mounted){
+          EasyLoading.dismiss();
+          setState((){
+            noDataTextString = 'No data found...';
+            noDataText = true;
+          });
+        }
+      }
+
+    }
+    else {
+      if(mounted){
+        EasyLoading.dismiss();
+        setState((){
+          noDataTextString = 'Failed to load Prescription...';
+          noDataText = true;
+        });
+      }
       throw Exception('Failed to load Prescription');
     }
   }
 
-  void getSubPreviousPrescription() async {
+  void getSubPreviousPrescription(String EncounterID) async {
     final response = await http.get(
-        Uri.parse(
-            '$urlForINSC/displaySubTablednvPreviousPrescription.shc?EncounterID=1339530'),
+        Uri.parse('$urlForINSC/displaySubTablednvPreviousPrescription.shc?EncounterID=$EncounterID'),
         headers: {
           "token": token
         });
 
+    EasyLoading.dismiss();
+
     if (response.statusCode == 200) {
-      EasyLoading.dismiss();
-      subPreviousPrescription =
-          SubPreviousPrescriptionModel.fromJson(jsonDecode(response.body));
-      setState(() {
-        serching = false;
-      });
-    } else {
-      EasyLoading.dismiss();
+
+      subPreviousPrescription = SubPreviousPrescriptionModel.fromJson(jsonDecode(response.body));
+      if(mounted){
+        setState(() {
+          serching = false;
+        });
+      }
+    }
+    else {
+      if(mounted){
+        EasyLoading.dismiss();
+        setState((){
+          noDataTextString = 'Failed to load Prescription...';
+          noDataText = true;
+        });
+      }
       throw Exception('Failed to load Prescription');
     }
   }
@@ -85,7 +117,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TopPageTextViews('View Current Prescription'),
-            serching? const Text("Searching...")
+            serching? Text(noDataTextString)
                 :citizenCurrentPrescription.data?.length !=0 ?
             Container(
               margin: const EdgeInsets.fromLTRB(20, 15, 20, 5),
@@ -124,13 +156,13 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image(
-                        image: AssetImage('assets/images/doctor.png'),
+                        image: const AssetImage('assets/images/doctor.png'),
                         height: 23,
                         width: 23,
                         fit: BoxFit.fill,
                         color: globalBlue,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 25,
                         height: 28,
                       ),
@@ -153,12 +185,10 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image(
-                        image: AssetImage('assets/images/doctor.png'),
-                        height: 23,
-                        width: 23,
-                        fit: BoxFit.fill,
+                      Icon(
+                        Icons.local_hospital_rounded,
                         color: globalBlue,
+                        size: 23,
                       ),
                       SizedBox(
                         width: 25,
@@ -187,7 +217,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                   ),
                 ],
               ),
-            ) : Text('No Data Found'),
+            ) : Text(noDataTextString),
             serching? SizedBox()
                 : citizenCurrentPrescription.data?.length !=0 ?Container(
               margin: EdgeInsets.fromLTRB(20, 5, 20, 25),
@@ -214,7 +244,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                           MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
-                              children: [
+                              children: const [
                                 SizedBox(
                                   height: 8,
                                 ),
@@ -234,7 +264,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                   openFile(
                                     url:
                                     '$urlForINSC/OpenPrescriptionContinuedWithInstruction_citizen.do?ptype=2&ptype=1&frmIsLetterHeadOption=0&'
-                                        'frmIsGenericReportOption=false&frmLanguage=0&frmIsWithInstruction=false&frmCitizenID=1081787',
+                                        'frmIsGenericReportOption=false&frmLanguage=0&frmIsWithInstruction=false&frmCitizenID=$localCitizenIDP',
                                     fileName: 'prescription.pdf',
                                   );
                                 },
@@ -249,14 +279,14 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.calendar_month,
                               // height: 20,
                               // width: 20,
                               color: Colors.grey,
                               size: 20,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 25,
                               height: 28,
                             ),
@@ -395,7 +425,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                         Text(
                                           subPreviousPrescription
                                               .data[index].drugName,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 16,
                                             color: Colors.black,
                                             fontWeight: FontWeight.w600,
@@ -404,7 +434,7 @@ class _PrescriptionPageState extends State<PrescriptionPage> {
                                         Text(
                                           subPreviousPrescription
                                               .data[index].contentName,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 16,
                                             color: Colors.black,
                                           ),

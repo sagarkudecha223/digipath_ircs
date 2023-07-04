@@ -39,8 +39,8 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
    String CareprofessionalByTreatingDoctorIdf = '';
    String ServiceAlias = '';
   String reportStatusText = '';
-  String u = 'dhruv';
-  String p  = 'demo';
+  // String u = 'dhruv';
+  // String p  = 'demo';
   List<MedicalReportModal> recordlist =  <MedicalReportModal>[];
    String PatientReportIDP = '';
    String RightPatientReportIDP = '';
@@ -62,7 +62,7 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
     try {
       Response response = await get(
           Uri.parse(
-              '$urlForIN/getListofDateAsPerCitizenCode.app?CitizenCode=15092100073901'),
+              '$urlForINSC/getListofDateAsPerCitizenCode.app?CitizenCode=$localCitizenCode'),
           headers: {
             'u': 'dhruv',
             'p': 'demo',

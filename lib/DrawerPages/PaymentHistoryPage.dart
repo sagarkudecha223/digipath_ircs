@@ -38,9 +38,11 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
     EasyLoading.show(status: 'Searching...');
     paymentList.clear();
 
+    print('$urlForINSC/getCitizenPaymentHistory.do?citizenID=$localCitizenIDP');
+
     try{
       Response response = await post(
-        Uri.parse('https://medicodb.in/getCitizenPaymentHistory.do?citizenID=1028107'),
+        Uri.parse('$urlForINSC/getCitizenPaymentHistory.do?citizenID=$localCitizenIDP'),
       );
      EasyLoading.dismiss();
 
@@ -81,7 +83,6 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
       EasyLoading.dismiss();
       showToast('Sorry !!! Server error');
     }
-
   }
 
   @override
@@ -104,14 +105,14 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
             Flexible(
               child: RefreshIndicator(
                 onRefresh: () {
-                  return Future.delayed(Duration(microseconds: 500),() {
+                  return Future.delayed(const Duration(microseconds: 500),() {
                     getPaymentList();
                   });
                 },
                 child: SingleChildScrollView(
                   child: ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: paymentList.length,
                   itemBuilder: (context, index) {
                     return Container(
@@ -146,7 +147,7 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
                               String patientProfileID = paymentList[index].patientProfileID;
                               EasyLoading.show(status: 'Loading...');
                               openFile(
-                                url: '$urlForINSC/generatePatientVoucherOPD_android.do?patientProfileID=$patientProfileID&episodeID=$episodeID&loginID=10834&withStationary=YES',
+                                url: '$urlForINSC/generatePatientVoucherOPD_android.do?patientProfileID=$patientProfileID&episodeID=$episodeID&loginID=$localUserLoginIDP&withStationary=NO',
                                 fileName:'$patientProfileID.pdf',
                               );
                             },
@@ -167,6 +168,7 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
   }
 
   Future openFile({required String url, required String fileName}) async {
+    print(url);
     final name = fileName;
     final file = await downloadFile(url,name);
 

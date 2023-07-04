@@ -50,7 +50,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool filterColumn = false;
   bool onBack = true;
   List<SearchCityModal> filterlist =  <SearchCityModal>[];
-  bool fromAddMember;
+  late bool fromAddMember;
 
   _SignUpPageState(this.fromAddMember);
 
@@ -83,6 +83,18 @@ class _SignUpPageState extends State<SignUpPage> {
         context: context,
         initialDate: selectedStartDate,
         firstDate: DateTime(1900),
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme:ColorScheme.light(
+                primary: const Color(0xFF549DD6),
+                onPrimary: Colors.white,
+                onSurface: Colors.black,
+              ),
+            ),
+            child: child!,
+          );
+        },
         lastDate: DateTime.now())
         .then((pickedDate) {
       if (pickedDate == null) {
@@ -672,9 +684,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                         insetPadding: const EdgeInsets.all(20),
                                         elevation: 16,
-                                        child: const Padding(
+                                        child: Padding(
                                           padding:  EdgeInsets.all(20.0),
-                                          child: OTPPage(),
+                                          child: OTPPage(fromAddMember: fromAddMember,),
                                         ),
                                       );
                                     },

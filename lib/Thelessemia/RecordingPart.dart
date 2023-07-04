@@ -19,7 +19,7 @@ class _TestPageState extends State<RecordingPart> with TickerProviderStateMixin{
   String statusText = "";
   bool isComplete = false;
   String recordFilePath = '';
-  String filename = 'Long pressed & hold the mic button for start recording...';
+  String filename = 'Long pressed & hold the mic button to start recording...';
   String duration = '0';
   late AnimationController controller;
   late AnimationController buttonController;

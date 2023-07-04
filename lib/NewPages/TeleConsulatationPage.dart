@@ -10,7 +10,6 @@ import 'package:get/route_manager.dart';
 import 'package:http/http.dart';
 import '../Design/BorderContainer.dart';
 import '../Design/ColorFillContainer.dart';
-import '../HomePage.dart';
 import '../ModalClass/TeleConsultionModal.dart';
 
 class TeleConsultationPage extends StatefulWidget {
@@ -39,67 +38,70 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
 
     try{
 
+      print('$urlForINSC/smart_getAllEncounterForCitizen.shc?citizenID=$localCitizenIDP');
+
       Response response = await get(Uri.parse('$urlForINSC/smart_getAllEncounterForCitizen.shc?citizenID=$localCitizenIDP'),
       headers: {
         'token' : token
       });
-
-      print(' Response ::::::::::::$response');
+      print(' Response :::::::${response.body}');
       EasyLoading.dismiss();
 
-      if(response.statusCode == 200){
+      if(mounted){
+        if(response.statusCode == 200){
 
-        var data = jsonDecode(response.body.toString());
+          var data = jsonDecode(response.body.toString());
 
-        String status = data['status'].toString();
-        print('Response Is $data');
+          String status = data['status'].toString();
 
-        if(status == 'true'){
+          if(status == 'true'){
 
-          List<dynamic> list = data['data'];
+            List<dynamic> list = data['data'];
 
-          if(list.isNotEmpty) {
-            for (int i = 0; i < list.length; i++) {
-              String appointmentDate = list[i]['appointmentDate'].toString();
-              String startTime = list[i]['startTime'].toString();
-              String endTime = list[i]['endTime'].toString();
-              String tDr = list[i]['tDr'].toString();
-              String tDrID = list[i]['tDrID'].toString();
-              String drCitizenID = list[i]['drCitizenID'].toString();
-              String encounterIDP = list[i]['encounterIDP'].toString();
-              String encounterServiceIDP = list[i]['encounterServiceIDP'].toString();
+            if(list.isNotEmpty) {
+              for (int i = 0; i < list.length; i++) {
+                String appointmentDate = list[i]['appointmentDate'].toString();
+                String startTime = list[i]['startTime'].toString();
+                String endTime = list[i]['endTime'].toString();
+                String tDr = list[i]['tDr'].toString();
+                String tDrID = list[i]['tDrID'].toString();
+                String drCitizenID = list[i]['drCitizenID'].toString();
+                String encounterIDP = list[i]['encounterIDP'].toString();
+                String encounterServiceIDP = list[i]['encounterServiceIDP'].toString();
 
-              teleConsulationList.add(TeleConsulationModal(appointmentDate: appointmentDate, startTime: startTime, endTime: endTime, tDr: tDr,
-                  tDrID: tDrID, drCitizenID: drCitizenID, encounterIDP: encounterIDP, encounterServiceIDP: encounterServiceIDP));
+                teleConsulationList.add(TeleConsulationModal(appointmentDate: appointmentDate, startTime: startTime, endTime: endTime, tDr: tDr,
+                    tDrID: tDrID, drCitizenID: drCitizenID, encounterIDP: encounterIDP, encounterServiceIDP: encounterServiceIDP));
 
+              }
             }
+
+            if(teleConsulationList.isNotEmpty){
+              noDataText = false;
+
+            }else{
+              noDataText = true;
+              noDataTextString = 'No Data Found';
+            }
+
+            setState(() {
+
+            });
           }
 
-          if(teleConsulationList.isNotEmpty){
-            noDataText = false;
-
-          }else{
-            noDataText = true;
-            noDataTextString = 'No Data Found';
-          }
-
-          setState(() {
-
-          });
+        }else{
+          noDataTextString = 'Sorry ! Server Error';
+          noDataText = true;
         }
-
-      }else{
-        noDataTextString = 'Sorry ! Server Error';
-        noDataText = true;
       }
 
     }catch(e){
-      setState(() {
-
-        noDataTextString = 'Sorry ! Server Error';
-        noDataText = true;
-        EasyLoading.dismiss();
-      });
+      if(mounted){
+        setState(() {
+          noDataTextString = 'Sorry ! Server Error';
+          noDataText = true;
+          EasyLoading.dismiss();
+        });
+      }
     }
   }
 
@@ -111,101 +113,71 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async{
-          Get.offAll(const HomePage());
-        return false;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: const Color(0xFF254D99),
-          leading: InkWell(
-              onTap: (){
-                  Get.offAll(HomePage());
-              },
-              child: Icon(Icons.arrow_back_rounded,color: Colors.white)),
-          title: Text('Tele-Consultation'.toUpperCase()),
-          titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.home,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Get.offAll(
-                  HomePage(),
-                );
-              },
-            )
-          ],
-        ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: globalPageBackgroundColor,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TopPageTextViews('Video Consultation'),
-              noDataText?Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.all(25),
-                  decoration: BorderContainer(Colors.white,globalBlue),
-                  padding: const EdgeInsets.all(15),
-                  child: Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center)) :
-              Flexible(
-                child: RefreshIndicator(
-                  onRefresh: () {
-                    return Future.delayed(Duration(microseconds: 500),() {
-                      setState(() {
-                        noDataText = true;
-                      });
-                      getTeleConsulation();
+    return Scaffold(
+      appBar: GlobalAppBar(context, 'Tele-Consultation'),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        color: globalPageBackgroundColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TopPageTextViews('Video Consultation'),
+            noDataText?Container(
+                width: double.infinity,
+                margin: const EdgeInsets.all(25),
+                decoration: BorderContainer(Colors.white,globalBlue),
+                padding: const EdgeInsets.all(15),
+                child: Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center)) :
+            Flexible(
+              child: RefreshIndicator(
+                onRefresh: () {
+                  return Future.delayed(Duration(microseconds: 500),() {
+                    setState(() {
+                      noDataText = true;
                     });
-                  },
-                  child: SingleChildScrollView(
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: teleConsulationList.length,
-                        itemBuilder: (context, index) {
-                       return Container(
-                         padding: EdgeInsets.all(15),
-                         decoration: BorderContainer(Colors.white,globalBlue),
-                         margin: EdgeInsets.only(left: 20,right: 20,top: 10),
-                         child: Column(
-                           children: [
-                             Padding(
-                               padding: const EdgeInsets.all(8.0),
-                               child: Text('You have an appointment with Dr.${teleConsulationList[index].tDr} On ${teleConsulationList[index].appointmentDate} At ${teleConsulationList[index].startTime}'
-                                   ' Please upload all your previous medical records prior to video consultation',textAlign: TextAlign.start,style: TextStyle(fontWeight: FontWeight.w600),),
+                    getTeleConsulation();
+                  });
+                },
+                child: SingleChildScrollView(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: teleConsulationList.length,
+                      itemBuilder: (context, index) {
+                     return Container(
+                       padding: EdgeInsets.all(15),
+                       decoration: BorderContainer(Colors.white,globalBlue),
+                       margin: EdgeInsets.only(left: 20,right: 20,top: 10),
+                       child: Column(
+                         children: [
+                           Padding(
+                             padding: const EdgeInsets.all(8.0),
+                             child: Text('You have an appointment with Dr.${teleConsulationList[index].tDr} On ${teleConsulationList[index].appointmentDate} At ${teleConsulationList[index].startTime}'
+                                 ' Please upload all your previous medical records prior to video consultation',textAlign: TextAlign.start,style: TextStyle(fontWeight: FontWeight.w600),),
+                           ),
+                           SizedBox(height: 10,),
+                           InkWell(
+                             onTap : (){
+                               Get.to(UploadDocumentPage(isDirect: false, encounterID: teleConsulationList[index].encounterIDP, startTime: teleConsulationList[index].startTime,
+                                 endTime: teleConsulationList[index].endTime, appointmentDate: teleConsulationList[index].appointmentDate,));
+                             },
+                             child: Container(
+                               decoration: ColorFillContainer(globalOrange),
+                               padding: EdgeInsets.all(15),
+                               child: const Text('Add Records Or Initiate Video consultation',textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
                              ),
-                             SizedBox(height: 10,),
-                             InkWell(
-                               onTap : (){
-                                 Get.to(UploadDocumentPage(isDirect: false, encounterID: teleConsulationList[index].encounterIDP, startTime: teleConsulationList[index].startTime,
-                                   endTime: teleConsulationList[index].endTime, appointmentDate: teleConsulationList[index].appointmentDate,));
-                               },
-                               child: Container(
-                                 decoration: ColorFillContainer(globalOrange),
-                                 padding: EdgeInsets.all(15),
-                                 child: const Text('Add Records Or Initiate Video consultation',textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
-                               ),
-                             )
-                           ],
-                         ),
+                           )
+                         ],
+                       ),
 
-                       );
-                      }
-                    ),
+                     );
+                    }
                   ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

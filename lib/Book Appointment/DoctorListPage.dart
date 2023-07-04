@@ -148,7 +148,7 @@ class _DoctorListPageState extends State<DoctorListPage> {
         color: globalPageBackgroundColor,
         child: Column(
           children: [
-            TopPageTextViews('Select doctor from the listing below'),
+            TopPageTextViews('Select doctor from the list below'),
             noDataText?Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center) :
             Flexible(
               child: Container(

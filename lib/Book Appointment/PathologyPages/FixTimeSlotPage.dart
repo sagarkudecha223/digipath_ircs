@@ -181,11 +181,11 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
                       child: Container(
                           margin: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                              color: timeSlotsList[index].isEnable == 'false'? globalRed : selectedIndex == index ? Colors.black12 : globalGreen,
+                              color: timeSlotsList[index].isEnable == 'false'? Colors.red.shade400 : selectedIndex == index ? Colors.grey : Colors.greenAccent.shade200,
                               borderRadius: BorderRadius.circular(15)
                           ),
                           height: 20,width: 100,
-                          child: Center(child: Text(timeSlotsList[index].time,style: TextStyle(fontSize: 16,color:  selectedIndex == index ? Colors.black : globalWhiteColor,
+                          child: Center(child: Text(timeSlotsList[index].time,style: TextStyle(fontSize: 16,color:  selectedIndex == index ? Colors.white : Colors.grey.shade800,
                               fontWeight: FontWeight.w500),textAlign: TextAlign.center,))
                       ),
                     );

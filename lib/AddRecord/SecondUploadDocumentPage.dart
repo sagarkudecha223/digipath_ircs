@@ -78,7 +78,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
     EasyLoading.show(status: 'Uploading Document...');
 
     try{
-      Response response = await post(Uri.parse('https://medicodb.in/uploadScanDocAndroid.app?'),
+      Response response = await post(Uri.parse('$urlForINSC/uploadScanDocAndroid.app?'),
         headers: {
           'u': 'dhruv',
           'p': 'demo',
@@ -174,7 +174,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                         topText('Service type :'),
                         InkWell(
                           onTap: () async{
-                            var data = await Get.to(CommonSearchPage(url: '$urlForIN/getServiceAndroid.app?', searchType: 'service',));
+                            var data = await Get.to(CommonSearchPage(url: '$urlForINSC/getServiceAndroid.app?', searchType: 'service',));
                             print('selected Service  ::: $data');
                             if(data != null){
                               final split = data.toString().split('||');
@@ -204,7 +204,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                         topText('Care professional :'),
                         InkWell(
                           onTap: () async{
-                            var data = await Get.to(CommonSearchPage(url: '$urlForIN/otpCareProfessional.app?', searchType: 'Care Professional',));
+                            var data = await Get.to(CommonSearchPage(url: '$urlForINSC/otpCareProfessional.app?', searchType: 'Care Professional',));
                             print('selected Care Professional  ::: $data');
                             if(data != null){
                               final split = data.toString().split('||');
@@ -234,7 +234,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                         topText('Care Provider : '),
                         InkWell(
                           onTap: () async{
-                            var data = await Get.to(CommonSearchPage(url: '$urlForIN/getCareProviderAndroid.app?', searchType: 'Care Provider',));
+                            var data = await Get.to(CommonSearchPage(url: '$urlForINSC/getCareProviderAndroid.app?', searchType: 'Care Provider',));
                             print('selected Care Provide  ::: $data');
                             if(data != null){
                               final split = data.toString().split('||');

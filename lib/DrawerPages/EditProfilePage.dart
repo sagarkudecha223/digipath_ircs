@@ -77,6 +77,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
         context: context,
         initialDate: selectedStartDate,
         firstDate: DateTime(1900),
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme:ColorScheme.light(
+                primary: const Color(0xFF549DD6),
+                onPrimary: Colors.white,
+                onSurface: Colors.black,
+              ),
+            ),
+            child: child!,
+          );
+        },
         lastDate: DateTime.now())
         .then((pickedDate) {
       if (pickedDate == null) {
