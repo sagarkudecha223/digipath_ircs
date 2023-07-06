@@ -36,9 +36,6 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
   late String PatientDocumentIDP = widget.medicalReportModal.PatientDocumentIDP;
   late String imageType = widget.medicalReportModal.ImageType;
 
-  // String u = 'dhruv';
-  // String p  = 'demo';
-
   @override
   void initState() {
     super.initState();
@@ -63,12 +60,10 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
   void fundosCopyReport() async{
     try {
       Response response = await get(
-          Uri.parse(
-              '$urlForINSC/getPatientReportDataForFundoscopyAndroid.app?EncounterServiceIDF=$EncounterServiceIDP'),
-          // headers: {
-          //   'u': u,
-          //   'p': p,
-          // }
+          Uri.parse('$urlForINSC/getPatientReportDataForFundoscopyAndroid.shc?EncounterServiceIDF=$EncounterServiceIDP'),
+          headers: {
+            'token' : token
+          }
       );
 
       if (mounted) {
@@ -117,12 +112,10 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
   void searchECGReport() async{
     try {
       Response response = await get(
-          Uri.parse(
-              '$urlForINSC/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
-          // headers: {
-          //   'u': u,
-          //   'p': p,
-          // }
+          Uri.parse('$urlForINSC/getPatientReportData.shc?EncounterServiceIDF=$EncounterServiceIDP'),
+          headers: {
+            'token' : token
+          }
       );
 
       if (mounted) {
@@ -177,12 +170,10 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
 
     try {
       Response response = await get(
-          Uri.parse(
-              '$urlForINSC/getPatientReportData.app?EncounterServiceIDF=$EncounterServiceIDP'),
-          // headers: {
-          //   'u': u,
-          //   'p': p,
-          // }
+          Uri.parse('$urlForINSC/getPatientReportData.shc?EncounterServiceIDF=$EncounterServiceIDP'),
+          headers: {
+            'token' : token
+          }
       );
 
       if (mounted) {

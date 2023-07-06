@@ -81,6 +81,12 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   @override
+  void dispose() {
+    EasyLoading.dismiss();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GlobalAppBar(context, 'Pending Payment List'),
@@ -133,7 +139,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                 InkWell(
                                   onTap : (){
                                     String encounterID = paymentList[index].encounterIDP;
-                                    String url = '$urlForINSC/CCAvenuePopUp_Android.do?encounterid=$encounterID&callFrom=android&APIFor=redcross&mobileNo=$localMobileNum';
+                                    String url = '$urlForIN/CCAvenuePopUp_Android.do?encounterid=$encounterID&callFrom=flutter&APIFor=redcross&mobileNo=$localMobileNum';
                                     Get.to(WebViewPage(url: url,));
                                   },
                                   child: Container(

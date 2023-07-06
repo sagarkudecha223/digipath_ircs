@@ -628,6 +628,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   @override
+  void dispose() {
+    EasyLoading.dismiss();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GlobalAppBar(context,'edit Profile'),

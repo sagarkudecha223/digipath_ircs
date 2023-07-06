@@ -59,9 +59,9 @@ class _SwitchUserPageState extends State<SwitchUserPage> {
     try{
 
       Response response = await post( Uri.parse('$urlForINSC/mobileNumberwisePatientList.notauth?mobile=$localMobileNum'),
-        headers: {
-          "token" : token
-        }
+        // headers: {
+        //   "token" : token
+        // }
       );
 
       EasyLoading.dismiss();
@@ -99,6 +99,12 @@ class _SwitchUserPageState extends State<SwitchUserPage> {
   }
 
   @override
+  void dispose() {
+    EasyLoading.dismiss();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GlobalAppBar(context,'Switch User'),
@@ -126,7 +132,7 @@ class _SwitchUserPageState extends State<SwitchUserPage> {
                         margin: EdgeInsets.all(5),
                         padding: EdgeInsets.all(15),
                         decoration: ColorFillContainer(Colors.indigo.shade100),
-                        child: Text( accountList[index].userName,style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black,fontSize: 18),),
+                        child: Text( accountList[index].userName,style: const TextStyle(fontWeight: FontWeight.w600,color: Colors.black,fontSize: 18),),
                       ),
                     );
                   },

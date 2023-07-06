@@ -1,4 +1,5 @@
 library app.globals;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../ModalClass/MultiAccountModal.dart';
 import '../ModalClass/PathologyPackageModal.dart';
 import '../ModalClass/PathologyServiceModal.dart';
@@ -44,6 +45,16 @@ void updateVcGroup(String vcgroupID) async{
  dynamic status = await searchAPI(false ,'$urlForINSC/updateVcGroup.shc?vcgroupID=$vcgroupID',
       {'token' : token},{},50);
 
-  print(' status after responce: $status');
+  print(' status after responce: ${status['status']}');
+
+  if(status['status']== true){
+   SharedPreferences preferences = await SharedPreferences.getInstance();
+   isOnline = false;
+   preferences.setBool('isOnline', false);
+   preferences.setString('vcgroupID', '');
+   print('isOnline ::: $isOnline');
+  }else{
+   print('enter in else isOnline ::: $isOnline');
+  }
 
 }

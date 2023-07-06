@@ -19,6 +19,14 @@ class _WebViewPageState extends State<WebViewPage> {
   late String url;
   late final WebViewController _controller;
 
+  // _loadHtmlFromAssets() async {
+  //   String file = await rootBundle.loadString('assets/index.html');
+  //   _controller.loadUrl(Uri.dataFromString(
+  //       file,
+  //       mimeType: 'text/html',
+  //       encoding: Encoding.getByName('utf-8')).toString());
+  // }
+
   void readResponse() async{
 
     print('enter responce:::');
@@ -30,8 +38,11 @@ class _WebViewPageState extends State<WebViewPage> {
     return Scaffold(
       body: WebView(
         initialUrl: url,
-        onWebViewCreated: (WebViewController webviewController) {
-          _controller = webviewController;
+        onWebViewCreated: (WebViewController webViewController) {
+          setState(() {
+            _controller = webViewController;
+            // _loadHtmlFromAssets();
+          });
         },
         javascriptMode: JavascriptMode.unrestricted,
         gestureNavigationEnabled: true,
@@ -50,9 +61,9 @@ class _WebViewPageState extends State<WebViewPage> {
                 }
               })
         },
-        onPageFinished: (_){
-          print('enter');
-          readResponse();
+        onPageFinished: (String url) async {
+          // await _controller.runJavascriptReturningResult('your js code');
+          print('enter finished:::');
         },
       ),
     );

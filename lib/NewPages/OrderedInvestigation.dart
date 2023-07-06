@@ -113,6 +113,12 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
   }
 
   @override
+  void dispose() {
+    EasyLoading.dismiss();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GlobalAppBar(context,'Ordered Investigation'),

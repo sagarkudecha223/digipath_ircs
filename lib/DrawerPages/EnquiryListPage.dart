@@ -54,6 +54,12 @@ class EnquiryListPageState extends State<EnquiryListPage> {
   }
 
   @override
+  void dispose() {
+    EasyLoading.dismiss();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: globalPageBackgroundColor,

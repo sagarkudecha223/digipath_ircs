@@ -176,6 +176,12 @@ class NewEnquiryPageState extends State<NewEnquiryPage> {
   }
 
   @override
+  void dispose() {
+    EasyLoading.dismiss();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.indigo[100],

@@ -93,7 +93,6 @@ class _ViewReportPageState extends State<ViewReportPage> {
               noDataText = true;
               noDataTextString = 'No matching data found';
               EasyLoading.dismiss();
-              showToast('Sorry ! No matching data found');
             });
           }
         }
@@ -183,6 +182,12 @@ class _ViewReportPageState extends State<ViewReportPage> {
   }
 
   @override
+  void dispose() {
+    EasyLoading.dismiss();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GlobalAppBar(context,'View Reports'),
@@ -196,8 +201,8 @@ class _ViewReportPageState extends State<ViewReportPage> {
             Visibility(
               visible: calenderView,
               child: Container(
-                padding: EdgeInsets.all(5),
-                margin: EdgeInsets.only(left: 20,right: 20,bottom: 5),
+                padding: const EdgeInsets.all(5),
+                margin: const EdgeInsets.only(left: 20,right: 20,bottom: 5),
                 decoration: BorderContainer(Colors.grey.shade100,globalBlue),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

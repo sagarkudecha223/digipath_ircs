@@ -8,6 +8,7 @@ import 'package:highlight_text/highlight_text.dart';
 import 'package:http/http.dart';
 import 'package:lottie/lottie.dart';
 import '../Global/Toast.dart';
+import '../Global/global.dart';
 import '../ModalClass/SearchCityModal.dart';
 
 class CommonSearchPage extends StatefulWidget {
@@ -104,8 +105,7 @@ class _CommonSearchPageState extends State<CommonSearchPage> {
       Response response = await get(
           Uri.parse('${url}searchText=$searchText'),
           headers: {
-            'u': 'dhruv',
-            'p': 'demo',
+            'token' : token
           }
       );
 

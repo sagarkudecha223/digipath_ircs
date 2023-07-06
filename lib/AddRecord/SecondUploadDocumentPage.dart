@@ -78,10 +78,9 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
     EasyLoading.show(status: 'Uploading Document...');
 
     try{
-      Response response = await post(Uri.parse('$urlForINSC/uploadScanDocAndroid.app?'),
+      Response response = await post(Uri.parse('$urlForINSC/uploadScanDocAndroid.shc?'),
         headers: {
-          'u': 'dhruv',
-          'p': 'demo',
+          'token' : token
         },
         body: {
           'CitizenIDF': localCitizenIDP,
@@ -136,6 +135,12 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
     );
   }
 
+ @override
+ void dispose() {
+   EasyLoading.dismiss();
+   super.dispose();
+ }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,7 +179,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                         topText('Service type :'),
                         InkWell(
                           onTap: () async{
-                            var data = await Get.to(CommonSearchPage(url: '$urlForINSC/getServiceAndroid.app?', searchType: 'service',));
+                            var data = await Get.to(CommonSearchPage(url: '$urlForINSC/getServiceAndroid.shc?', searchType: 'service',));
                             print('selected Service  ::: $data');
                             if(data != null){
                               final split = data.toString().split('||');
@@ -204,7 +209,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                         topText('Care professional :'),
                         InkWell(
                           onTap: () async{
-                            var data = await Get.to(CommonSearchPage(url: '$urlForINSC/otpCareProfessional.app?', searchType: 'Care Professional',));
+                            var data = await Get.to(CommonSearchPage(url: '$urlForINSC/otpCareProfessional.shc?', searchType: 'Care Professional',));
                             print('selected Care Professional  ::: $data');
                             if(data != null){
                               final split = data.toString().split('||');
@@ -234,7 +239,7 @@ class _SecondUploadDocumentPageState extends State<SecondUploadDocumentPage> {
                         topText('Care Provider : '),
                         InkWell(
                           onTap: () async{
-                            var data = await Get.to(CommonSearchPage(url: '$urlForINSC/getCareProviderAndroid.app?', searchType: 'Care Provider',));
+                            var data = await Get.to(CommonSearchPage(url: '$urlForINSC/getCareProviderAndroid.shc?', searchType: 'Care Provider',));
                             print('selected Care Provide  ::: $data');
                             if(data != null){
                               final split = data.toString().split('||');

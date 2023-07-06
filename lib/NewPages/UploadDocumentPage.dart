@@ -252,13 +252,21 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   joinMeeting(String roomName, vcgroupIDP) async {
 
     Map<FeatureFlag, bool> featureFlags = {
+      FeatureFlag.isAddPeopleEnabled : false,
+      FeatureFlag.isMeetingNameEnabled : false,
+      FeatureFlag.isPrejoinPageEnabled : false,
+      FeatureFlag.isInviteEnabled : false,
+      FeatureFlag.isIosRecordingEnabled : false,
+      FeatureFlag.isKickoutEnabled : false,
+      FeatureFlag.isLiveStreamingEnabled : false,
       FeatureFlag.isWelcomePageEnabled : false
     };
 
     var options = JitsiMeetingOptions(
       roomNameOrUrl: roomName,
+      userDisplayName: localUserName,
       featureFlags: featureFlags
-    )..featureFlags?.addAll(featureFlags);
+    );
 
     debugPrint("JitsiMeetingOptions: $options");
     await JitsiMeetWrapper.joinMeeting(
@@ -272,19 +280,10 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
           debugPrint("onConferenceJoined: url: $url ::::::: isOnline : $isOnline");
         },
         onConferenceTerminated: (url, error) async{
-          SharedPreferences preferences = await SharedPreferences.getInstance();
-          isOnline = false;
-          preferences.setBool('isOnline', false);
-          preferences.setString('vcgroupID', '');
           updateVcGroup(vcgroupIDP);
-          debugPrint("onClosed ::::::: isOnline : $isOnline");
           debugPrint("onConferenceTerminated: url: $url, error: $error");
         },
         onClosed: () async{
-          SharedPreferences preferences = await SharedPreferences.getInstance();
-          isOnline = false;
-          preferences.setBool('isOnline', false);
-          preferences.setString('vcgroupID', '');
           updateVcGroup(vcgroupIDP);
           debugPrint("onClosed ::::::: isOnline : $isOnline");
         }

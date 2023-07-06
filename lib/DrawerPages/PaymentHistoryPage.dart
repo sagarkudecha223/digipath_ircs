@@ -86,6 +86,12 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
   }
 
   @override
+  void dispose() {
+    EasyLoading.dismiss();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: GlobalAppBar(context,'Pending Payment List'),

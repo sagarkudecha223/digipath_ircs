@@ -39,8 +39,6 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
    String CareprofessionalByTreatingDoctorIdf = '';
    String ServiceAlias = '';
   String reportStatusText = '';
-  // String u = 'dhruv';
-  // String p  = 'demo';
   List<MedicalReportModal> recordlist =  <MedicalReportModal>[];
    String PatientReportIDP = '';
    String RightPatientReportIDP = '';
@@ -62,10 +60,9 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
     try {
       Response response = await get(
           Uri.parse(
-              '$urlForINSC/getListofDateAsPerCitizenCode.app?CitizenCode=$localCitizenCode'),
+              '$urlForINSC/getListofDateAsPerCitizenCode.shc?CitizenCode=$localCitizenCode'),
           headers: {
-            'u': 'dhruv',
-            'p': 'demo',
+            'token' : token
           }
       );
 
@@ -153,7 +150,7 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
             Flexible(
               child: RefreshIndicator(
                 onRefresh: () {
-                  return Future.delayed(Duration(microseconds: 500),
+                  return Future.delayed(const Duration(microseconds: 500),
                           () {
                         EasyLoading.show(status: 'Loading...');
                         getRecord();
