@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
 import 'package:digipath_ircs/Design/TopPageTextViews.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
+import 'package:digipath_ircs/Global/ShowGlobalDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
@@ -173,90 +174,87 @@ class _FreeConsultationPageState extends State<FreeConsultationPage> with Widget
                               const Text('Select Category',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.indigo),),
                               InkWell(
                                 onTap: (){
-                                  showDialog<String>(
-                                      context: context,
-                                      builder: (context) =>Dialog(
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                          insetPadding: EdgeInsets.all(20),
-                                          elevation: 16,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.indigo[300],
-                                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
-                                                ),
-                                                height: 50,
-                                                child: const Center(child: Text('Select Language',textScaleFactor: 1.0,style: TextStyle(color:Colors.white,fontSize: 19,fontWeight: FontWeight.w500,),)),
-                                              ),
-                                              RadioListTile(
-                                                title: const Text('English'),
-                                                value: "English",
-                                                groupValue: language,
-                                                onChanged: (value){
-                                                  setState(() {
-                                                    language = value.toString();
-                                                    Navigator.pop(context, 'Cancel');
-                                                    getAnswerList();
-                                                  }
-                                                  );
-                                                },
-                                              ),
-                                              RadioListTile(
-                                                title: Text('Hindi'),
-                                                value: "Hindi",
-                                                groupValue: language,
-                                                onChanged: (value){
-                                                  setState(() {
-                                                    language = value.toString();
-                                                    _targetLanguage = TranslateLanguage.hindi;
-                                                    _onDeviceTranslator = OnDeviceTranslator(sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
-                                                    print(_onDeviceTranslator.targetLanguage);
-                                                    Navigator.pop(context, 'Cancel');
-                                                    getAnswerList();
-                                                  }
-                                                  );
-                                                },
-                                              ),
-                                              RadioListTile(
-                                                title: Text('Gujarati'),
-                                                value: "Gujarati",
-                                                groupValue: language,
-                                                onChanged: (value){
-                                                  setState(() {
-                                                    language = value.toString();
-                                                    _targetLanguage = TranslateLanguage.gujarati;
-                                                    _onDeviceTranslator = OnDeviceTranslator(sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
-                                                    print(_onDeviceTranslator.targetLanguage);
-                                                    Navigator.pop(context, 'Cancel');
-                                                    getAnswerList();
-                                                  }
-                                                  );
-                                                },
-                                              ),
-                                              RadioListTile(
-                                                title: Text('Marathi'),
-                                                value: "Marathi",
-                                                groupValue: language,
-                                                onChanged: (value){
-                                                  setState(() {
-                                                    language = value.toString();
-                                                    _targetLanguage = TranslateLanguage.marathi;
-                                                    _onDeviceTranslator = OnDeviceTranslator(sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
-                                                    print(_onDeviceTranslator.targetLanguage);
-                                                    Navigator.pop(context, 'Cancel');
-                                                    getAnswerList();
-                                                  }
-                                                  );
-                                                },
-                                              ),
-                                            ],
-                                          )
-                                      ));
+                                  showGlobalDialog(context, Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.indigo[300],
+                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+                                        ),
+                                        height: 50,
+                                        child: const Center(child: Text('Select Language',textScaleFactor: 1.0,style: TextStyle(color:Colors.white,fontSize: 19,fontWeight: FontWeight.w500,),)),
+                                      ),
+                                      RadioListTile(
+                                        title: const Text('English'),
+                                        value: "English",
+                                        activeColor: globalBlue,
+                                        groupValue: language,
+                                        onChanged: (value){
+                                          setState(() {
+                                            language = value.toString();
+                                            Navigator.pop(context, 'Cancel');
+                                            getAnswerList();
+                                          }
+                                          );
+                                        },
+                                      ),
+                                      RadioListTile(
+                                        title: Text('Hindi'),
+                                        value: "Hindi",
+                                        activeColor: globalBlue,
+                                        groupValue: language,
+                                        onChanged: (value){
+                                          setState(() {
+                                            language = value.toString();
+                                            _targetLanguage = TranslateLanguage.hindi;
+                                            _onDeviceTranslator = OnDeviceTranslator(sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
+                                            print(_onDeviceTranslator.targetLanguage);
+                                            Navigator.pop(context, 'Cancel');
+                                            getAnswerList();
+                                          }
+                                          );
+                                        },
+                                      ),
+                                      RadioListTile(
+                                        title: Text('Gujarati'),
+                                        value: "Gujarati",
+                                        activeColor: globalBlue,
+                                        groupValue: language,
+                                        onChanged: (value){
+                                          setState(() {
+                                            language = value.toString();
+                                            _targetLanguage = TranslateLanguage.gujarati;
+                                            _onDeviceTranslator = OnDeviceTranslator(sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
+                                            print(_onDeviceTranslator.targetLanguage);
+                                            Navigator.pop(context, 'Cancel');
+                                            getAnswerList();
+                                          }
+                                          );
+                                        },
+                                      ),
+                                      RadioListTile(
+                                        title: Text('Marathi'),
+                                        value: "Marathi",
+                                        activeColor: globalBlue,
+                                        groupValue: language,
+                                        onChanged: (value){
+                                          setState(() {
+                                            language = value.toString();
+                                            _targetLanguage = TranslateLanguage.marathi;
+                                            _onDeviceTranslator = OnDeviceTranslator(sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
+                                            print(_onDeviceTranslator.targetLanguage);
+                                            Navigator.pop(context, 'Cancel');
+                                            getAnswerList();
+                                          }
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ), true);
                                   FocusManager.instance.primaryFocus?.unfocus();
                                 },
-                                child: Icon(Icons.g_translate_rounded,size: 30,color: Colors.indigo,)
+                                child: const Icon(Icons.g_translate_rounded,size: 30,color: Colors.indigo,)
                               ),
                             ],
                           ),

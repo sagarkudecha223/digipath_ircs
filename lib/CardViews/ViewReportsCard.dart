@@ -54,8 +54,8 @@ class _ViewReportsCardState extends State<ViewReportsCard> {
           if(widget.viewReportModal.ReportStatus == '3'){
                 EasyLoading.show(status: 'Loading...'),
                 openFile(
-                  // https://medicodb.in/getPathologyReportAndroid.do?prmServiceMapID=370742&prmEncounterServiceID=1833113&txtStationary=true
-                  url: '$urlForINSC/getPathologyReportAndroid.do?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP&txtStationary=true',
+                  //https://smarthealth.care/pathologyReport?prmServiceMapID=322588&prmEncounterServiceID=1833829&txtStationary=false&cbWithGraph=undefined&stationaryOption=1
+                  url: '$urlForINSC/pathologyReport?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP&txtStationary=false&cbWithGraph=undefined&stationaryOption=1',
                   fileName:'PathologyReport.pdf',
                 ),
             }
@@ -93,6 +93,8 @@ class _ViewReportsCardState extends State<ViewReportsCard> {
   }
 
   Future openFile({required String url, required String fileName}) async {
+
+    print(url);
     final name = fileName;
     final file = await downloadFile(url,name);
 

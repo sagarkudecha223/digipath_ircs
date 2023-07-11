@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
+import 'package:digipath_ircs/Global/ShowGlobalDialog.dart';
 import 'package:get/utils.dart';
 import 'package:digipath_ircs/Design/BorderContainer.dart';
 import 'package:digipath_ircs/Design/ColorFillContainer.dart';
@@ -178,31 +179,20 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   }
 
   Future<void> showTimeOverDialog() {
-    return showDialog(
-        context: context,
-        builder: ( BuildContext context ){
-          return Dialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            insetPadding: EdgeInsets.all(20),
-            backgroundColor: Colors.indigo.shade50,
-            elevation: 16,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Lottie.asset('assets/JSON/timerClock.json',repeat: true,height: 250,width: 250),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0,right: 15),
-                    child: Text('Meeting time is over ! Please Book new Appointment',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: globalBlue),),
-                  )
-                ],
-              ),
-            ),
-          );
-        }
-    );
+    return showGlobalDialog(context, Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/JSON/timerClock.json',repeat: true,height: 250,width: 250),
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0,right: 15),
+            child: Text('Meeting time is over ! Please Book new Appointment',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: globalBlue),),
+          )
+        ],
+      ),
+    ), true);
   }
 
   void startVideoCall() async{
@@ -292,192 +282,174 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
   }
 
   Future<void> showWaitingDialog(int hour, minutes, seconds) async{
-    return showDialog(
-      context: context,
-      builder: ( BuildContext context ){
-        return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          insetPadding: EdgeInsets.all(20),
-          backgroundColor: Colors.indigo.shade50,
-          elevation: 16,
-          child: ShowWaitingDialogPage(hour: hour, minutes: minutes, seconds: seconds,),
-        );
-      }
-    );
+    return showGlobalDialog(context, ShowWaitingDialogPage(hour: hour, minutes: minutes, seconds: seconds,), true);
   }
 
   Future<void> show2Simple() async {
-    return showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            insetPadding: EdgeInsets.all(20),
-            backgroundColor: Colors.indigo.shade50,
-            elevation: 16,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+    return showGlobalDialog(context, Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () async{
+                  print('tap');
+                  Get.to(SecondUploadDocumentPage(filePath: _image!));
+                },
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      shape: BoxShape.circle
+                  ),
+                  child: Column(
                     children: [
-                      InkWell(
-                        onTap: () async{
-                          print('tap');
-                          Get.to(SecondUploadDocumentPage(filePath: _image!));
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(5),
-                          padding: EdgeInsets.all(12),
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Icons.view_timeline_outlined, size: 20,color: Colors.indigo.shade800),
-                              Text('ADD TO',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 10)),
-                              Text('TIMELINE',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 10))
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 20,),
-                      InkWell(
-                        onTap: () {
-                          EasyLoading.show(status: 'Uploading Image...');
-                          uploadDocument();
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(5),
-                          padding: EdgeInsets.all(12),
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Icons.file_upload_rounded, size: 25,color: Colors.indigo.shade800),
-                              Text('UPLOAD',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 11))
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 20,),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pop(context, false);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(5),
-                          padding: EdgeInsets.all(12),
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle
-                          ),
-                          child: Column(
-                            children: [
-                              Icon(Icons.cancel_rounded, size: 25,color: Colors.indigo.shade800),
-                              Text('Cancel'.toUpperCase(),style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 10))
-                            ],
-                          ),
-                        ),
-                      ),
+                      Icon(Icons.view_timeline_outlined, size: 20,color: Colors.indigo.shade800),
+                      Text('ADD TO',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 10)),
+                      Text('TIMELINE',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 10))
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(20),
-                  height: 400,
-                  child: _image==null?const Text('Upload your Image'):
-                  InkWell(
-                    onTap: (){
-                      showDialog<String>(
-                        context: context,
-                        barrierColor:Colors.transparent,
-                        builder: (BuildContext context) => TweenAnimationBuilder(
-                          tween: Tween<double>(begin: 0, end: 1),
-                          duration: const Duration(milliseconds: 500),
-                          builder: (BuildContext context, double value, Widget? child) {
-                            return Opacity(opacity: value,
-                              child: Padding(
-                                padding: EdgeInsets.only(top: value * 1),
-                                child: child,
-                              ),
-                            );
-                          },
-                          child: AlertDialog(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                            backgroundColor: Colors.transparent,
-                            insetPadding: EdgeInsets.all(10),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 15),
-                                  child: Row(mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      InkWell(child: Icon(Icons.cancel,size: 35,),
-                                          onTap: ()=>{ Navigator.pop(context, 'Cancel')}),
-                                    ],),
-                                ),
-                                Container(
-                                    height: 300,
-                                    width: 300,
-                                    color: Colors.transparent,
-                                    child: PhotoView.customChild(
-                                      backgroundDecoration: BoxDecoration(color: Colors.transparent),
-                                      basePosition: Alignment.center,
-                                      minScale: PhotoViewComputedScale.contained * 1,
-                                      tightMode: true,
-                                      maxScale: PhotoViewComputedScale.covered * 2.0,
-                                      initialScale: PhotoViewComputedScale.contained * 1.1,
-                                      enableRotation: true,
-                                      scaleStateController: scaleStateController,
-                                      child: Container(
-                                        color: Colors.transparent,
-                                        width: 300,
-                                        height: 300,
-                                        child: Image.file(_image!),
-                                      ),
-                                    )
-                                ),
-                              ],
-                            ),
-                          ),
+              ),
+              const SizedBox(width: 20,),
+              InkWell(
+                onTap: () {
+                  EasyLoading.show(status: 'Uploading Image...');
+                  uploadDocument();
+                },
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      shape: BoxShape.circle
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(Icons.file_upload_rounded, size: 25,color: Colors.indigo.shade800),
+                      Text('UPLOAD',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 11))
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(width: 20,),
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context, false);
+                },
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      shape: BoxShape.circle
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(Icons.cancel_rounded, size: 25,color: Colors.indigo.shade800),
+                      Text('Cancel'.toUpperCase(),style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey.shade800,fontSize: 10))
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.only(left: 10,right: 10),
+          height: 400,
+          decoration: BoxDecoration(
+            border: Border.all(color: globalBlue),
+            color: Colors.grey.shade200
+          ),
+          child: _image==null?const Text('Upload your Image'):
+          InkWell(
+              onTap: (){
+                showDialog<String>(
+                  context: context,
+                  barrierColor:Colors.transparent,
+                  builder: (BuildContext context) => TweenAnimationBuilder(
+                    tween: Tween<double>(begin: 0, end: 1),
+                    duration: const Duration(milliseconds: 500),
+                    builder: (BuildContext context, double value, Widget? child) {
+                      return Opacity(opacity: value,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: value * 1),
+                          child: child,
                         ),
                       );
                     },
-                    child: Image.file(_image!)
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(10),
-                  child: InkWell(
-                    onTap: (){
-                      Navigator.pop(context);
-                      _cropImage();
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.crop, size: 25,color: Colors.indigo.shade800),
-                        SizedBox(width: 10,),
-                        Text('Crop Image',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.indigo.shade800,fontSize: 13))
-                      ],
+                    child: AlertDialog(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                      backgroundColor: Colors.transparent,
+                      insetPadding: EdgeInsets.all(10),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: Row(mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                InkWell(child: Icon(Icons.cancel,size: 35,),
+                                    onTap: ()=>{ Navigator.pop(context, 'Cancel')}),
+                              ],),
+                          ),
+                          Container(
+                              height: 300,
+                              width: 300,
+                              color: Colors.transparent,
+                              child: PhotoView.customChild(
+                                backgroundDecoration: BoxDecoration(color: Colors.transparent),
+                                basePosition: Alignment.center,
+                                minScale: PhotoViewComputedScale.contained * 1,
+                                tightMode: true,
+                                maxScale: PhotoViewComputedScale.covered * 2.0,
+                                initialScale: PhotoViewComputedScale.contained * 1.1,
+                                enableRotation: true,
+                                scaleStateController: scaleStateController,
+                                child: Container(
+                                  color: Colors.transparent,
+                                  width: 300,
+                                  height: 300,
+                                  child: Image.file(_image!),
+                                ),
+                              )
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                )
+                );
+              },
+              child: Image.file(_image!)
+          ),
+        ),
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(10),
+          child: InkWell(
+            onTap: (){
+              Navigator.pop(context);
+              _cropImage();
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.crop, size: 25,color: Colors.indigo.shade800),
+                SizedBox(width: 10,),
+                Text('Crop Image',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.indigo.shade800,fontSize: 13))
               ],
             ),
-          );
-        }
-    );
+          ),
+        )
+      ],
+    ), true);
   }
 
   Future<void> _cropImage() async {
@@ -542,7 +514,7 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         color: globalPageBackgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -553,55 +525,45 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
               children: [
                 InkWell(
                   onTap: (){
-                       showDialog<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Dialog(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                              insetPadding: EdgeInsets.all(20),
-                              elevation: 16,
-                              child : Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text('Select Image From...'.toUpperCase(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: globalBlue),),
-                                    const SizedBox(height: 25,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            openCamera();
-                                            Navigator.pop(context, false);
-                                          },
-                                          child: Column(
-                                            children:  [
-                                              Icon(Icons.camera_alt, size: 40,color: globalBlue,),
-                                              Text('CAMERA',style: TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo.shade800),)
-                                            ],
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            openGallery();
-                                            Navigator.pop(context, false);
-                                          },
-                                          child: Column(
-                                            children: [
-                                              Icon(Icons.photo_library_rounded, size: 40,color: globalBlue,),
-                                              Text('Gallery',style: TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo.shade800))
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }
-                      );
+                       showGlobalDialog(context, Padding(
+                         padding: const EdgeInsets.all(20.0),
+                         child: Column(
+                           mainAxisSize: MainAxisSize.min,
+                           children: [
+                             Text('Select Image From...'.toUpperCase(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: globalBlue),),
+                             const SizedBox(height: 25,),
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.spaceAround,
+                               children: [
+                                 InkWell(
+                                   onTap: () {
+                                     openCamera();
+                                     Navigator.pop(context, false);
+                                   },
+                                   child: Column(
+                                     children:  [
+                                       Icon(Icons.camera_alt, size: 40,color: globalBlue,),
+                                       Text('CAMERA',style: TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo.shade800),)
+                                     ],
+                                   ),
+                                 ),
+                                 InkWell(
+                                   onTap: () {
+                                     openGallery();
+                                     Navigator.pop(context, false);
+                                   },
+                                   child: Column(
+                                     children: [
+                                       Icon(Icons.photo_library_rounded, size: 40,color: globalBlue,),
+                                       Text('Gallery',style: TextStyle(fontWeight: FontWeight.w600,color: Colors.indigo.shade800))
+                                     ],
+                                   ),
+                                 ),
+                               ],
+                             ),
+                           ],
+                         ),
+                       ), true);
                   },
                   child: Container(
                     margin: EdgeInsets.all(5),
@@ -682,8 +644,8 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                     visible: !isDirect,
                     child: InkWell(
                       child: Container(
-                        margin: EdgeInsets.all(5),
-                        padding: EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(10),
                         decoration: ColorFillContainer(Colors.white),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -721,17 +683,17 @@ class _UploadDocumentPageState extends State<UploadDocumentPage> {
                     itemBuilder: (context, index){
                       return Container(
                         decoration: BorderContainer(Colors.white, globalBlue),
-                        padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
-                        margin: EdgeInsets.all(5),
+                        padding: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                        margin: const EdgeInsets.all(5),
                         child: Column(
                           crossAxisAlignment: documentList[index].documentType == '3'?CrossAxisAlignment.start : CrossAxisAlignment.end,
                           children: [
                             ImageWidget(imageString: documentList[index].imageString,),
-                            SizedBox(height: 5,),
+                            const SizedBox(height: 5,),
                             Text(documentList[index].documentDate,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.indigo.shade800),),
-                            SizedBox(height: 5,),
+                            const SizedBox(height: 5,),
                             Text(documentList[index].uploadBy,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.indigo.shade800),),
-                            SizedBox(height: 5,),
+                            const SizedBox(height: 5,),
                           ],
                         ),
                       );

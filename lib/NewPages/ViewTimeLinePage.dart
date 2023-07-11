@@ -56,6 +56,7 @@ class _ViewTimeLinePageState extends State<ViewTimeLinePage> {
   void getRecord() async{
 
     recordlist.clear();
+    print('$urlForINSC/getListofDateAsPerCitizenCode.shc?CitizenCode=$localCitizenCode');
 
     try {
       Response response = await get(

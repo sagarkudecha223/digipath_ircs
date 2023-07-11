@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:badges/badges.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
+import 'package:digipath_ircs/Global/ShowGlobalDialog.dart';
 import 'package:digipath_ircs/Global/Toast.dart';
 import 'package:digipath_ircs/HomePage.dart';
 import 'package:flutter/material.dart';
@@ -213,82 +216,62 @@ class _ConfirmTimeSlotPageState extends State<ConfirmTimeSlotPage> {
                     firstText(' VISIT TYPE :'),
                     InkWell(
                       onTap: (){
-                           showDialog<String>(
-                            context: context,
-                            builder: (context) =>TweenAnimationBuilder(
-                              tween: Tween<double>(begin: 0, end: 1),
-                              duration: Duration(milliseconds: 500),
-                              builder: (BuildContext context, double value, Widget? child) {
-                                return Opacity(opacity: value,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: value * 1),
-                                    child: child,
-                                  ),
-                                );
-                              },
-                              child: Dialog(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                insetPadding: EdgeInsets.all(30),
-                                elevation: 16,
-                                child: Container(
-                                  decoration: ColorFillContainer(Colors.white.withOpacity(0.8)),
-                                  margin: EdgeInsets.all(20),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          InkWell(
-                                            onTap : (){
-                                            Navigator.pop(context);
-                                            },
-                                              child: Icon(Icons.cancel_rounded,size: 30,))
-                                        ],
-                                      ),
-                                      InkWell(
-                                        onTap: (){
-                                          setState(() {
-                                            collectionType = 'Home Collection';
-                                            Navigator.pop(context);
-                                          });
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(top: 10),
-                                          width: double.infinity,
-                                          decoration: ColorFillContainer(Colors.indigo.shade50),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: mainText('Home Collection'),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      InkWell(
-                                        onTap: (){
-                                          setState(() {
-                                            collectionType = 'Center Visit';
-                                            Navigator.pop(context);
-                                          });
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(top: 5),
-                                          width: double.infinity,
-                                          decoration: ColorFillContainer(Colors.indigo.shade50),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: mainText('Center Visit'),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            )
-                        );
+                           showGlobalDialog(context, Container(
+                             decoration: ColorFillContainer(Colors.white.withOpacity(0.8)),
+                             margin: EdgeInsets.all(20),
+                             child: Column(
+                               mainAxisSize: MainAxisSize.min,
+                               children: [
+                                 Row(
+                                   mainAxisAlignment: MainAxisAlignment.end,
+                                   children: [
+                                     InkWell(
+                                         onTap : (){
+                                           Navigator.pop(context);
+                                         },
+                                         child: Icon(Icons.cancel_rounded,size: 30,))
+                                   ],
+                                 ),
+                                 InkWell(
+                                   onTap: (){
+                                     setState(() {
+                                       collectionType = 'Home Collection';
+                                       Navigator.pop(context);
+                                     });
+                                   },
+                                   child: Container(
+                                     margin: EdgeInsets.only(top: 10),
+                                     width: double.infinity,
+                                     decoration: ColorFillContainer(Colors.indigo.shade50),
+                                     child: Padding(
+                                       padding: const EdgeInsets.all(10.0),
+                                       child: mainText('Home Collection'),
+                                     ),
+                                   ),
+                                 ),
+                                 const SizedBox(
+                                   height: 10,
+                                 ),
+                                 InkWell(
+                                   onTap: (){
+                                     setState(() {
+                                       collectionType = 'Center Visit';
+                                       Navigator.pop(context);
+                                     });
+                                   },
+                                   child: Container(
+                                     margin: EdgeInsets.only(top: 5),
+                                     width: double.infinity,
+                                     decoration: ColorFillContainer(Colors.indigo.shade50),
+                                     child: Padding(
+                                       padding: const EdgeInsets.all(10.0),
+                                       child: mainText('Center Visit'),
+                                     ),
+                                   ),
+                                 )
+                               ],
+                             ),
+                           ), true);
                       },
                       child: secondText('EDIT ')
                     ),
@@ -505,82 +488,85 @@ class _ConfirmTimeSlotPageState extends State<ConfirmTimeSlotPage> {
                           context: context,
                           builder: (context) =>StatefulBuilder(
                               builder: (context, StateSetter setState){
-                                return Dialog(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                  insetPadding: EdgeInsets.all(30),
-                                  elevation: 16,
-                                  child: Container(
-                                    padding: const EdgeInsets.only(left: 25,right: 25,top: 15,bottom: 20),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            InkWell(
-                                                onTap : (){
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Icon(Icons.cancel_rounded,size: 30,))
-                                          ],
-                                        ),
-                                        RadioListTile(
-                                          activeColor: globalOrange,
-                                          visualDensity: const VisualDensity(
-                                            horizontal: VisualDensity.minimumDensity,
-                                            vertical: VisualDensity.minimumDensity,
+                                return BackdropFilter(
+                                  filter: ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
+                                  child: Dialog(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                    insetPadding: EdgeInsets.all(30),
+                                    elevation: 16,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(left: 25,right: 25,top: 15,bottom: 20),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              InkWell(
+                                                  onTap : (){
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Icon(Icons.cancel_rounded,size: 30,))
+                                            ],
                                           ),
-                                          title: const Text('Pay Online'),
-                                          value: "Pay Online",
-                                          groupValue: paymentText,
-                                          onChanged: (value){
-                                            setState(() {
-                                              paymentText = value.toString();
-                                            }
-                                            );
-                                          },
-                                        ),
-                                        const Padding(
-                                          padding: EdgeInsets.only(left: 10.0, right: 10),
-                                          child: Divider(
-                                            thickness: 1,
-                                            color: Colors.grey,
+                                          RadioListTile(
+                                            activeColor: globalOrange,
+                                            visualDensity: const VisualDensity(
+                                              horizontal: VisualDensity.minimumDensity,
+                                              vertical: VisualDensity.minimumDensity,
+                                            ),
+                                            title: const Text('Pay Online'),
+                                            value: "Pay Online",
+                                            groupValue: paymentText,
+                                            onChanged: (value){
+                                              setState(() {
+                                                paymentText = value.toString();
+                                              }
+                                              );
+                                            },
                                           ),
-                                        ),
-                                        RadioListTile(
-                                          activeColor: globalOrange,
-                                          visualDensity: const VisualDensity(
-                                            horizontal: VisualDensity.minimumDensity,
-                                            vertical: VisualDensity.minimumDensity,
-                                          ),
-                                          title: const Text('Pay At Visit'),
-                                          value: "Pay At Visit",
-                                          groupValue: paymentText,
-                                          onChanged: (value){
-                                            setState(() {
-                                              paymentText = value.toString();
-                                            }
-                                            );
-                                          },
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        InkWell(
-                                          onTap: (){
-                                            Navigator.pop(context);
-                                            submitData();
-                                          },
-                                          child: Container(
-                                            width: double.infinity,
-                                            decoration: ColorFillContainer(globalOrange),
-                                            child: const Padding(
-                                              padding: EdgeInsets.all(10.0),
-                                              child: Text('Submit',textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
+                                          const Padding(
+                                            padding: EdgeInsets.only(left: 10.0, right: 10),
+                                            child: Divider(
+                                              thickness: 1,
+                                              color: Colors.grey,
                                             ),
                                           ),
-                                        )
-                                      ],
+                                          RadioListTile(
+                                            activeColor: globalOrange,
+                                            visualDensity: const VisualDensity(
+                                              horizontal: VisualDensity.minimumDensity,
+                                              vertical: VisualDensity.minimumDensity,
+                                            ),
+                                            title: const Text('Pay At Visit'),
+                                            value: "Pay At Visit",
+                                            groupValue: paymentText,
+                                            onChanged: (value){
+                                              setState(() {
+                                                paymentText = value.toString();
+                                              }
+                                              );
+                                            },
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          InkWell(
+                                            onTap: (){
+                                              Navigator.pop(context);
+                                              submitData();
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              decoration: ColorFillContainer(globalOrange),
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(10.0),
+                                                child: Text('Submit',textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );

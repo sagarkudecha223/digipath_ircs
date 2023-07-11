@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:digipath_ircs/DrawerPages/EditProfilePage.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:digipath_ircs/Global/global.dart';
@@ -15,9 +16,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'Book Appointment/PathologyPages/PathologyPage.dart';
 import 'Design/TextWidget.dart';
 import 'DrawerPages/SwitchUserPage.dart';
+import 'Global/ShowGlobalDialog.dart';
 import 'LoginPage.dart';
 import 'ModalClass/HomePageTitleModal.dart';
-import 'AddRecord/AddRecordPage.dart';
 import 'DrawerPages/EnquiryListPage.dart';
 import 'NewPages/OrderedInvestigation.dart';
 import 'DrawerPages/PaymentHistoryPage.dart';
@@ -63,22 +64,22 @@ class _homeState extends State<HomePage> {
 
     titleList.clear();
 
-    titleList.add(HomePagetitleModal(icon: Icons.calendar_month,color: globalBlue, title: 'BOOK APPOINTMENT'));
-    titleList.add(HomePagetitleModal(icon: Icons.payment_rounded,color: globalBlue, title: 'PAYMENT'));
-    titleList.add(HomePagetitleModal(icon: Icons.upload_file,color: globalLightBlue, title: 'UPLOAD DOCUMENT' ));
-    titleList.add(HomePagetitleModal(icon: Icons.pageview_rounded,color: globalLightBlue, title: 'VIEW REPORT'));
-    titleList.add(HomePagetitleModal(icon: Icons.view_timeline_outlined, color: globalLightBlue, title: 'VIEW TIMELINE'));
-    titleList.add(HomePagetitleModal(icon: Icons.video_camera_front_outlined, color: globalLightBlue, title: ' TELE-CONSULTATION'));
-    titleList.add(HomePagetitleModal(icon: Icons.medical_services_outlined,color: globalLightBlue, title: 'PRESCRIPTION'));
+    titleList.add(HomePagetitleModal(icon: Icons.calendar_month,color: globalBlue, title: 'Book Appointment'));
+    titleList.add(HomePagetitleModal(icon: Icons.payment_rounded,color: globalBlue, title: 'Payment'));
+    titleList.add(HomePagetitleModal(icon: Icons.upload_file,color: globalLightBlue, title: 'Upload Document' ));
+    titleList.add(HomePagetitleModal(icon: Icons.pageview_rounded,color: globalLightBlue, title: 'View Report'));
+    titleList.add(HomePagetitleModal(icon: Icons.view_timeline_outlined, color: globalLightBlue, title: 'View Timeline'));
+    titleList.add(HomePagetitleModal(icon: Icons.video_camera_front_outlined, color: globalLightBlue, title: ' Tele-Consultation'));
+    titleList.add(HomePagetitleModal(icon: Icons.medical_services_outlined,color: globalLightBlue, title: 'Prescription'));
     // titleList.add(HomePagetitleModal(icon: Icons.add_photo_alternate_rounded,color: globalLightBlue, title: 'ADD RECORD'));
-    titleList.add(HomePagetitleModal(icon: Icons.inventory_sharp,color: globalLightBlue, title: 'ORDERED INVESTIGATION'));
+    titleList.add(HomePagetitleModal(icon: Icons.inventory_sharp,color: globalLightBlue, title: 'Ordered Investigation'));
     titleList.add(HomePagetitleModal(icon: Icons.chat_rounded,color: globalOrange, title: 'थैलासीमिया साथी'));
 
   }
 
   Container homeCommonContainer(Color colors,String text1){
     return Container(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.only(top: 12.0,bottom: 12.0,right: 15,left: 15),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
@@ -96,7 +97,7 @@ class _homeState extends State<HomePage> {
           text1,
           textAlign: TextAlign.center,
           style:  TextStyle(
-            fontSize: 16,
+            fontSize: 17,
             color: globalWhiteColor,
             fontFamily: 'Ageo_Bold',
             fontWeight: FontWeight.bold,
@@ -130,25 +131,28 @@ class _homeState extends State<HomePage> {
                   ),
                 );
               },
-              child: AlertDialog(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                title:  TextWidget('Are you sure you want to Exit?', 18, FontWeight.w600, globalBlue),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => {Navigator.pop(context, 'Cancel'),_scaffoldKey.currentState?.openEndDrawer(),},
-                    child: TextWidget('Cancel', 16, FontWeight.bold, globalBlue),
-                  ),
-                  TextButton(
-                    onPressed: () => {
-                      if (Platform.isAndroid) {
-                        SystemNavigator.pop()
-                      } else if (Platform.isIOS) {
-                        exit(0)
-                      }
-                    },
-                    child: TextWidget('OK', 14, FontWeight.bold,globalBlue),
-                  ),
-                ],
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
+                child: AlertDialog(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                  title:  TextWidget('Are you sure you want to exit?', 18, FontWeight.w600, globalBlue),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => {Navigator.pop(context, 'Cancel'),_scaffoldKey.currentState?.openEndDrawer(),},
+                      child: TextWidget('Cancel', 16, FontWeight.bold, globalBlue),
+                    ),
+                    TextButton(
+                      onPressed: () => {
+                        if (Platform.isAndroid) {
+                          SystemNavigator.pop()
+                        } else if (Platform.isIOS) {
+                          exit(0)
+                        }
+                      },
+                      child: TextWidget('Ok', 14, FontWeight.bold,globalBlue),
+                    ),
+                  ],
+                ),
               ),
             )
         );
@@ -168,7 +172,7 @@ class _homeState extends State<HomePage> {
             ),
           ),
           centerTitle: true,
-          title: Text('Home'.toUpperCase()),
+          title: const Text('Home'),
           titleTextStyle: TextStyle(color: globalWhiteColor,fontWeight: FontWeight.bold,fontSize: 19),
           elevation: 0.0,
           actions: [
@@ -191,22 +195,25 @@ class _homeState extends State<HomePage> {
                         ),
                       );
                     },
-                    child: AlertDialog(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                      title: TextWidget('Are you sure you want to Logout?', 15, FontWeight.w600,globalBlue),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => {Navigator.pop(context, 'Cancel'),_scaffoldKey.currentState?.openEndDrawer(),},
-                          child: TextWidget('Cancel', 15, FontWeight.bold,globalBlue),
-                        ),
-                        TextButton(
-                          onPressed: () => {
-                            signOut(),
-                            _scaffoldKey.currentState?.openEndDrawer(),
-                          },
-                          child: TextWidget('OK', 15, FontWeight.bold,globalBlue),
-                        ),
-                      ],
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
+                      child: AlertDialog(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+                        title: TextWidget('Are you sure you want to logout?', 15, FontWeight.w600,globalBlue),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => {Navigator.pop(context, 'Cancel'),_scaffoldKey.currentState?.openEndDrawer(),},
+                            child: TextWidget('Cancel', 15, FontWeight.bold,globalBlue),
+                          ),
+                          TextButton(
+                            onPressed: () => {
+                              signOut(),
+                              _scaffoldKey.currentState?.openEndDrawer(),
+                            },
+                            child: TextWidget('Ok', 15, FontWeight.bold,globalBlue),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -349,81 +356,64 @@ class _homeState extends State<HomePage> {
                                 onTap: (){
                                   print(index);
                                   if(index == 0){
-                                    showDialog<String>(
-                                        context: context,
-                                        builder: (BuildContext context) => TweenAnimationBuilder(
-                                          tween: Tween<double>(begin: 0, end: 1),
-                                          duration: Duration(milliseconds: 500),
-                                          builder: (BuildContext context, double value, Widget? child) {
-                                            return Opacity(opacity: value,
-                                              child: Padding(
-                                                padding: EdgeInsets.only(top: value * 1),
-                                                child: child,
-                                              ),
-                                            );
-                                          },
-                                          child: Dialog(
-                                            backgroundColor: Colors.white.withOpacity(0.7),
-                                            insetPadding : const EdgeInsets.all(15),
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-                                            elevation: 16,
-                                            child: Container(
-                                              padding: const EdgeInsets.all(10),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  const SizedBox(height: 10,),
-                                                  Text('Book Appointment for...',style: TextStyle(fontSize: 18,fontFamily: 'Ageo_Bold',color: Colors.indigo.shade900,fontWeight: FontWeight.bold,),),
-                                                  const SizedBox(height: 20,),
-                                                  InkWell(
-                                                    onTap: (){
-                                                      Navigator.pop(context);
-                                                      Get.to(BookApointmentPage());
-                                                    },
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius: BorderRadius.circular(12),
-                                                      ),
-                                                      margin: EdgeInsets.only(bottom: 3,top: 7,left: 10,right: 10),
-                                                      padding: EdgeInsets.all(10),
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(Icons.ac_unit_rounded,color: Colors.indigo.shade800),
-                                                          SizedBox(width: 15),
-                                                          Text('Tele Consultation',style: TextStyle(fontSize: 16,fontFamily: 'Ageo_Bold',color: Colors.indigo.shade800,fontWeight: FontWeight.w600),)
-                                                        ],
-                                                      ),
-                                                    ),
+                                    showGlobalDialog(
+                                      context,
+                                      Container(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const SizedBox(height: 10,),
+                                              Text('Book appointment for...',style: TextStyle(fontSize: 18,fontFamily: 'Ageo_Bold',color: Colors.indigo.shade900,fontWeight: FontWeight.bold,),),
+                                              const SizedBox(height: 20,),
+                                              InkWell(
+                                                onTap: (){
+                                                  Navigator.pop(context);
+                                                  Get.to(BookApointmentPage());
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey.shade300,
+                                                    borderRadius: BorderRadius.circular(12),
                                                   ),
-                                                  const SizedBox(height: 20,),
-                                                  InkWell(
-                                                    onTap: (){
-                                                      Navigator.pop(context);
-                                                      Get.to(PathologyPage());
-                                                    },
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius: BorderRadius.circular(12),
-                                                      ),
-                                                      margin: EdgeInsets.only(bottom: 10,top: 3,left: 10,right: 10),
-                                                      padding: EdgeInsets.all(10),
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(Icons.ac_unit_rounded,color: Colors.indigo.shade800),
-                                                          SizedBox(width: 15),
-                                                          Text('Pathology',style: TextStyle(fontSize: 16,fontFamily: 'Ageo_Bold',color: Colors.indigo.shade800,fontWeight: FontWeight.w600),)
-                                                        ],
-                                                      ),
-                                                    ),
+                                                  margin: EdgeInsets.only(bottom: 3,top: 7,left: 10,right: 10),
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons.ac_unit_rounded,color: Colors.indigo.shade800),
+                                                      const SizedBox(width: 15),
+                                                      Text('Tele Consultation',style: TextStyle(fontSize: 16,fontFamily: 'Ageo_Bold',color: Colors.indigo.shade800,fontWeight: FontWeight.w600),)
+                                                    ],
                                                   ),
-                                                  const SizedBox(height: 20,),
-                                                ],
+                                                ),
                                               ),
-                                            ),
+                                              const SizedBox(height: 20,),
+                                              InkWell(
+                                                onTap: (){
+                                                  Navigator.pop(context);
+                                                  Get.to(PathologyPage());
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey.shade300,
+                                                    borderRadius: BorderRadius.circular(12),
+                                                  ),
+                                                  margin: EdgeInsets.only(bottom: 10,top: 3,left: 10,right: 10),
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons.ac_unit_rounded,color: Colors.indigo.shade800),
+                                                      SizedBox(width: 15),
+                                                      Text('Pathology',style: TextStyle(fontSize: 16,fontFamily: 'Ageo_Bold',color: Colors.indigo.shade800,fontWeight: FontWeight.w600),)
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 20,),
+                                            ],
                                           ),
-                                        )
+                                        ),
+                                      true
                                     );
                                   }
                                   else if(index == 1){

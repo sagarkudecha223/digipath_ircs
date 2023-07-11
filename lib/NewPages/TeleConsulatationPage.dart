@@ -77,20 +77,19 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
 
             if(teleConsulationList.isNotEmpty){
               noDataText = false;
-
             }else{
               noDataText = true;
               noDataTextString = 'No Data Found';
             }
-
             setState(() {
 
             });
           }
-
         }else{
-          noDataTextString = 'Sorry ! Server Error';
-          noDataText = true;
+          setState((){
+            noDataTextString = 'Sorry ! Server Error';
+            noDataText = true;
+          });
         }
       }
 
@@ -132,7 +131,7 @@ class _TeleConsultationPageState extends State<TeleConsultationPage> {
             Flexible(
               child: RefreshIndicator(
                 onRefresh: () {
-                  return Future.delayed(Duration(microseconds: 500),() {
+                  return Future.delayed(const Duration(microseconds: 500),() {
                     setState(() {
                       noDataText = true;
                     });

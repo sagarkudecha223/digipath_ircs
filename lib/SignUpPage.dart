@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:digipath_ircs/Design/TopPageTextViews.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
+import 'package:digipath_ircs/Global/ShowGlobalDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
@@ -86,8 +88,8 @@ class _SignUpPageState extends State<SignUpPage> {
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              colorScheme:ColorScheme.light(
-                primary: const Color(0xFF549DD6),
+              colorScheme:const ColorScheme.light(
+                primary: Color(0xFF549DD6),
                 onPrimary: Colors.white,
                 onSurface: Colors.black,
               ),
@@ -286,12 +288,12 @@ class _SignUpPageState extends State<SignUpPage> {
         appBar: AppBar(
           title: Text(fromAddMember?'Add Family Member'.toUpperCase() : 'QUICK SIGN UP'.toUpperCase()),
           centerTitle: true,
-          titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+          titleTextStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
           leading: InkWell(
               onTap: (){
                 Navigator.pop(context);
               },
-              child: Icon(Icons.arrow_back_rounded,color: Colors.white)),
+              child: const Icon(Icons.arrow_back_rounded,color: Colors.white)),
           backgroundColor: globalBlue,
           elevation: 0.0,
         ),
@@ -303,7 +305,7 @@ class _SignUpPageState extends State<SignUpPage> {
               children: [
                 TopPageTextViews(fromAddMember?'family member registration' : 'Start your Account of Vinecare'),
                 Container(
-                  margin: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
+                  margin: const EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
                   decoration: BorderContainer(globalWhiteColor,globalBlue),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 15,right: 15,top: 25,bottom: 25),
@@ -328,7 +330,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           textCapitalization: TextCapitalization.words,
                           decoration: TextFieldDecoration(
                             Icon(Icons.person,color: globalBlue,),
-                            Icon(Icons.check_circle_outline,color: Colors.green,),
+                            const Icon(Icons.check_circle_outline,color: Colors.green,),
                           ),
                         ),
                         paddingWithText('FAMILY NAME',2,0,0,2),
@@ -338,61 +340,56 @@ class _SignUpPageState extends State<SignUpPage> {
                           textCapitalization: TextCapitalization.words,
                           decoration: TextFieldDecoration(
                               Icon(Icons.person,color: globalBlue,),
-                              familyNamevalid?Icon(Icons.check_circle_outline,color: Colors.green,):Icon(Icons.error_outline,color: Colors.red,)
+                              familyNamevalid?const Icon(Icons.check_circle_outline,color: Colors.green,):const Icon(Icons.error_outline,color: Colors.red,)
                           ),
                           onChanged: changeText,
                         ),
                         paddingWithText('GENDER',2,0,0,2),
                         InkWell(
                           onTap: () {
-                            showDialog<String>(
-                                context: context,
-                                builder: (context) =>Dialog(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                    insetPadding: EdgeInsets.all(20),
-                                    elevation: 16,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          child: Center(child: Text('Select Gender',textScaleFactor: 1.0,style: TextStyle(color:Colors.white,fontSize: 19,fontWeight: FontWeight.w500,),)),
-                                          decoration: BoxDecoration(
-                                            color: Colors.indigo[300],
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
-                                          ),
-                                          height: 50,
-                                        ),
-                                        RadioListTile(
-                                          title: const Text('Male'),
-                                          value: "Male",
-                                          groupValue: genderText,
-                                          onChanged: (value){
-                                            setState(() {
-                                              gendervalid = true;
-                                              genderIDF = '1';
-                                              genderText = value.toString();
-                                              Navigator.pop(context, 'Cancel');
-                                            }
-                                            );
-                                          },
-                                        ),
-                                        RadioListTile(
-                                          title: Text('Female'),
-                                          value: "Female",
-                                          groupValue: genderText,
-                                          onChanged: (value){
-                                            setState(() {
-                                              gendervalid = true;
-                                              genderIDF = '2';
-                                              genderText = value.toString();
-                                              Navigator.pop(context, 'Cancel');
-                                            }
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    )
-                                ));
+                            showGlobalDialog(context, Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: globalBlue,
+                                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+                                  ),
+                                  height: 50,
+                                  child: const Center(child: Text('Select gender',textScaleFactor: 1.0,style: TextStyle(color:Colors.white,fontSize: 19,fontWeight: FontWeight.w500,),)),
+                                ),
+                                RadioListTile(
+                                  title: const Text('Male'),
+                                  value: "Male",
+                                  activeColor: globalBlue,
+                                  groupValue: genderText,
+                                  onChanged: (value){
+                                    setState(() {
+                                      gendervalid = true;
+                                      genderIDF = '1';
+                                      genderText = value.toString();
+                                      Navigator.pop(context, 'Cancel');
+                                    }
+                                    );
+                                  },
+                                ),
+                                RadioListTile(
+                                  title: Text('Female'),
+                                  value: "Female",
+                                  activeColor: globalBlue,
+                                  groupValue: genderText,
+                                  onChanged: (value){
+                                    setState(() {
+                                      gendervalid = true;
+                                      genderIDF = '2';
+                                      genderText = value.toString();
+                                      Navigator.pop(context, 'Cancel');
+                                    }
+                                    );
+                                  },
+                                ),
+                              ],
+                            ), true);
                             FocusManager.instance.primaryFocus?.unfocus();
                           },
                           child: Container(
@@ -680,13 +677,16 @@ class _SignUpPageState extends State<SignUpPage> {
                                   barrierDismissible: false,
                                   builder: (context) =>StatefulBuilder(
                                     builder: (context, StateSetter setState) {
-                                      return Dialog(
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                        insetPadding: const EdgeInsets.all(20),
-                                        elevation: 16,
-                                        child: Padding(
-                                          padding:  EdgeInsets.all(20.0),
-                                          child: OTPPage(fromAddMember: fromAddMember,),
+                                      return BackdropFilter(
+                                        filter: ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
+                                        child: Dialog(
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                          insetPadding: const EdgeInsets.all(20),
+                                          elevation: 16,
+                                          child: Padding(
+                                            padding:  EdgeInsets.all(20.0),
+                                            child: OTPPage(fromAddMember: fromAddMember,),
+                                          ),
                                         ),
                                       );
                                     },

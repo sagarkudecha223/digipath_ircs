@@ -120,7 +120,7 @@ class _ViewReportPageState extends State<ViewReportPage> {
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              colorScheme: ColorScheme.light(
+              colorScheme: const ColorScheme.light(
                 primary: Color(0xFF549DD6),
                 onPrimary: Colors.white,
                 onSurface: Colors.black,
@@ -247,7 +247,7 @@ class _ViewReportPageState extends State<ViewReportPage> {
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 0),
                                 child: Text(endDate,textScaleFactor: 1.0,
-                                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                                  style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
                               ),
                             ],
                           ),
@@ -255,8 +255,8 @@ class _ViewReportPageState extends State<ViewReportPage> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.fromLTRB(10, 0, 15, 0),
-                      padding: EdgeInsets.all(6),
+                      margin: const EdgeInsets.fromLTRB(10, 0, 15, 0),
+                      padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
                           color: Colors.grey.shade300,
                           shape: BoxShape.circle
