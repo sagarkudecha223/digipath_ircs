@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:digipath_ircs/Design/BorderContainer.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
+import 'package:digipath_ircs/Global/ShowGlobalDialog.dart';
 import 'package:dio/dio.dart' as foo;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -234,115 +235,89 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
       onTap: ()=>{
         if(widget.medicalReportModal.Document == '0'){
           if(widget.medicalReportModal.ReportStatus == '1'){
-            showDialog(
-              context: context,
-              builder: (context) {
-                return Dialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  insetPadding: EdgeInsets.all(20),
-                  // backgroundColor: Colors.transparent,
-                  elevation: 16,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 20, bottom: 8),
-                        child: Text('Report is registered',textScaleFactor: 1.0,
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight
-                              .w500), textAlign: TextAlign.center,),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 10, top: 10),
-                        child: Text('you can see your report after reporting',textScaleFactor: 1.0,
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight
-                              .normal), textAlign: TextAlign.center,),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10),
-                        child: Divider(thickness: 1, color: Colors.grey,),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 3, bottom: 15),
-                        child: InkWell(
-                            onTap: () => { Navigator.pop(context, 'Cancel')},
-                            child: const Padding(
-                              padding: EdgeInsets.only(right: 100,left: 100,top: 10,bottom: 10),
-                              child: Text('OK',textScaleFactor: 1.0, style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.normal),
-                                textAlign: TextAlign.center,),
-                            )),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            )
+            showGlobalDialog(context, Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 20, bottom: 8),
+                  child: Text('Report is registered',textScaleFactor: 1.0,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight
+                        .w500), textAlign: TextAlign.center,),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 10, top: 10),
+                  child: Text('you can see your report after reporting',textScaleFactor: 1.0,
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight
+                        .normal), textAlign: TextAlign.center,),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Divider(thickness: 1, color: Colors.grey,),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 3, bottom: 15),
+                  child: InkWell(
+                      onTap: () => { Navigator.pop(context, 'Cancel')},
+                      child: const Padding(
+                        padding: EdgeInsets.only(right: 100,left: 100,top: 10,bottom: 10),
+                        child: Text('OK',textScaleFactor: 1.0, style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal),
+                          textAlign: TextAlign.center,),
+                      )),
+                ),
+              ],
+            ), true)
           }
           else if(widget.medicalReportModal.ReportStatus == '2'){
-            showDialog(
-              context: context,
-              builder: (context) {
-                return Dialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  insetPadding: EdgeInsets.all(20),
-                  // backgroundColor: Colors.transparent,
-                  elevation: 16,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 20, bottom: 8),
-                        child: Text('Report is just uploaded',textScaleFactor: 1.0,
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight
-                              .w500), textAlign: TextAlign.center,),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 10, top: 10),
-                        child: Text('You can view after report reporting',textScaleFactor: 1.0,
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight
-                              .normal), textAlign: TextAlign.center,),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10),
-                        child: Divider(thickness: 1, color: Colors.grey,),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 3, bottom: 15),
-                        child: InkWell(
-                            onTap: () => { Navigator.pop(context, 'Cancel')},
-                            child: const Padding(
-                              padding: EdgeInsets.only(right: 100,left: 100,top: 10,bottom: 10),
-                              child: Text('OK',textScaleFactor: 1.0, style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.normal),
-                                textAlign: TextAlign.center,),
-                            )),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            )
+            showGlobalDialog(context, Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 20, bottom: 8),
+                  child: Text('Report is just uploaded',textScaleFactor: 1.0,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight
+                        .w500), textAlign: TextAlign.center,),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 10, top: 10),
+                  child: Text('You can view after report reporting',textScaleFactor: 1.0,
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight
+                        .normal), textAlign: TextAlign.center,),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Divider(thickness: 1, color: Colors.grey,),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 3, bottom: 15),
+                  child: InkWell(
+                      onTap: () => { Navigator.pop(context, 'Cancel')},
+                      child: const Padding(
+                        padding: EdgeInsets.only(right: 100,left: 100,top: 10,bottom: 10),
+                        child: Text('OK',textScaleFactor: 1.0, style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal),
+                          textAlign: TextAlign.center,),
+                      )),
+                ),
+              ],
+            ), true)
           }
           else if(widget.medicalReportModal.ReportStatus == '3'){
 
               if(widget.medicalReportModal.LinkToMeasurement == 'true'){
 
                 print('check Report..................'),
-                /// check Report...
 
                 EasyLoading.show(status: 'Loading...'),
                 openFile(
-                  url: '$urlForINSC/pathologyReportForAndroid.app?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP',
+                  // https://smarthealth.care/pathologyReport?prmServiceMapID=322618&prmEncounterServiceID=1833826&txtStationary=false&cbWithGraph=undefined&stationaryOption=1
+                  url: '$urlForINSC/pathologyReport?prmServiceMapID=$ServiceMapIDP&prmEncounterServiceID=$EncounterServiceIDP&txtStationary=false&cbWithGraph=undefined&stationaryOption=1',
                   fileName:'PathologyReport.pdf',
                 ),
-
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchPagePDFView(encounterServiceIDP: widget.medicalReportModal.EncounterServiceIDP, ServiceMapIDP: widget.medicalReportModal.ServiceMapIDP, reportOf: 'checkReport',)))
               }
               else{
 
@@ -380,27 +355,27 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
                 else if(widget.medicalReportModal.ImageType == '3'){
 
                   }
-                  else if(widget.medicalReportModal.ImageType == '4'){
+                else if(widget.medicalReportModal.ImageType == '4'){
 
-                      if(widget.medicalReportModal.modalityIDP == '6'){
-                        print('Wave Form : ECG'),
-                        /// ECG Report...
-                        EasyLoading.show(status: 'Loading...'),
-                        searchECGReport(),
-                      }
-                      else if(widget.medicalReportModal.modalityIDP == '24'){
-                        print('Wave Form :  Patient Monitor')
-                      }
+                    if(widget.medicalReportModal.modalityIDP == '6'){
+                      print('Wave Form : ECG'),
+                      /// ECG Report...
+                      EasyLoading.show(status: 'Loading...'),
+                      searchECGReport(),
                     }
-                    else if(widget.medicalReportModal.ImageType == '5'){
-                        print('WaveFormLoop')
-                      }
-                      else if(widget.medicalReportModal.ImageType == '6'){
-                          print('UrinAnalysis')
-                        }
-                        else if(widget.medicalReportModal.ImageType == '7'){
-                            print('Vital')
-                          }
+                    else if(widget.medicalReportModal.modalityIDP == '24'){
+                      print('Wave Form :  Patient Monitor')
+                    }
+                  }
+                else if(widget.medicalReportModal.ImageType == '5'){
+                    print('WaveFormLoop')
+                }
+                else if(widget.medicalReportModal.ImageType == '6'){
+                    print('UrinAnalysis')
+                }
+                else if(widget.medicalReportModal.ImageType == '7'){
+                    print('Vital')
+                }
               }
             }
         }
@@ -496,10 +471,10 @@ class _MedicalRecordsCardState extends State<MedicalRecordsCard> {
       final response = await foo.Dio().get(
           url,
           options: foo.Options(
-            headers: {
-              'u': 'dhruv',
-              'p': 'demo'
-            },
+            // headers: {
+            //   'u': 'dhruv',
+            //   'p': 'demo'
+            // },
             responseType: foo.ResponseType.bytes,
             followRedirects: false,
           )

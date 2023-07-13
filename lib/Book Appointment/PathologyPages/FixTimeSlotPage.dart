@@ -89,12 +89,12 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: Colors.indigo[100],
+        color: globalPageBackgroundColor,
         child: Column(
           children: [
             Container(
-                margin: EdgeInsets.only(left: 5,right: 5,top: 15,bottom: 5),
-                padding: EdgeInsets.only(top:10,left: 5,right: 5),
+                margin: const EdgeInsets.only(left: 5,right: 5,top: 15,bottom: 5),
+                padding: const EdgeInsets.only(top:10,left: 5,right: 5),
                 decoration: BorderContainer(globalWhiteColor,globalBlue),
                 child: CalendarWeek(
                   controller: _controller,
@@ -102,7 +102,7 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
                   height: 105,
                   showMonth: true,
                   minDate: DateTime.now(),
-                  maxDate: DateTime.now().add(Duration(days: 13),),
+                  maxDate: DateTime.now().add(const Duration(days: 13),),
                   onDatePressed: (DateTime datetime) {
 
                     date = DateFormat('yyyy-MM-dd').format(datetime);
@@ -131,8 +131,8 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
                   onDateLongPressed: (DateTime datetime) {
                     // Do something
                   },
-                  marginMonth : EdgeInsets.all(0),
-                  marginDayOfWeek : EdgeInsets.only(bottom: 5),
+                  marginMonth : const EdgeInsets.all(0),
+                  marginDayOfWeek : const EdgeInsets.only(bottom: 5),
                   onWeekChanged: () {
                     // Do something
                   },
@@ -152,8 +152,8 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
             ),
             Expanded(
               child: Container(
-                margin: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
-                padding: EdgeInsets.only(top:30,left: 5,right: 5),
+                margin: const EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
+                padding: const EdgeInsets.only(top:30,left: 5,right: 5),
                 decoration: BorderContainer(globalWhiteColor, globalBlue),
                 height: double.infinity,
                 width: double.infinity,
@@ -179,7 +179,7 @@ class _FixTimeSlotPageState extends State<FixTimeSlotPage> {
                         });
                       },
                       child: Container(
-                          margin: EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               color: timeSlotsList[index].isEnable == 'false'? Colors.red.shade400 : selectedIndex == index ? Colors.grey : Colors.greenAccent.shade200,
                               borderRadius: BorderRadius.circular(15)

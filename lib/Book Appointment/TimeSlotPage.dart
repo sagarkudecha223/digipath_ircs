@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
+import 'package:digipath_ircs/Global/ShowGlobalDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_week/flutter_calendar_week.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -305,7 +308,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
                     child: Text(noDataTextString,style:const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),textAlign: TextAlign.center),
                   ) : GridView.builder(
                     itemCount: timeSlotsList.length,
-                    padding: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
+                    padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 0),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         childAspectRatio: 3.5 / 2,
@@ -321,7 +324,7 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
                           }
                           else{
                             if(timeSlotsList[index].isEnable == 'false'){
-                              showToast('This Time Slots is unavailable');
+                              showToast('This time slots is unavailable');
                             }
                             else{
                               setState(() {
@@ -329,63 +332,46 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
                                 selectedIndex = index;
                               });
                               selectedTime = timeSlotsList[index].time;
-                               showDialog<String>(
-                                  context: context,
-                                  builder: (context) =>TweenAnimationBuilder(
-                                    tween: Tween<double>(begin: 0, end: 1),
-                                    duration: Duration(milliseconds: 500),
-                                    builder: (BuildContext context, double value, Widget? child) {
-                                      return Opacity(opacity: value,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(top: value * 1),
-                                          child: child,
-                                        ),
-                                      );
-                                    },
-                                    child: Dialog(
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                      insetPadding: EdgeInsets.all(20),
-                                      elevation: 16,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 20,right: 20,top: 15,bottom: 10),
-                                            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text('Select Service',style: TextStyle(fontWeight: FontWeight.w500,color: Colors.grey,fontSize: 19 ),),
-                                                InkWell(child: Icon(Icons.cancel,size: 30,),
-                                                    onTap: ()=>{ Navigator.pop(context, 'Cancel')}),
-                                              ],),
-                                          ),
-                                          ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount:serviceList.length,
-                                              itemBuilder: (context,index){
-                                                return ListTile(
-                                                    onTap: (){
-                                                      selectedService = serviceList[index].ServiceName;
-                                                      selectedServiceIDP = serviceList[index].ServiceIDP;
-                                                      Navigator.pop(context, 'Cancel');
-                                                    },
-                                                    title:Container(
-                                                        padding: EdgeInsets.all(10),
-                                                        decoration: (BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(8),
-                                                          color: Colors.indigo[100],
-                                                        )),
-                                                        child: Text(serviceList[index].ServiceName,style: TextStyle(color: Colors.indigo[900]),)
-                                                    )
-                                                );
-                                              }),
-                                          const SizedBox(
-                                            height: 10,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                              );
+                               showGlobalDialog(context,
+                                 Column(
+                                 mainAxisSize: MainAxisSize.min,
+                                 children: [
+                                   Padding(
+                                     padding: const EdgeInsets.only(left: 20,right: 20,top: 15,bottom: 10),
+                                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                       children: [
+                                         Text('Select service',style: TextStyle(fontWeight: FontWeight.w600,color: globalBlue,fontSize: 19 ),),
+                                         InkWell(child: Icon(Icons.cancel,size: 30,color: globalBlue,),
+                                             onTap: ()=>{ Navigator.pop(context, 'Cancel')}),
+                                       ],),
+                                   ),
+                                   ListView.builder(
+                                       shrinkWrap: true,
+                                       itemCount:serviceList.length,
+                                       itemBuilder: (context,index){
+                                         return ListTile(
+                                             onTap: (){
+                                               selectedService = serviceList[index].ServiceName;
+                                               selectedServiceIDP = serviceList[index].ServiceIDP;
+                                               Navigator.pop(context, 'Cancel');
+                                             },
+                                             title:Container(
+                                                 padding: EdgeInsets.all(10),
+                                                 decoration: (BoxDecoration(
+                                                   borderRadius: BorderRadius.circular(8),
+                                                   color: Colors.indigo[100],
+                                                 )),
+                                                 child: Text(serviceList[index].ServiceName,style: TextStyle(color: Colors.indigo[900]),)
+                                             )
+                                         );
+                                       }),
+                                   const SizedBox(
+                                     height: 10,
+                                   )
+                                 ],
+                               ),
+                                 true
+                               );
                             }
                           }
                         },
@@ -408,135 +394,119 @@ class _TimeSlotPageState extends State<TimeSlotPage> with SingleTickerProviderSt
               child: InkWell(
                 onTap: (){
                   if(selectedService.isNotEmpty){
-                    showDialog<String>(
-                        context: context,
-                        builder: (context) =>TweenAnimationBuilder(
-                          tween: Tween<double>(begin: 0, end: 1),
-                          duration: Duration(milliseconds: 500),
-                          builder: (BuildContext context, double value, Widget? child) {
-                            return Opacity(opacity: value,
-                              child: Padding(
-                                padding: EdgeInsets.only(top: value * 1),
-                                child: child,
-                              ),
-                            );
-                          },
-                          child: Dialog(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                            insetPadding: EdgeInsets.all(20),
-                            elevation: 16,
-                            child: Padding(
-                              padding: const EdgeInsets.all( 30.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 25.0,bottom: 50),
-                                    child: Text('VERIFY DATA',style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold),),
-                                  ),
-                                  CommonRowPadding('DATE',current_date),
-                                  divider,
-                                  CommonRowPadding('TIME',selectedTimeSlots),
-                                  divider,
-                                  CommonRowPadding('Dr Name',careProfessionalName),
-                                  divider,
-                                  CommonRowPadding('Service Name',selectedService),
-                                  divider,
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 40.0),
-                                    child: InkWell(
-                                      onTap: () async {
+                    showGlobalDialog(context,
+                        Padding(
+                        padding: const EdgeInsets.all( 30.0),
+                        child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(top: 25.0,bottom: 50),
+                            child: Text('VERIFY DATA',style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold),),
+                          ),
+                          CommonRowPadding('DATE',current_date),
+                          divider,
+                          CommonRowPadding('TIME',selectedTimeSlots),
+                          divider,
+                          CommonRowPadding('Dr Name',careProfessionalName),
+                          divider,
+                          CommonRowPadding('Service Name',selectedService),
+                          divider,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40.0),
+                            child: InkWell(
+                              onTap: () async {
 
-                                        EasyLoading.show(status: 'Loading...');
+                                EasyLoading.show(status: 'Loading...');
+                                var data = await saveAppointmentData();
 
-                                        var data = await saveAppointmentData();
-
-                                        if(data.toString() == 'true'){
-                                          showDialog<void> (
-                                              barrierDismissible : false,
-                                              context: context,
-                                              builder:(context) =>TweenAnimationBuilder(
-                                                  tween: Tween<double>(begin: 0, end: 1),
-                                                  duration: Duration(milliseconds: 500),
-                                                  builder: (BuildContext context, double value, Widget? child) {
-                                                    return Opacity(opacity: value,
-                                                      child: Padding(
-                                                        padding: EdgeInsets.only(top: value * 1),
-                                                        child: child,
-                                                      ),
-                                                    );
-                                                  },
-                                                  child: Dialog(
-                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                                    insetPadding: EdgeInsets.all(20),
-                                                    elevation: 16,
-                                                    child : Padding(
-                                                      padding: const EdgeInsets.all(30.0),
-                                                      child: Column(
-                                                        mainAxisSize: MainAxisSize.min,
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children: [
-                                                          const ThemeButton(),
-                                                          const Padding(
-                                                            padding: EdgeInsets.all(10.0),
-                                                            child: Text('Confirmation',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
-                                                          ),
-                                                          const Padding(
-                                                            padding: EdgeInsets.only(bottom: 25.0),
-                                                            child: Text('Your booking has been placed successfully',style: TextStyle(fontSize: 15),textAlign: TextAlign.center,),
-                                                          ),
-                                                          CommonRowPadding('DATE',current_date),
-                                                          divider,
-                                                          CommonRowPadding('TIME',selectedTimeSlots),
-                                                          divider,
-                                                          CommonRowPadding('Dr Name',careProfessionalName),
-                                                          divider,
-                                                          CommonRowPadding('Service Name',selectedService),
-                                                          divider,
-                                                          InkWell(
-                                                            onTap: (){
-                                                              Get.offAll(HomePage());
-                                                            },
-                                                            child: Container(
-                                                              padding: EdgeInsets.all(15),
-                                                              margin: EdgeInsets.only(top: 35),
-                                                              decoration: ColorFillContainer(globalOrange),
-                                                              width: double.infinity,
-                                                              child: const Center(child: Text('OK',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold))),
-                                                            ),
-                                                          ),
-                                                        ],
+                                if(data.toString() == 'true'){
+                                  await showDialog<void> (
+                                      barrierDismissible : false,
+                                      context: context,
+                                      builder:(context) =>TweenAnimationBuilder(
+                                          tween: Tween<double>(begin: 0, end: 1),
+                                          duration: Duration(milliseconds: 500),
+                                          builder: (BuildContext context, double value, Widget? child) {
+                                            return Opacity(opacity: value,
+                                              child: Padding(
+                                                padding: EdgeInsets.only(top: value * 1),
+                                                child: child,
+                                              ),
+                                            );
+                                          },
+                                          child: BackdropFilter(
+                                            filter: ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
+                                            child: Dialog(
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                              insetPadding: EdgeInsets.all(20),
+                                              elevation: 16,
+                                              child : Padding(
+                                                padding: const EdgeInsets.all(30.0),
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    const ThemeButton(),
+                                                    const Padding(
+                                                      padding: EdgeInsets.all(10.0),
+                                                      child: Text('Confirmation',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                                                    ),
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(bottom: 25.0),
+                                                      child: Text('Your booking has been placed successfully',style: TextStyle(fontSize: 15),textAlign: TextAlign.center,),
+                                                    ),
+                                                    CommonRowPadding('DATE',current_date),
+                                                    divider,
+                                                    CommonRowPadding('TIME',selectedTimeSlots),
+                                                    divider,
+                                                    CommonRowPadding('Dr Name',careProfessionalName),
+                                                    divider,
+                                                    CommonRowPadding('Service Name',selectedService),
+                                                    divider,
+                                                    InkWell(
+                                                      onTap: (){
+                                                        Get.offAll(HomePage());
+                                                      },
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(15),
+                                                        margin: EdgeInsets.only(top: 35),
+                                                        decoration: ColorFillContainer(globalOrange),
+                                                        width: double.infinity,
+                                                        child: const Center(child: Text('OK',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold))),
                                                       ),
                                                     ),
-                                                  )
-                                              )
-                                          );
-                                        }
-                                        else{
-                                          showToast("Internal Error. Contact the System Administrator. OR Try again !!!");
-                                          Navigator.pop(context);
-                                        }
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(15),
-                                        decoration: ColorFillContainer(globalOrange),
-                                        width: double.infinity,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: const [
-                                            Text('BOOK APPOINTMENT NOW',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                                            Icon(Icons.arrow_forward,color: Colors.white,)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                      )
+                                  );
+                                  Get.offAll(HomePage());
+                                }
+                                else{
+                                  showToast("Internal Error. Contact the System Administrator. OR Try again !!!");
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(15),
+                                decoration: ColorFillContainer(globalOrange),
+                                width: double.infinity,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: const [
+                                    Text('BOOK APPOINTMENT NOW',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                                    Icon(Icons.arrow_forward,color: Colors.white,)
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        )
-                    );
+                        ],
+                      ),
+                    ), true);
                   }
                   else{
                     showToast('Please Select Service first !!!');

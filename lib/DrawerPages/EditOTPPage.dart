@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:digipath_ircs/Global/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../Design/ColorFillContainer.dart';
@@ -65,7 +66,6 @@ class _EditOTPPageState extends State<EditOTPPage> {
     if(status.toString() != 'Sorry !!! Server Error' && status.toString().isNotEmpty  && status.toString() != 'Sorry !!!  Connectivity issue! Try again'){
 
       String statusInfo = status['status'].toString();
-
       if(statusInfo == 'true'){
 
         showToast(status['message'].toString());
@@ -179,7 +179,7 @@ class _EditOTPPageState extends State<EditOTPPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(otpTextBool?'Please Re-send the OTP' : 'OTP send Successfully',style: TextStyle(color: Colors.indigo,fontWeight: FontWeight.w600),),
+                Text(otpTextBool?'Please Re-send the OTP' : 'OTP send Successfully',style: const TextStyle(color: Colors.indigo,fontWeight: FontWeight.w600),),
                 const SizedBox(height: 10,),
                 const Padding(
                   padding: EdgeInsets.only(left: 10.0,right: 10,top: 5,bottom: 5),
@@ -234,7 +234,7 @@ class _EditOTPPageState extends State<EditOTPPage> {
                   },
                   child: Container(
                     width: double.infinity,
-                    decoration: ColorFillContainer(Colors.indigo.shade300),
+                    decoration: ColorFillContainer(globalOrange),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Text(buttonText,style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w600),textAlign: TextAlign.center,),
@@ -259,7 +259,7 @@ class _EditOTPPageState extends State<EditOTPPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: Text(otpTextBool?'TIMED OUT' : _start.toString(),style: TextStyle(color: Colors.indigo[900],fontSize: 20,fontWeight: FontWeight.bold),),
+                      child: Text(otpTextBool?'TIMED OUT' : '${_start.toString()} Sec',style: TextStyle(color: Colors.indigo[900],fontSize: 20,fontWeight: FontWeight.bold),),
                     ),
                     const SizedBox(
                       width: 10,

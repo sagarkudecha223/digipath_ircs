@@ -1,8 +1,10 @@
+import 'dart:ui';
 import 'package:digipath_ircs/Design/BorderContainer.dart';
 import 'package:digipath_ircs/Design/GlobalAppBar.dart';
 import 'package:digipath_ircs/Design/TopPageTextViews.dart';
 import 'package:digipath_ircs/DrawerPages/EditOTPPage.dart';
 import 'package:digipath_ircs/Global/Colors.dart';
+import 'package:digipath_ircs/Global/ShowGlobalDialog.dart';
 import 'package:digipath_ircs/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -80,8 +82,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-              colorScheme:ColorScheme.light(
-                primary: const Color(0xFF549DD6),
+              colorScheme:const ColorScheme.light(
+                primary: Color(0xFF549DD6),
                 onPrimary: Colors.white,
                 onSurface: Colors.black,
               ),
@@ -365,114 +367,96 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> showConfirmBasicInfoDialog(){
-    return showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            insetPadding: EdgeInsets.all(20),
-            elevation: 16,
-            child: Padding(
-              padding: const EdgeInsets.all( 30.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('confirm Basic information'.toUpperCase(),style: TextStyle(fontSize: 20,color: globalBlue,fontWeight: FontWeight.bold),textAlign: TextAlign.center),
-                  divider(),
-                  CommonRowPadding('First name:', personName.text),
-                  divider(),
-                  CommonRowPadding('Middle name:', middleName.text),
-                  divider(),
-                  CommonRowPadding('Family name:', familyName.text),
-                  divider(),
-                  CommonRowPadding('Date of birth:', startDate),
-                  divider(),
-                  CommonRowPadding('Gender:', genderText),
-                  divider(),
-                  InkWell(
-                    onTap: (){
-                      submitBasicInfo();
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      decoration: BoxDecoration(
-                        color: globalOrange,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text('edit basic information'.toUpperCase(),style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                              ],
-                            ),
-                            const Icon(Icons.arrow_forward,color: Colors.white,),
-                          ],
-                        ),
-                      ),
+    return showGlobalDialog(context, Padding(
+      padding: const EdgeInsets.all( 30.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('confirm Basic information'.toUpperCase(),style: TextStyle(fontSize: 20,color: globalBlue,fontWeight: FontWeight.bold),textAlign: TextAlign.center),
+          divider(),
+          CommonRowPadding('First name:', personName.text),
+          divider(),
+          CommonRowPadding('Middle name:', middleName.text),
+          divider(),
+          CommonRowPadding('Family name:', familyName.text),
+          divider(),
+          CommonRowPadding('Date of birth:', startDate),
+          divider(),
+          CommonRowPadding('Gender:', genderText),
+          divider(),
+          InkWell(
+            onTap: (){
+              submitBasicInfo();
+            },
+            child: Container(
+              margin: const EdgeInsets.only(top: 20),
+              decoration: BoxDecoration(
+                color: globalOrange,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text('edit basic information'.toUpperCase(),style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                      ],
                     ),
-                  )
-                ],
+                    const Icon(Icons.arrow_forward,color: Colors.white,),
+                  ],
+                ),
               ),
             ),
-          );
-        }
-    );
+          )
+        ],
+      ),
+    ), true);
   }
 
   Future<void> showConfirmEmailDialog(String header){
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          insetPadding: EdgeInsets.all(20),
-          elevation: 16,
-          child: Padding(
-            padding: EdgeInsets.all(30),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('confirm $header information'.toUpperCase(),style: TextStyle(fontSize: 20,color: globalBlue,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                divider(),
-                CommonRowPadding('$header:', header=='Email Address'?emailAddress.text:mobileNumber.text),
-                divider(),
-                InkWell(
-                  onTap: (){
-                    header=='Email Address'?submitEmailInfo():
-                    submitPhoneNumberInfo();
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    decoration: BoxDecoration(
-                      color: globalOrange,
-                      borderRadius: BorderRadius.circular(8),
+    return showGlobalDialog(context,
+     Padding(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('confirm $header information'.toUpperCase(),style: TextStyle(fontSize: 20,color: globalBlue,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+          divider(),
+          CommonRowPadding('$header:', header=='Email Address'?emailAddress.text:mobileNumber.text),
+          divider(),
+          InkWell(
+            onTap: (){
+              header=='Email Address'?submitEmailInfo():
+              submitPhoneNumberInfo();
+            },
+            child: Container(
+              margin: const EdgeInsets.only(top: 20),
+              decoration: BoxDecoration(
+                color: globalOrange,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text('edit $header '.toUpperCase(),style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                      ],
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Text('edit $header information'.toUpperCase(),style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                            ],
-                          ),
-                          const Icon(Icons.arrow_forward,color: Colors.white,),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              ],
+                    const Icon(Icons.arrow_forward,color: Colors.white,),
+                  ],
+                ),
+              ),
             ),
-          ),
-        );
-      }
-    );
+          )
+        ],
+      ),
+    ),
+        true);
   }
 
   Future<void> submitPhoneNumberInfo()async {
@@ -482,13 +466,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
       barrierDismissible: true,
       builder: (context) =>StatefulBuilder(
         builder: (context, StateSetter setState){
-          return Dialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            insetPadding: const EdgeInsets.all(20),
-            elevation: 16,
-            child: Padding(
-              padding:  EdgeInsets.all(20.0),
-              child: EditOTPPage(submitUrl: '$urlForINSC/updatePatientContactInfo.shc?Mobile_ContactIDP=$ContactIDPNumber&mobile=${mobileNumber.text}&Email_ContactIDP=$ContactIDPEmail&email=$ContactDetailsEmail',),
+          return BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
+            child: Dialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              insetPadding: const EdgeInsets.all(20),
+              elevation: 16,
+              child: Padding(
+                padding:  EdgeInsets.all(20.0),
+                child: EditOTPPage(submitUrl: '$urlForINSC/updatePatientContactInfo.shc?Mobile_ContactIDP=$ContactIDPNumber&mobile=${mobileNumber.text}&Email_ContactIDP=$ContactIDPEmail&email=$ContactDetailsEmail',),
+              ),
             ),
           );
         },
@@ -503,94 +490,74 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> showConfirmAddressDialog(){
-    return showDialog<void>(
-        context: context,
-        builder: (BuildContext context){
-          return Dialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            insetPadding: EdgeInsets.all(20),
-            elevation: 16,
-            child: Padding(
-              padding: const EdgeInsets.all( 30.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('confirm Address information'.toUpperCase(),style: TextStyle(fontSize: 20,color: globalBlue,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                  divider(),
-                  CommonRowPadding('City name:', cityName),
-                  divider(),
-                  InkWell(
-                    onTap: submitAddressInfo,
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      decoration: BoxDecoration(
-                        color: globalOrange,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text('edit address information'.toUpperCase(),style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                              ],
-                            ),
-                            const Icon(Icons.arrow_forward,color: Colors.white,),
-                          ],
-                        ),
-                      ),
+    return showGlobalDialog(context, Padding(
+      padding: const EdgeInsets.all( 30.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('confirm Address information'.toUpperCase(),style: TextStyle(fontSize: 20,color: globalBlue,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+          divider(),
+          CommonRowPadding('City name:', cityName),
+          divider(),
+          InkWell(
+            onTap: submitAddressInfo,
+            child: Container(
+              margin: const EdgeInsets.only(top: 20),
+              decoration: BoxDecoration(
+                color: globalOrange,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text('edit address information'.toUpperCase(),style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                      ],
                     ),
-                  )
-                ],
+                    const Icon(Icons.arrow_forward,color: Colors.white,),
+                  ],
+                ),
               ),
             ),
-          );
-        }
-    );
+          )
+        ],
+      ),
+    ), true);
   }
 
   Future<void> showHomeDialog(String text){
-    return showDialog<void>(
-        context: context,
-        builder: (BuildContext context){
-          return Dialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            insetPadding: EdgeInsets.all(20),
-            elevation: 16,
-            child: Padding(
-              padding: const EdgeInsets.all(30),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(text.toUpperCase(),style: TextStyle(fontWeight: FontWeight.w600,color: globalBlue,fontSize: 17),textAlign: TextAlign.center,),
-                  divider(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0,right: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          child: Text('OK',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                          onTap: (){
-                            Navigator.pop(context);
-                          },
-                        ),
-                        InkWell(
-                            onTap: (){
-                              Get.offAll(HomePage());
-                            },
-                          child: Text('Go to Home',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
-                      ],
-                    ),
-                  )
-                ],
-              ),
+    return showGlobalDialog(context, Padding(
+      padding: const EdgeInsets.all(30),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(text.toUpperCase(),style: TextStyle(fontWeight: FontWeight.w600,color: globalBlue,fontSize: 17),textAlign: TextAlign.center,),
+          divider(),
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0,right: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  child: Text('OK',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                ),
+                InkWell(
+                    onTap: (){
+                      Get.offAll(HomePage());
+                    },
+                    child: Text('Go to Home',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+              ],
             ),
-          );
-        }
-    );
+          )
+        ],
+      ),
+    ), true);
   }
 
   Text topText(String text){
@@ -748,54 +715,47 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             topText('gender'),
                             InkWell(
                               onTap: () {
-                                showDialog<String>(
-                                    context: context,
-                                    builder: (context) =>Dialog(
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                        insetPadding: EdgeInsets.all(20),
-                                        elevation: 16,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Container(
-                                              child: Center(child: Text('Select Gender',textScaleFactor: 1.0,style: TextStyle(color:Colors.white,fontSize: 19,fontWeight: FontWeight.w500,),)),
-                                              decoration: BoxDecoration(
-                                                color: globalBlue,
-                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
-                                              ),
-                                              height: 50,
-                                            ),
-                                            RadioListTile(
-                                              title: const Text('Male'),
-                                              value: "Male",
-                                              activeColor: globalBlue,
-                                              groupValue: genderText,
-                                              onChanged: (value){
-                                                setState(() {
-                                                  genderIDF = '1';
-                                                  genderText = value.toString();
-                                                  Navigator.pop(context, 'Cancel');
-                                                }
-                                                );
-                                              },
-                                            ),
-                                            RadioListTile(
-                                              title: Text('Female'),
-                                              value: "Female",
-                                              activeColor: globalBlue,
-                                              groupValue: genderText,
-                                              onChanged: (value){
-                                                setState(() {
-                                                  genderIDF = '2';
-                                                  genderText = value.toString();
-                                                  Navigator.pop(context, 'Cancel');
-                                                }
-                                                );
-                                              },
-                                            ),
-                                          ],
-                                        )
-                                    ));
+                                showGlobalDialog(context, Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      child: Center(child: Text('Select Gender',textScaleFactor: 1.0,style: TextStyle(color:Colors.white,fontSize: 19,fontWeight: FontWeight.w500,),)),
+                                      decoration: BoxDecoration(
+                                        color: globalBlue,
+                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+                                      ),
+                                      height: 50,
+                                    ),
+                                    RadioListTile(
+                                      title: const Text('Male'),
+                                      value: "Male",
+                                      activeColor: globalBlue,
+                                      groupValue: genderText,
+                                      onChanged: (value){
+                                        setState(() {
+                                          genderIDF = '1';
+                                          genderText = value.toString();
+                                          Navigator.pop(context, 'Cancel');
+                                        }
+                                        );
+                                      },
+                                    ),
+                                    RadioListTile(
+                                      title: Text('Female'),
+                                      value: "Female",
+                                      activeColor: globalBlue,
+                                      groupValue: genderText,
+                                      onChanged: (value){
+                                        setState(() {
+                                          genderIDF = '2';
+                                          genderText = value.toString();
+                                          Navigator.pop(context, 'Cancel');
+                                        }
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ), true);
                                 FocusManager.instance.primaryFocus?.unfocus();
                               },
                               child: Container(

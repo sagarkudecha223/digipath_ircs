@@ -4,6 +4,9 @@ class PaymentModal{
   final String purposeType;
   final String encounterDate;
   final String amount;
+  final String collecationTime;
+  final String StartTimeSlot;
+  final bool isPay;
 
   PaymentModal({
 
@@ -11,6 +14,9 @@ class PaymentModal{
     required this.purposeType,
     required this.encounterDate,
     required this.amount,
+    required this.collecationTime,
+    required this.StartTimeSlot,
+    required this.isPay,
 
   });
 }
