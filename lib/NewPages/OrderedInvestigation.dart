@@ -133,162 +133,167 @@ class OrderedInvestigationState extends State<OrderedInvestigation> {
             if (searching)
               Text(noDataTextString)
             else
-              patientOrderSetByCitizenList.isNotEmpty?Container(
-                margin: const EdgeInsets.fromLTRB(20, 15, 20, 5),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: patientOrderSetByCitizenList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      padding: const EdgeInsets.fromLTRB(25, 15, 25, 15),
-                      decoration: BorderContainer(Colors.white,globalBlue),
-                      child: Column(
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+              patientOrderSetByCitizenList.isNotEmpty?Flexible(
+                child: SingleChildScrollView(
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(20, 15, 20, 5),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: patientOrderSetByCitizenList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.fromLTRB(25, 15, 25, 15),
+                          decoration: BorderContainer(Colors.white,globalBlue),
+                          child: Column(
                             children: [
-                              Icon(
-                                Icons.calendar_month,
-                                // height: 20,
-                                // width: 20,
-                                color: globalBlue,
-                                size: 20,
-                              ),
-                              const SizedBox(
-                                width: 25,
-                                height: 28,
-                              ),
-                              Flexible(
-                                child: Text(
-                                  patientOrderSetByCitizenList[index].encounterDate,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.calendar_month,
+                                    // height: 20,
+                                    // width: 20,
+                                    color: globalBlue,
+                                    size: 20,
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 5,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image(
-                                image: const AssetImage('assets/images/doctor.png'),
-                                height: 20,
-                                width: 20,
-                                fit: BoxFit.fill,
-                                color: globalBlue,
-                              ),
-                              const SizedBox(
-                                width: 25,
-                                height: 28,
-                              ),
-                              Flexible(
-                                child: Text(
-                                  patientOrderSetByCitizenList[index].doctorName,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
+                                  const SizedBox(
+                                    width: 25,
+                                    height: 28,
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 5,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.local_hospital_rounded,
-                                color: globalBlue,
-                                size: 23,
-                              ),
-                              const SizedBox(
-                                width: 25,
-                                height: 28,
-                              ),
-                              Flexible(
-                                child: Text(
-                                  patientOrderSetByCitizenList[index].careProviderName,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 5,
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: ListView.builder(
-                                  padding: const EdgeInsets.fromLTRB(35, 5, 0, 0),
-                                  itemCount: serviceList.length,
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context,
-                                      int insideindex) {
-                                    return Container(
-                                      padding: const EdgeInsets.only(bottom: 3),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.medical_services_outlined,size: 20,color: globalBlue,),
-                                          const SizedBox(
-                                            width: 25,
-                                          ),
-                                          Flexible(
-                                            child: Text(
-                                              serviceList[insideindex].serviceName,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                  Flexible(
+                                    child: Text(
+                                      patientOrderSetByCitizenList[index].encounterDate,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                    );
-                                  },
-                                ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              InkWell(
-                                child: Icon(Icons.download,color: globalBlue,),
-                                onTap: () => {
-                                  EasyLoading.show(status: 'Loading...'),
-                                  openFile(
-                                    url:
-                                    '$urlForINSC/getPatientOrderSetReport_SmartHealthByEncounterID.do?ptype=0&txtStationary=false&txtID=${patientOrderSetByCitizenList[index].encounterIDF}&frmUserName=$localUserName',
-                                    fileName: '${patientOrderSetByCitizenList[index].careProviderIDP}.pdf',
-                                  )
-                                },
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: 5,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image(
+                                    image: const AssetImage('assets/images/doctor.png'),
+                                    height: 20,
+                                    width: 20,
+                                    fit: BoxFit.fill,
+                                    color: globalBlue,
+                                  ),
+                                  const SizedBox(
+                                    width: 25,
+                                    height: 28,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      patientOrderSetByCitizenList[index].doctorName,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: 5,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.local_hospital_rounded,
+                                    color: globalBlue,
+                                    size: 23,
+                                  ),
+                                  const SizedBox(
+                                    width: 25,
+                                    height: 28,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      patientOrderSetByCitizenList[index].careProviderName,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: 5,
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    child: ListView.builder(
+                                      padding: const EdgeInsets.fromLTRB(35, 5, 0, 0),
+                                      itemCount: serviceList.length,
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder: (BuildContext context,
+                                          int insideindex) {
+                                        return Container(
+                                          padding: const EdgeInsets.only(bottom: 3),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.medical_services_outlined,size: 20,color: globalBlue,),
+                                              const SizedBox(
+                                                width: 25,
+                                              ),
+                                              Flexible(
+                                                child: Text(
+                                                  serviceList[insideindex].serviceName,
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  InkWell(
+                                    child: Icon(Icons.download,color: globalBlue,),
+                                    onTap: () => {
+                                      EasyLoading.show(status: 'Loading...'),
+                                      openFile(
+                                        url:
+                                        '$urlForINSC/getPatientOrderSetReport_SmartHealthByEncounterID.do?ptype=0&txtStationary=false&txtID=${patientOrderSetByCitizenList[index].encounterIDF}&frmUserName=$localUserName',
+                                        fileName: '${patientOrderSetByCitizenList[index].careProviderIDP}.pdf',
+                                      )
+                                    },
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ) : const Text('No Data Found'),
           ],
